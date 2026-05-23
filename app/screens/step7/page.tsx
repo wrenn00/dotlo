@@ -164,6 +164,7 @@ export default function Step7Page() {
             조건을 바꾸거나 다시 만들어볼 수 있어요
           </p>
           <button
+            onClick={() => router.push("/screens/step8")}
             className="flex items-center gap-1.5 px-4 py-2 rounded-full mt-3"
             style={{ background: "#fff", border: "1px solid #E5E7EB" }}
           >
@@ -176,7 +177,7 @@ export default function Step7Page() {
       {/* 하단 버튼 */}
       <div className="px-5 pb-8 pt-3 shrink-0" style={{ background: "#fff" }}>
         <button
-          onClick={() => router.push("/screens/step8")}
+          onClick={() => router.push("/screens/step9")}
           className="w-full h-[52px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
           style={{ background: "#0F172A" }}
         >

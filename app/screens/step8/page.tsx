@@ -1,17 +1,18 @@
-import { ProgressBar, StepNavigation } from "@/components/StepNavigation";
+"use client";
+
+import { useRouter } from "next/navigation";
+import LoadingStepper from "@/components/LoadingStepper";
+
+const STEPS = ["카테고리별 장소 분석", "이동 동선 계산 중...", "코스 분석", "일정 생성"];
 
 export default function Step8Page() {
+  const router = useRouter();
   return (
-    <div className="flex flex-col h-full" style={{ background: "#fff" }}>
-      <ProgressBar current={8} />
-      <div className="flex flex-col flex-1 items-center justify-center gap-4 px-6">
-        <div className="w-20 h-20 rounded-3xl flex items-center justify-center" style={{ background: "#F8F9FB" }}>
-          <span className="text-[32px] font-bold" style={{ color: "#C4C7CF" }}>8</span>
-        </div>
-        <p className="text-[20px] font-bold" style={{ color: "#373C3E" }}>STEP 8</p>
-        <p className="text-[14px] text-center" style={{ color: "#888E9C" }}>Figma 디자인이 여기에 들어올 예정입니다</p>
-      </div>
-      <StepNavigation current={8} prevHref="/screens/step7" />
-    </div>
+    <LoadingStepper
+      title="코스를 다시 만들고 있어요"
+      icon="regenerate"
+      steps={STEPS}
+      onComplete={() => router.push("/screens/step9")}
+    />
   );
 }
