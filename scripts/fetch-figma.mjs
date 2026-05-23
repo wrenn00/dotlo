@@ -14,7 +14,7 @@ if (!FILE_KEY) { console.error("❌  FILE_KEY를 스크립트 상단에 입력�
 if (!NODE_ID)  { console.error("❌  NODE_ID를 스크립트 상단에 입력하세요."); process.exit(1); }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const OUT = path.join(__dirname, "figma-output.json");
+const OUT = path.join(__dirname, "figma-home.json");
 
 const encoded = encodeURIComponent(NODE_ID);
 const url = `https://api.figma.com/v1/files/${FILE_KEY}/nodes?ids=${encoded}`;
