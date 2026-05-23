@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ProgressBar, StepNavigation } from "@/components/StepNavigation";
 import WhereBottomSheet from "./components/WhereBottomSheet";
 import WhenBottomSheet from "./components/WhenBottomSheet";
@@ -192,6 +193,7 @@ const CarIcon = () => (
 // ─── 메인 ──────────────────────────────────────────────────────────────────────
 
 export default function ScreenStep1() {
+  const router = useRouter();
   const [openSheet, setOpenSheet] = useState<Sheet>(null);
   const [cards, setCards] = useState({ hotel: false, car: false });
   const [sel, setSel] = useState<Selections>({
@@ -199,10 +201,6 @@ export default function ScreenStep1() {
     when: { start: null, end: null },
     who: null,
   });
-
-  function toggleCard(key: "hotel" | "car") {
-    setCards((p) => ({ ...p, [key]: !p[key] }));
-  }
 
   return (
     // 모바일 프레임 내부이므로 absolute로 바텀시트 배치 가능
@@ -258,14 +256,14 @@ export default function ScreenStep1() {
             title="렌터카 이용 여부"
             subtitle="렌트 여부에 따라 동선이 달라져요"
             selected={cards.car}
-            onToggle={() => toggleCard("car")}
+            onToggle={() => router.push("/screens/step1/rentcar")}
           />
           <OptionCard
             icon={<HotelIcon />}
             title="숙소 위치 추가하기"
             subtitle="동선이 더 정확해져요"
             selected={cards.hotel}
-            onToggle={() => toggleCard("hotel")}
+            onToggle={() => router.push("/screens/step1/stay")}
           />
         </div>
       </div>
