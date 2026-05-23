@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import StatsCard from "./components/StatsCard";
 import AIAnalysisBox, { type TasteItem } from "./components/AIAnalysisBox";
+import ShareSheet from "./components/ShareSheet";
 import DayTabs from "../step7/components/DayTabs";
 import TimelineItem, { type TimelineData } from "../step7/components/TimelineItem";
 
@@ -81,6 +82,7 @@ const SCHEDULE: Record<string, TimelineData[]> = {
 export default function Step9Page() {
   const router = useRouter();
   const [selectedDay, setSelectedDay] = useState("1일차");
+  const [shareOpen, setShareOpen] = useState(false);
 
   const items = SCHEDULE[selectedDay] ?? [];
 
@@ -90,7 +92,7 @@ export default function Step9Page() {
   }
 
   return (
-    <div className="flex flex-col h-full" style={{ background: "#fff" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#fff" }}>
 
       {/* 헤더 */}
       <div className="flex items-center justify-between px-5 pt-12 pb-2 shrink-0">
@@ -100,7 +102,10 @@ export default function Step9Page() {
           </svg>
         </button>
         <div className="flex items-center gap-2">
-          <button className="w-9 h-9 flex items-center justify-center">
+          <button
+            onClick={() => setShareOpen(true)}
+            className="w-9 h-9 flex items-center justify-center"
+          >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
               <circle cx="4" cy="9" r="2" stroke="#6B7280" strokeWidth="1.5" />
               <circle cx="14" cy="4" r="2" stroke="#6B7280" strokeWidth="1.5" />
@@ -217,6 +222,9 @@ export default function Step9Page() {
           내 여행에 추가하기
         </button>
       </div>
+
+      {/* 공유 시트 */}
+      <ShareSheet open={shareOpen} onClose={() => setShareOpen(false)} />
     </div>
   );
 }
