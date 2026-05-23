@@ -143,3 +143,18 @@
     cursor: none !important;
   }
 }
+
+/* 전역 스크롤바 숨김 — 앱처럼 보이게 */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* 드래그 스크롤 중 텍스트 선택 방지 */
+body.dragging-scroll {
+  user-select: none;
+  -webkit-user-select: none;
+}
