@@ -171,7 +171,10 @@ export default function Step9Page() {
             <span style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>{selectedDay}</span>
             <span style={{ fontSize: 12, color: "#9CA3AF" }}>{DAY_HEADER[selectedDay]}</span>
           </div>
-          <button className="flex items-center gap-1">
+          <button
+            onClick={() => router.push("/screens/step9/edit")}
+            className="flex items-center gap-1"
+          >
             <span style={{ fontSize: 12, color: "#6B7280" }}>코스 수정</span>
             <span style={{ fontSize: 12 }}>✏️</span>
           </button>
