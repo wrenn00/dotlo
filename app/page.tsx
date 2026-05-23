@@ -31,7 +31,7 @@ export default function IntroPage() {
 
       {/* 시작 버튼 */}
       <button
-        onClick={() => router.push("/step/1")}
+        onClick={() => router.push("/screens/step1")}
         className="w-full max-w-[280px] h-[52px] rounded-2xl text-[16px] font-semibold text-white transition-opacity active:opacity-80"
         style={{ background: "#373C3E" }}
       >

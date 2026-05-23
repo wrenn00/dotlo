@@ -6,8 +6,8 @@ const TOTAL = 9;
 
 interface StepNavigationProps {
   current: number;        // 1~9
-  nextHref?: string;      // 기본값: /step/{current+1}
-  prevHref?: string;      // 기본값: /step/{current-1} 또는 /
+  nextHref?: string;      // 기본값: /screens/step{current+1}
+  prevHref?: string;      // 기본값: /screens/step{current-1} 또는 /
   nextLabel?: string;
   hideNext?: boolean;
   hidePrev?: boolean;
@@ -23,8 +23,8 @@ export function StepNavigation({
 }: StepNavigationProps) {
   const router = useRouter();
 
-  const toNext = nextHref ?? (current < TOTAL ? `/step/${current + 1}` : "/");
-  const toPrev = prevHref ?? (current > 1 ? `/step/${current - 1}` : "/");
+  const toNext = nextHref ?? (current < TOTAL ? `/screens/step${current + 1}` : "/");
+  const toPrev = prevHref ?? (current > 1 ? `/screens/step${current - 1}` : "/");
 
   return (
     <div className="flex flex-col gap-3 px-5 pb-8 pt-4">
