@@ -20,6 +20,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import PlaceActionSheet, { type PlaceInfo } from "./components/PlaceActionSheet";
 
 // ─── 타입 / 데이터 ────────────────────────────────────────────────────────────
 
@@ -152,7 +153,8 @@ export default function Step9EditPage() {
   const router = useRouter();
   const [selectedDay, setSelectedDay] = useState("1일차");
   const [schedule, setSchedule] = useState<Record<string, ScheduleItem[]>>(INITIAL);
-  const [highlightedId, setHighlightedId] = useState<string | null>("2"); // 이치란 라멘 기본 강조
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
+  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -175,7 +177,13 @@ export default function Step9EditPage() {
   }
 
   function handleSelect(id: string) {
-    setHighlightedId((cur) => (cur === id ? null : id));
+    setHighlightedId(id);
+    setSelectedPlaceId(id);
+  }
+
+  function handleCloseSheet() {
+    setSelectedPlaceId(null);
+    setHighlightedId(null);
   }
 
   function handleRemove(id: string) {
@@ -184,7 +192,22 @@ export default function Step9EditPage() {
       [selectedDay]: (prev[selectedDay] ?? []).filter((i) => i.id !== id),
     }));
     setHighlightedId(null);
+    setSelectedPlaceId(null);
   }
+
+  // 시트에 전달할 정보
+  const selectedPlace: PlaceInfo | null = (() => {
+    if (!selectedPlaceId) return null;
+    const found = items.find((i) => i.id === selectedPlaceId);
+    if (!found) return null;
+    return {
+      id: found.id,
+      title: found.title,
+      day: selectedDay,
+      time: found.time,
+      duration: found.duration,
+    };
+  })();
 
   function handleReset() {
     setSchedule(INITIAL);
@@ -192,7 +215,7 @@ export default function Step9EditPage() {
   }
 
   return (
-    <div className="flex flex-col h-full" style={{ background: "#fff" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#fff" }}>
 
       {/* 헤더 */}
       <div className="flex items-center justify-between px-5 pt-12 pb-3 shrink-0">
@@ -324,6 +347,14 @@ export default function Step9EditPage() {
           수정 완료
         </button>
       </div>
+
+      {/* 장소 액션 바텀시트 (Frame 500) */}
+      <PlaceActionSheet
+        open={!!selectedPlaceId}
+        place={selectedPlace}
+        onClose={handleCloseSheet}
+        onRemove={handleRemove}
+      />
     </div>
   );
 }
