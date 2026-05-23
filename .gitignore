@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# figma extracted data (large files, may contain sensitive info)
+scripts/figma-output.json
+scripts/figma-slim.json
