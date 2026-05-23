@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ProgressBar, StepNavigation } from "@/components/StepNavigation";
 import WhereBottomSheet from "./components/WhereBottomSheet";
 import WhenBottomSheet from "./components/WhenBottomSheet";
 import WhoBottomSheet, { type WhoSelection } from "./components/WhoBottomSheet";
@@ -45,55 +44,24 @@ function SelectChip({ icon, label, value, onClick }: ChipProps) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-3 w-full text-left transition-all"
+      className="inline-flex items-center gap-2 self-start transition-all"
       style={{
-        height: 56,
         background: hasValue ? "#F0FDFB" : "#F5F5F7",
         borderRadius: 16,
-        padding: "0 16px",
+        padding: "12px 20px",
         border: hasValue ? "1.5px solid #38C6AF" : "1.5px solid transparent",
       }}
     >
-      {/* 아이콘 */}
-      <div
-        className="flex items-center justify-center shrink-0"
+      <span className="shrink-0">{icon}</span>
+      <span
         style={{
-          width: 32,
-          height: 32,
-          background: hasValue ? "#E2FBF3" : "#E5E7EB",
-          borderRadius: 10,
+          fontSize: 16,
+          fontWeight: 500,
+          color: hasValue ? "#1A1A1A" : "#9CA3AF",
         }}
       >
-        {icon}
-      </div>
-
-      {/* 텍스트 */}
-      <div className="flex-1 min-w-0">
-        {hasValue ? (
-          <>
-            <p style={{ fontSize: 11, color: "#38C6AF", fontWeight: 600 }}>{label}</p>
-            <p
-              className="truncate"
-              style={{ fontSize: 14, fontWeight: 600, color: "#1A1A1A", marginTop: 1 }}
-            >
-              {value}
-            </p>
-          </>
-        ) : (
-          <p style={{ fontSize: 15, fontWeight: 500, color: "#9CA3AF" }}>{label}</p>
-        )}
-      </div>
-
-      {/* 화살표 */}
-      <svg width="7" height="12" viewBox="0 0 7 12" fill="none" className="shrink-0">
-        <path
-          d="M1 1l5 5-5 5"
-          stroke={hasValue ? "#38C6AF" : "#C4C7CF"}
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+        {hasValue ? value : label}
+      </span>
     </button>
   );
 }
@@ -128,25 +96,26 @@ function OptionCard({ icon, title, subtitle, selected, onToggle }: CardProps) {
         {icon}
       </div>
       <div className="flex flex-col flex-1 min-w-0">
-        <span style={{ fontSize: 16, fontWeight: 500, color: "#000", lineHeight: "20px" }}>
-          {title}
-        </span>
+        <div className="flex items-center gap-2">
+          <span style={{ fontSize: 16, fontWeight: 500, color: "#000", lineHeight: "20px" }}>
+            {title}
+          </span>
+          {/* 선택사항 배지 — 항상 표시 */}
+          <div
+            className="flex items-center justify-center shrink-0"
+            style={{ padding: "2px 8px", background: "#CCFBF1", borderRadius: 999 }}
+          >
+            <span style={{ fontSize: 10, fontWeight: 500, color: "#0D9488" }}>선택</span>
+          </div>
+        </div>
         <span style={{ fontSize: 12, color: "#666B78", lineHeight: "15px", marginTop: 3 }}>
           {subtitle}
         </span>
       </div>
-      {selected ? (
-        <div
-          className="flex items-center justify-center shrink-0"
-          style={{ height: 17, padding: "0 10px", background: "#E2FBF3", borderRadius: 999 }}
-        >
-          <span style={{ fontSize: 10, fontWeight: 500, color: "#38C6AF" }}>선택</span>
-        </div>
-      ) : (
-        <svg width="7" height="13" viewBox="0 0 7 13" fill="none" className="shrink-0">
-          <path d="M1 1l5 5.5L1 12" stroke="#A8A8A9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )}
+      {/* 우측 화살표 (선택 상태와 무관) */}
+      <svg width="7" height="13" viewBox="0 0 7 13" fill="none" className="shrink-0">
+        <path d="M1 1l5 5.5L1 12" stroke="#A8A8A9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
     </button>
   );
 }
@@ -206,19 +175,25 @@ export default function ScreenStep1() {
     // 모바일 프레임 내부이므로 absolute로 바텀시트 배치 가능
     <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
 
-      {/* ── 진행바 ── */}
-      <ProgressBar current={1} />
+      {/* ── 뒤로가기 헤더 ── */}
+      <div className="px-5 pt-12 pb-2 shrink-0">
+        <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
+          <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
+            <path d="M9 1L1 8.5 9 16" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
 
       {/* ── 콘텐츠 ── */}
-      <div className="flex flex-col flex-1 overflow-y-auto px-5 pt-5 pb-2">
+      <div className="flex flex-col flex-1 overflow-y-auto px-5 pt-8 pb-2">
 
         {/* "이번 여행은" */}
-        <p style={{ fontSize: 20, fontWeight: 700, color: "#373C3E", lineHeight: "25px" }}>
+        <p style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", lineHeight: "30px" }}>
           이번 여행은
         </p>
 
-        {/* 칩 3개 */}
-        <div className="flex flex-col gap-2.5 mt-4">
+        {/* 칩 — 어디로 / 언제부터는 각자 한 줄, 누구와는 "떠날거에요"와 같은 줄 */}
+        <div className="flex flex-col gap-3 mt-5">
           <SelectChip
             icon={<PinIcon />}
             label="어디로"
@@ -231,26 +206,28 @@ export default function ScreenStep1() {
             value={fmtWhen(sel.when) || undefined}
             onClick={() => setOpenSheet("when")}
           />
-          <SelectChip
-            icon={<PeopleIcon />}
-            label="누구와"
-            value={sel.who ? `${sel.who.type} · ${sel.who.count}명` : undefined}
-            onClick={() => setOpenSheet("who")}
-          />
+
+          {/* 누구와 + "떠날거에요" 같은 줄 */}
+          <div className="flex items-center gap-4">
+            <SelectChip
+              icon={<PeopleIcon />}
+              label="누구와"
+              value={sel.who ? `${sel.who.type} · ${sel.who.count}명` : undefined}
+              onClick={() => setOpenSheet("who")}
+            />
+            <span style={{ fontSize: 20, fontWeight: 700, color: "#1A1A1A" }}>
+              떠날거에요
+            </span>
+          </div>
         </div>
 
-        {/* "떠날거에요" */}
-        <p style={{ fontSize: 20, fontWeight: 700, color: "#373C3E", lineHeight: "25px", marginTop: 16 }}>
-          떠날거에요
-        </p>
-
         {/* 부제 */}
-        <p style={{ fontSize: 13, fontWeight: 500, color: "#888E9C", lineHeight: "16px", marginTop: 10 }}>
+        <p style={{ fontSize: 13, fontWeight: 500, color: "#888E9C", lineHeight: "16px", marginTop: 16 }}>
           몇 가지 질문에 답하면 맞춤 코스를 추천해드려요
         </p>
 
-        {/* 옵션 카드 */}
-        <div className="flex flex-col gap-3 mt-auto pt-8">
+        {/* 옵션 카드 — 하단 정렬 (큰 공백 위에 배치) */}
+        <div className="flex flex-col gap-3 mt-auto">
           <OptionCard
             icon={<CarIcon />}
             title="렌터카 이용 여부"
@@ -268,8 +245,16 @@ export default function ScreenStep1() {
         </div>
       </div>
 
-      {/* ── 하단 네비 ── */}
-      <StepNavigation current={1} hidePrev={true} />
+      {/* ── 하단 "다음" 버튼 ── */}
+      <div className="px-5 pb-8 pt-3 shrink-0">
+        <button
+          onClick={() => router.push("/screens/step2")}
+          className="w-full h-[52px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
+          style={{ background: "#374151" }}
+        >
+          다음
+        </button>
+      </div>
 
       {/* ── 바텀시트 3종 ── */}
       <WhereBottomSheet
