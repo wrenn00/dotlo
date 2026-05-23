@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import TouchCursor from "@/components/TouchCursor";
 
 const pretendard = localFont({
   src: "../public/fonts/PretendardVariable.woff2",
@@ -25,6 +26,9 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${pretendard.variable} h-full antialiased`}>
       <body className="h-full bg-[#1a1a1a] flex items-center justify-center">
+        {/* 글래스 터치 인디케이터 (데스크톱만) */}
+        <TouchCursor />
+
         {/* 모바일 프레임 — 375×812 고정, 폰처럼 보이게 */}
         <div
           className="relative overflow-hidden bg-white"

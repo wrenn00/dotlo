@@ -128,3 +128,18 @@
     @apply font-sans;
   }
 }
+
+/* 데스크톱(hover+fine pointer)에서만 기본 커서 숨김 — TouchCursor가 대체 */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  [role="button"] {
+    cursor: none !important;
+  }
+}
