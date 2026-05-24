@@ -70,9 +70,9 @@ export default function Step7Page() {
   const currentCourse = getCourse(activeTab);
   const items = SCHEDULE[selectedDay] ?? [];
 
-  const handleExpand = () => {
-    if (!selectedId) return;
-    setActiveTab(selectedId);
+  const handleCardClick = (id: CourseId) => {
+    setSelectedId(id);
+    setActiveTab(id);
     setShowDetail(true);
     setTimeout(() => {
       detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -101,7 +101,7 @@ export default function Step7Page() {
             코스를 만들었어요
           </h1>
           <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6, lineHeight: "20px" }}>
-            3가지 스타일로 골랐어요. 선택한 코스는 수정가능해요
+            3가지 코스를 비교해보고, 마음에 드는 코스를 선택하세요
           </p>
         </div>
 
@@ -125,15 +125,21 @@ export default function Step7Page() {
           </div>
         </div>
 
+        {/* 안내 */}
+        <div className="px-5 mt-5 flex items-center justify-between">
+          <p style={{ fontSize: 12, color: "#7A858B" }}>원하는 코스를 선택해주세요</p>
+          <Icon name="touch_app" size={14} className="text-cloudy-gray-400" />
+        </div>
+
         {/* 3개 카드 */}
-        <div className="px-5 mt-5 grid grid-cols-3 gap-2">
+        <div className="px-5 mt-2 grid grid-cols-3 gap-2">
           {courses.map((c) => {
             const active = selectedId === c.id;
             return (
               <button
                 key={c.id}
-                onClick={() => setSelectedId(c.id)}
-                className="flex flex-col items-start text-left p-3 rounded-2xl transition-all"
+                onClick={() => handleCardClick(c.id)}
+                className="flex flex-col items-start text-left p-3 rounded-2xl transition-all active:scale-95"
                 style={{
                   background: active ? "#fff" : "#F7F9FA",
                   border: active ? `2px solid ${c.colorHex}` : "2px solid transparent",
@@ -150,20 +156,8 @@ export default function Step7Page() {
           })}
         </div>
 
-        {/* 하단 버튼 */}
-        <div className="mt-auto px-5 pb-8 pt-5">
-          <button
-            onClick={handleExpand}
-            disabled={!selectedId}
-            className="w-full h-[52px] rounded-2xl text-base font-semibold transition-all"
-            style={{
-              background: selectedId ? "#090738" : "#DDE5E8",
-              color: selectedId ? "#fff" : "#7A858B",
-            }}
-          >
-            이 코스 선택하기
-          </button>
-        </div>
+        {/* 버튼 없음 — 카드 클릭이 곧 펼침 트리거 */}
+        <div className="flex-1" />
       </section>
 
       {/* ═══ 섹션 2: 상세 뷰 (조건부) ═══ */}
