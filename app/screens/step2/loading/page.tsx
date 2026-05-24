@@ -4,7 +4,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
-import successCheck from "@/public/lottie/success-check.json";
+import { replaceColor } from "lottie-colorify";
+import successCheckRaw from "@/public/lottie/success-check.json";
+
+// 초록 계열 → sky-blue 로 치환 (흰 체크는 유지)
+const successCheck = replaceColor(
+  "#c8f1e0",
+  "#c2f5ff",
+  replaceColor("#2cda94", "#00e1ff", successCheckRaw)
+);
 
 type Stage = "loading" | "success";
 
@@ -12,6 +20,7 @@ export default function Step2LoadingPage() {
   const router = useRouter();
   const [stage, setStage] = useState<Stage>("loading");
   const [count, setCount] = useState(0);
+  const [lottieComplete, setLottieComplete] = useState(false);
 
   // 카운트업 0 → 47 (60ms 간격 ≈ 2.8s)
   useEffect(() => {
@@ -36,12 +45,12 @@ export default function Step2LoadingPage() {
     }
   }, [count, stage]);
 
-  // success 단계 → 1.5s 후 다음 페이지
+  // Lottie 재생 완료 → 0.8s 여유 후 다음 페이지
   useEffect(() => {
-    if (stage !== "success") return;
-    const t = setTimeout(() => router.push("/screens/step2/loaded"), 1500);
+    if (stage !== "success" || !lottieComplete) return;
+    const t = setTimeout(() => router.push("/screens/step2/loaded"), 800);
     return () => clearTimeout(t);
-  }, [stage, router]);
+  }, [stage, lottieComplete, router]);
 
   return (
     <div
@@ -129,7 +138,12 @@ export default function Step2LoadingPage() {
               className="flex flex-col items-center"
             >
               <div style={{ width: 180, height: 180 }}>
-                <Lottie animationData={successCheck} loop={false} autoplay />
+                <Lottie
+                  animationData={successCheck}
+                  loop={false}
+                  autoplay
+                  onComplete={() => setLottieComplete(true)}
+                />
               </div>
 
               <motion.p
