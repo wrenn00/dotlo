@@ -177,6 +177,7 @@ export default function HomePage() {
             title={"현지인 맛집만\n골라가는 도시"}
             subtitle="오사카, 대만, 호치민"
             courseCount={8}
+            gradientRgb="22, 15, 82"
           />
           <SuggestCard
             image="/images/trips/danang.png"
