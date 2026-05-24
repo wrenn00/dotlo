@@ -45,3 +45,6 @@ scripts/figma-*.json
 
 # Lottie 색상 교체 백업 (로컬 롤백용)
 *backup.json
+
+# 루트에 흩어진 작업용 이미지 (public/ 하위는 추적 유지)
+/*.png
