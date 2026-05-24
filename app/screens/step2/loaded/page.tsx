@@ -1,15 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import PlaceImage from "@/components/PlaceImage";
+import PlaceThumbnail from "@/components/PlaceThumbnail";
+import places from "@/data/places.json";
 
-const PLACES = [
-  { id: 1, name: "이치란 라멘 도본토리점", sub: "오사카 · 음식점" },
-  { id: 2, name: "후시미 이나리 신사", sub: "교토 · 관광명소" },
-  { id: 3, name: "블루보틀 키요스미", sub: "오사카 · 카페" },
-  { id: 4, name: "기요미즈데라", sub: "교토 · 관광명소" },
-  { id: 5, name: "니시키 시장", sub: "교토 · 시장" },
-];
+const tokyoPlaces = places.filter((p) => p.city === "tokyo");
 
 export default function Step2LoadedPage() {
   const router = useRouter();
@@ -42,7 +37,7 @@ export default function Step2LoadedPage() {
         {/* 제목 */}
         <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "32px" }}>
           저장된 장소{" "}
-          <span style={{ color: "#00E1FF" }}>47개</span>
+          <span style={{ color: "#00E1FF" }}>{tokyoPlaces.length}개</span>
           를{"\n"}가져왔어요
         </h1>
         <p style={{ fontSize: 14, color: "#7A858B", marginTop: 8 }}>
@@ -57,19 +52,20 @@ export default function Step2LoadedPage() {
 
         {/* 장소 리스트 */}
         <div className="flex flex-col gap-2.5">
-          {PLACES.map((p) => (
+          {tokyoPlaces.map((p) => (
             <div
               key={p.id}
               className="flex items-center gap-3 px-4 py-3"
               style={{ background: "#fff", borderRadius: 14, border: "1px solid #DDE5E8" }}
             >
-              {/* 썸네일 */}
-              <PlaceImage placeName={p.name} width={48} height={48} />
+              <PlaceThumbnail src={p.image} alt={p.name} category={p.category} size={48} />
               <div className="flex-1 min-w-0">
                 <p className="truncate" style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>
                   {p.name}
                 </p>
-                <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>{p.sub}</p>
+                <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>
+                  {p.region} · {p.category}
+                </p>
               </div>
             </div>
           ))}

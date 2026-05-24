@@ -2,64 +2,30 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import PlaceImage from "@/components/PlaceImage";
-import { usePlaceData } from "@/lib/places-data";
+import PlaceThumbnail from "@/components/PlaceThumbnail";
 import Icon from "@/components/Icon";
+import places from "@/data/places.json";
 
-const CATEGORIES = ["전체", "맛집 12", "카페 7", "쇼핑 5", "관광 12"];
+type Place = (typeof places)[number];
 
-const PLACES = [
-  {
-    id: "1",
-    name: "이치란 라멘 도본토리점",
-    rating: 4.2, reviews: 5488,
-    region: "오사카 · 맛집",
-    desc: "편안한 분위기의 돈코츠 라멘식당",
-  },
-  {
-    id: "2",
-    name: "EX 카페 교토 아라시야마점",
-    rating: 4.6, reviews: 4603,
-    region: "교토 · 카페",
-    desc: "커피, 차와 예술작품을 즐길 수 있는 조용한 카페",
-  },
-  {
-    id: "3",
-    name: "기요미즈데라",
-    rating: 4.6, reviews: 69279,
-    region: "교토 · 관광",
-    desc: "멋진 경관의 역사적인 사원",
-  },
-  {
-    id: "4",
-    name: "오카페 교토",
-    rating: 4.8, reviews: 1209,
-    region: "교토 · 카페",
-    desc: "바리스타의 커피와 간식, 아침식사",
-  },
-  {
-    id: "5",
-    name: "스시노무사시",
-    rating: 4.8, reviews: 1209,
-    region: "교토 · 맛집",
-    desc: "신선한 재료로 만든 전통 스시",
-  },
-];
+const tokyoPlaces: Place[] = places.filter((p) => p.city === "tokyo");
 
+// 칩에 노출할 카테고리 (숙소 제외) + 동적 카운트
+const CHIP_CATEGORIES = ["맛집", "카페", "쇼핑", "관광", "야경"] as const;
+const COUNTS: Record<string, number> = CHIP_CATEGORIES.reduce(
+  (acc, cat) => ({ ...acc, [cat]: tokyoPlaces.filter((p) => p.category === cat).length }),
+  {} as Record<string, number>
+);
 
-// ─── 장소 카드 (실제 사진 + 실 평점 + dummy fallback) ────────────────────────
+// ─── 장소 카드 ────────────────────────────────────────────────────────────────
 
 interface PlaceRowProps {
-  place: typeof PLACES[number];
+  place: Place;
   isSelected: boolean;
   onToggle: () => void;
 }
 
 function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
-  const real = usePlaceData(place.name);
-  const rating = real?.rating ?? place.rating;
-  const reviews = real?.userRatingCount ?? place.reviews;
-
   return (
     <button
       onClick={onToggle}
@@ -69,16 +35,18 @@ function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
         border: isSelected ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
       }}
     >
-      <PlaceImage placeName={place.name} width={52} height={52} />
+      <PlaceThumbnail src={place.image} alt={place.name} category={place.category} size={52} />
 
       <div className="flex-1 min-w-0">
         <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{place.name}</p>
         <p className="flex items-center gap-1" style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
           <Icon name="star" size={13} fill className="text-star-yellow-500" />
-          {rating} · {reviews.toLocaleString()}개 리뷰
+          {place.rating} · {place.reviews.toLocaleString()}개 리뷰
         </p>
-        <p style={{ fontSize: 12, color: "#555E63", marginTop: 1 }}>{place.region}</p>
-        <p className="truncate" style={{ fontSize: 12, color: "#7A858B", marginTop: 1 }}>{place.desc}</p>
+        <p style={{ fontSize: 12, color: "#555E63", marginTop: 1 }}>
+          {place.region} · {place.category}
+        </p>
+        <p className="truncate" style={{ fontSize: 12, color: "#7A858B", marginTop: 1 }}>{place.description}</p>
       </div>
 
       <div
@@ -105,7 +73,7 @@ function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
 export default function Step2SelectPage() {
   const router = useRouter();
   const [activeCat, setActiveCat] = useState("전체");
-  const [selected, setSelected] = useState<Set<string>>(new Set(["1", "2", "3", "4"]));
+  const [selected, setSelected] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState("");
 
   function toggle(id: string) {
@@ -116,14 +84,20 @@ export default function Step2SelectPage() {
     });
   }
 
-  function toggleAll() {
-    if (selected.size === PLACES.length) setSelected(new Set());
-    else setSelected(new Set(PLACES.map((p) => p.id)));
-  }
+  const filtered = tokyoPlaces.filter((p) => {
+    if (activeCat !== "전체" && p.category !== activeCat) return false;
+    if (query && !(p.name.includes(query) || p.region.includes(query))) return false;
+    return true;
+  });
 
-  const filtered = PLACES.filter((p) =>
-    query ? p.name.includes(query) || p.region.includes(query) : true
-  );
+  function toggleAll() {
+    const allSelected = filtered.every((p) => selected.has(p.id));
+    setSelected((prev) => {
+      const next = new Set(prev);
+      filtered.forEach((p) => (allSelected ? next.delete(p.id) : next.add(p.id)));
+      return next;
+    });
+  }
 
   return (
     <div className="flex flex-col h-full" style={{ background: "#fff" }}>
@@ -143,7 +117,7 @@ export default function Step2SelectPage() {
           꼭 가고싶은 장소를{"\n"}선택해주세요
         </h1>
         <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6 }}>
-          구글맵에 47개의 장소를 불러왔어요
+          구글맵에 {tokyoPlaces.length}개의 장소를 불러왔어요
         </p>
       </div>
 
@@ -169,19 +143,20 @@ export default function Step2SelectPage() {
 
       {/* 카테고리 필터 — 가로 스크롤 */}
       <div className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth px-5 pb-2 mb-1">
-        {CATEGORIES.map((cat) => {
-          const active = activeCat === cat;
+        {[`전체 ${tokyoPlaces.length}`, ...CHIP_CATEGORIES.map((c) => `${c} ${COUNTS[c]}`)].map((label) => {
+          const key = label.split(" ")[0];
+          const active = activeCat === key;
           return (
             <button
-              key={cat}
-              onClick={() => setActiveCat(cat)}
+              key={label}
+              onClick={() => setActiveCat(key)}
               className="shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
               style={{
                 background: active ? "#090738" : "#F7F9FA",
                 color: active ? "#fff" : "#555E63",
               }}
             >
-              {cat}
+              {label}
             </button>
           );
         })}
