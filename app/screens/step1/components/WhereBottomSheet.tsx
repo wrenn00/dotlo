@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useKeyboard } from "@/components/KeyboardProvider";
+
+const INPUT_ID = "where-search";
 
 const RECENT = ["교토", "바르셀로나", "도쿄"];
 
@@ -25,6 +28,7 @@ interface Props {
 
 export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
   const [query, setQuery] = useState("");
+  const { open: openKeyboard, close: closeKeyboard, isOpen: kbOpen, inputId } = useKeyboard();
 
   const trimmed = query.trim();
   const filtered = trimmed
@@ -37,8 +41,20 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
   function handleSelect(city: string) {
     onSelect(city);
     setQuery("");
+    closeKeyboard();
     onClose();
   }
+
+  function handleClose() {
+    closeKeyboard();
+    onClose();
+  }
+
+  function focusSearch() {
+    openKeyboard(INPUT_ID, query, setQuery);
+  }
+
+  const isFocused = kbOpen && inputId === INPUT_ID;
 
   return (
     <>
@@ -51,7 +67,7 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
           pointerEvents: open ? "auto" : "none",
           zIndex: 40,
         }}
-        onClick={onClose}
+        onClick={handleClose}
       />
 
       {/* 시트 */}
@@ -76,41 +92,50 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
           <span style={{ fontSize: 18, fontWeight: 700, color: "#090738" }}>
             어디로 떠나시나요?
           </span>
-          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center">
+          <button onClick={handleClose} className="w-8 h-8 flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M2 2l12 12M14 2L2 14" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         </div>
 
-        {/* 검색바 */}
+        {/* 검색바 — 가상 키보드 트리거 */}
         <div className="px-5 pb-3">
           <div
-            className="flex items-center gap-2 px-4"
-            style={{ height: 44, background: "#F7F9FA", borderRadius: 12 }}
+            onClick={focusSearch}
+            className="flex items-center gap-2 px-4 cursor-pointer"
+            style={{
+              height: 44,
+              background: "#F7F9FA",
+              borderRadius: 12,
+              outline: isFocused ? "2px solid #00E1FF" : "none",
+            }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
               <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
-            <input
-              type="text"
-              inputMode="search"
-              enterKeyHint="search"
-              className="flex-1 bg-transparent outline-none text-sm placeholder:text-cloudy-gray-400"
-              style={{ color: "#090738" }}
-              placeholder="도시 또는 국가"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && filtered.length > 0) {
-                  handleSelect(filtered[0].city);
-                }
-              }}
-            />
+            <div className="flex-1 flex items-center min-w-0">
+              {query ? (
+                <span className="truncate" style={{ fontSize: 14, color: "#090738" }}>
+                  {query}
+                </span>
+              ) : (
+                <span style={{ fontSize: 14, color: "#A1ADB3" }}>도시 또는 국가</span>
+              )}
+              {isFocused && (
+                <span
+                  className="ml-0.5 animate-pulse"
+                  style={{ width: 2, height: 16, background: "#00E1FF" }}
+                />
+              )}
+            </div>
             {query && (
               <button
-                onClick={() => setQuery("")}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setQuery("");
+                }}
                 className="shrink-0 flex items-center justify-center"
                 style={{ width: 18, height: 18, borderRadius: "50%", background: "#A1ADB3" }}
                 aria-label="검색어 지우기"

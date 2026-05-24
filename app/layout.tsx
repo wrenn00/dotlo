@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import TouchCursor from "@/components/TouchCursor";
 import PageTransition from "@/components/PageTransition";
+import { KeyboardProvider } from "@/components/KeyboardProvider";
+import VirtualKeyboard from "@/components/VirtualKeyboard";
 
 export const metadata: Metadata = {
   title: "dotlo prototype",
@@ -33,18 +35,21 @@ export default function RootLayout({
         <TouchCursor />
 
         {/* 모바일 프레임 — 375×812 고정, 폰처럼 보이게 */}
-        <div
-          className="relative overflow-hidden bg-white"
-          style={{
-            width: 375,
-            height: 812,
-            borderRadius: 44,
-            boxShadow:
-              "0 0 0 10px #2a2a2a, 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.08)",
-          }}
-        >
-          <PageTransition>{children}</PageTransition>
-        </div>
+        <KeyboardProvider>
+          <div
+            className="relative overflow-hidden bg-white"
+            style={{
+              width: 375,
+              height: 812,
+              borderRadius: 44,
+              boxShadow:
+                "0 0 0 10px #2a2a2a, 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.08)",
+            }}
+          >
+            <PageTransition>{children}</PageTransition>
+            <VirtualKeyboard />
+          </div>
+        </KeyboardProvider>
       </body>
     </html>
   );
