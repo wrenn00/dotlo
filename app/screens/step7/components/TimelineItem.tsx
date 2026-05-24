@@ -1,5 +1,7 @@
 "use client";
 
+import PlaceImage from "@/components/PlaceImage";
+import { usePlaceData } from "@/lib/places-data";
 import { getCategoryColor } from "./categoryColors";
 
 export type IconType = "flight" | "hotel" | "food";
@@ -38,6 +40,10 @@ const TRANSPORT_ICON: Record<TransportType, string> = {
 };
 
 export default function TimelineItem({ data, isLast }: Props) {
+  const real = usePlaceData(data.title);
+  const hasPhoto = !!real?.photoName;
+  const c = getCategoryColor(data.category);
+
   return (
     <div className="flex flex-col">
       <div className="flex gap-3">
@@ -56,28 +62,31 @@ export default function TimelineItem({ data, isLast }: Props) {
 
         {/* 우측: 카드 */}
         <div
-          className="flex flex-col flex-1 p-3 rounded-2xl"
+          className="flex flex-1 items-stretch gap-3 p-3 rounded-2xl"
           style={{ background: "#F7F9FA" }}
         >
-          <div className="flex items-center justify-between">
-            {(() => {
-              const c = getCategoryColor(data.category);
-              return (
-                <div className="px-2 py-0.5 rounded-full" style={{ background: c.bg }}>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: c.text }}>
-                    {data.category}
-                  </span>
-                </div>
-              );
-            })()}
-            <span style={{ fontSize: 11, color: "#7A858B" }}>{data.duration}</span>
+          <div className="flex flex-col flex-1 min-w-0">
+            <div className="flex items-center justify-between">
+              <div className="px-2 py-0.5 rounded-full" style={{ background: c.bg }}>
+                <span style={{ fontSize: 10, fontWeight: 700, color: c.text }}>
+                  {data.category}
+                </span>
+              </div>
+              <span style={{ fontSize: 11, color: "#7A858B" }}>{data.duration}</span>
+            </div>
+            <p
+              className="truncate"
+              style={{ fontSize: 15, fontWeight: 700, color: "#090738", marginTop: 6 }}
+            >
+              {data.title}
+            </p>
+            <p className="truncate" style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>
+              {data.subtitle}
+            </p>
           </div>
-          <p style={{ fontSize: 15, fontWeight: 700, color: "#090738", marginTop: 6 }}>
-            {data.title}
-          </p>
-          <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>
-            {data.subtitle}
-          </p>
+          {hasPhoto && (
+            <PlaceImage placeName={data.title} width={56} height={56} rounded="rounded-lg" />
+          )}
         </div>
       </div>
 

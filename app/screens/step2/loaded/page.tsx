@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import PlaceImage from "@/components/PlaceImage";
 
 const PLACES = [
   { id: 1, name: "이치란 라멘 도본토리점", sub: "오사카 · 음식점" },
@@ -63,10 +64,7 @@ export default function Step2LoadedPage() {
               style={{ background: "#fff", borderRadius: 14, border: "1px solid #DDE5E8" }}
             >
               {/* 썸네일 */}
-              <div
-                className="shrink-0 rounded-xl"
-                style={{ width: 48, height: 48, background: "#DDE5E8" }}
-              />
+              <PlaceImage placeName={p.name} width={48} height={48} />
               <div className="flex-1 min-w-0">
                 <p className="truncate" style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>
                   {p.name}

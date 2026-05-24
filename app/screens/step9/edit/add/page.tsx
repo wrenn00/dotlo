@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PlaceImage from "@/components/PlaceImage";
 
 // ─── 데이터 ──────────────────────────────────────────────────────────────────
 
@@ -190,7 +191,7 @@ export default function AddPlacePage() {
                       border: isSel ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
                     }}
                   >
-                    <div className="shrink-0 rounded-xl" style={{ width: 48, height: 48, background: "#DDE5E8" }} />
+                    <PlaceImage placeName={p.name} width={48} height={48} />
                     <div className="flex-1 min-w-0">
                       <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{p.name}</p>
                       <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
@@ -282,7 +283,7 @@ export default function AddPlacePage() {
                       >
                         {p.rank}
                       </span>
-                      <div className="shrink-0 rounded-xl" style={{ width: 44, height: 44, background: "#DDE5E8" }} />
+                      <PlaceImage placeName={p.name} width={44} height={44} />
                       <div className="flex-1 min-w-0">
                         <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{p.name}</p>
                         <p style={{ fontSize: 11, color: "#555E63", marginTop: 2 }}>{p.category}</p>

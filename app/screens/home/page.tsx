@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import TripCard from "./components/TripCard";
 import SuggestCard from "./components/SuggestCard";
 import BottomTabBar from "./components/BottomTabBar";
+import { initPlacesData } from "@/lib/places-data";
 
 // ─── Figma 색상 (figma-home-slim.json 기반) ───────────────────────────────────
 // mintMain    rgb(28,204,176)  #00E1FF  — 메인 배너
@@ -154,6 +156,11 @@ function SectionHeader({ title, right }: { title: string; right?: string }) {
 
 export default function HomePage() {
   const router = useRouter();
+
+  // 백그라운드에서 장소 데이터 미리 로드 (앱 첫 진입 시 1회)
+  useEffect(() => {
+    initPlacesData();
+  }, []);
 
   return (
     <div className="relative flex flex-col h-full" style={{ background: "#F7F9FA" }}>

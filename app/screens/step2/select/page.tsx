@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PlaceImage from "@/components/PlaceImage";
+import { usePlaceData } from "@/lib/places-data";
 
 const CATEGORIES = ["전체", "맛집 12", "카페 7", "쇼핑 5", "관광 12"];
 
@@ -43,54 +45,66 @@ const PLACES = [
   },
 ];
 
-interface RealData {
-  rating?: number;
-  reviews?: number;
-  photoName?: string;
-  loaded: boolean;
+
+// ─── 장소 카드 (실제 사진 + 실 평점 + dummy fallback) ────────────────────────
+
+interface PlaceRowProps {
+  place: typeof PLACES[number];
+  isSelected: boolean;
+  onToggle: () => void;
 }
+
+function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
+  const real = usePlaceData(place.name);
+  const rating = real?.rating ?? place.rating;
+  const reviews = real?.userRatingCount ?? place.reviews;
+
+  return (
+    <button
+      onClick={onToggle}
+      className="flex items-start gap-3 text-left py-3 px-3 rounded-2xl transition-all"
+      style={{
+        background: isSelected ? "#E5FBFF" : "#fff",
+        border: isSelected ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
+      }}
+    >
+      <PlaceImage placeName={place.name} width={52} height={52} />
+
+      <div className="flex-1 min-w-0">
+        <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{place.name}</p>
+        <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
+          ★ {rating} · {reviews.toLocaleString()}개 리뷰
+        </p>
+        <p style={{ fontSize: 12, color: "#555E63", marginTop: 1 }}>{place.region}</p>
+        <p className="truncate" style={{ fontSize: 12, color: "#7A858B", marginTop: 1 }}>{place.desc}</p>
+      </div>
+
+      <div
+        className="shrink-0 flex items-center justify-center"
+        style={{
+          width: 22, height: 22, borderRadius: "50%",
+          background: isSelected ? "#00E1FF" : "transparent",
+          border: isSelected ? "none" : "1.5px solid #A1ADB3",
+          marginTop: 2,
+        }}
+      >
+        {isSelected && (
+          <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
+            <path d="M1 4l3 3 6-6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
+      </div>
+    </button>
+  );
+}
+
+// ─── 메인 ────────────────────────────────────────────────────────────────────
 
 export default function Step2SelectPage() {
   const router = useRouter();
   const [activeCat, setActiveCat] = useState("전체");
   const [selected, setSelected] = useState<Set<string>>(new Set(["1", "2", "3", "4"]));
   const [query, setQuery] = useState("");
-  const [realData, setRealData] = useState<Record<string, RealData>>({});
-
-  // 마운트 시 각 장소를 Text Search로 조회 — 실패는 조용히 무시
-  useEffect(() => {
-    let aborted = false;
-    Promise.all(
-      PLACES.map(async (p) => {
-        try {
-          const res = await fetch(
-            `/api/places/search?query=${encodeURIComponent(p.name)}`,
-          );
-          if (!res.ok) return [p.id, { loaded: true }] as const;
-          const data = await res.json();
-          const first = data.results?.[0];
-          if (!first) return [p.id, { loaded: true }] as const;
-          return [
-            p.id,
-            {
-              rating: first.rating ?? undefined,
-              reviews: first.userRatingCount ?? undefined,
-              photoName: first.photoName ?? undefined,
-              loaded: true,
-            } as RealData,
-          ] as const;
-        } catch {
-          return [p.id, { loaded: true }] as const;
-        }
-      }),
-    ).then((entries) => {
-      if (aborted) return;
-      setRealData(Object.fromEntries(entries));
-    });
-    return () => {
-      aborted = true;
-    };
-  }, []);
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -183,50 +197,14 @@ export default function Step2SelectPage() {
 
       {/* 장소 리스트 */}
       <div className="flex flex-col gap-2.5 px-5 overflow-y-auto flex-1 pb-2">
-        {filtered.map((p) => {
-          const isSelected = selected.has(p.id);
-          return (
-            <button
-              key={p.id}
-              onClick={() => toggle(p.id)}
-              className="flex items-start gap-3 text-left py-3 px-3 rounded-2xl transition-all"
-              style={{
-                background: isSelected ? "#E5FBFF" : "#fff",
-                border: isSelected ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
-              }}
-            >
-              {/* 썸네일 */}
-              <div className="shrink-0 rounded-xl" style={{ width: 52, height: 52, background: "#DDE5E8" }} />
-
-              {/* 정보 */}
-              <div className="flex-1 min-w-0">
-                <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{p.name}</p>
-                <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
-                  ★ {p.rating} · {p.reviews.toLocaleString()}개 리뷰
-                </p>
-                <p style={{ fontSize: 12, color: "#555E63", marginTop: 1 }}>{p.region}</p>
-                <p className="truncate" style={{ fontSize: 12, color: "#7A858B", marginTop: 1 }}>{p.desc}</p>
-              </div>
-
-              {/* 체크 */}
-              <div
-                className="shrink-0 flex items-center justify-center"
-                style={{
-                  width: 22, height: 22, borderRadius: "50%",
-                  background: isSelected ? "#00E1FF" : "transparent",
-                  border: isSelected ? "none" : "1.5px solid #A1ADB3",
-                  marginTop: 2,
-                }}
-              >
-                {isSelected && (
-                  <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
-                    <path d="M1 4l3 3 6-6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </div>
-            </button>
-          );
-        })}
+        {filtered.map((p) => (
+          <PlaceRow
+            key={p.id}
+            place={p}
+            isSelected={selected.has(p.id)}
+            onToggle={() => toggle(p.id)}
+          />
+        ))}
       </div>
 
       {/* 하단 */}
