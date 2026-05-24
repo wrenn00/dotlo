@@ -44,4 +44,4 @@ next-env.d.ts
 scripts/figma-*.json
 
 # Lottie 색상 교체 백업 (로컬 롤백용)
-*.backup.json
+*backup.json
