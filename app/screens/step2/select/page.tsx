@@ -165,15 +165,15 @@ export default function Step2SelectPage() {
         </div>
       </div>
 
-      {/* 카테고리 필터 */}
-      <div className="flex gap-2 px-5 mb-3 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+      {/* 카테고리 필터 — 가로 스크롤 */}
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth px-5 pb-2 mb-1">
         {CATEGORIES.map((cat) => {
           const active = activeCat === cat;
           return (
             <button
               key={cat}
               onClick={() => setActiveCat(cat)}
-              className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
+              className="shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
               style={{
                 background: active ? "#090738" : "#F7F9FA",
                 color: active ? "#fff" : "#555E63",

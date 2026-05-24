@@ -96,14 +96,14 @@ export default function AddPlacePage() {
       </div>
 
       {/* 일차 탭 */}
-      <div className="flex gap-2 overflow-x-auto px-5 pb-3 shrink-0" style={{ scrollbarWidth: "none" }}>
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth px-5 pb-3 shrink-0">
         {DAYS.map((d) => {
           const active = selectedDay === d;
           return (
             <button
               key={d}
               onClick={() => setSelectedDay(d)}
-              className="shrink-0 px-4 py-1.5 rounded-full transition-colors"
+              className="shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full transition-colors"
               style={{
                 background: active ? "#090738" : "transparent",
                 color: active ? "#fff" : "#7A858B",
@@ -153,14 +153,14 @@ export default function AddPlacePage() {
         {activeTab === "my" && (
           <div className="flex flex-col">
             {/* 카테고리 필터 */}
-            <div className="flex gap-2 overflow-x-auto px-5 py-3" style={{ scrollbarWidth: "none" }}>
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth px-5 py-3">
               {CATEGORIES.map((cat) => {
                 const active = activeCat === cat;
                 return (
                   <button
                     key={cat}
                     onClick={() => setActiveCat(cat)}
-                    className="shrink-0 px-3 py-1.5 rounded-full"
+                    className="shrink-0 whitespace-nowrap px-3 py-1.5 rounded-full"
                     style={{
                       background: active ? "#090738" : "#F7F9FA",
                       color: active ? "#fff" : "#555E63",

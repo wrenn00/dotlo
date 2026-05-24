@@ -238,14 +238,14 @@ export default function Step9EditPage() {
       <div className="flex flex-col flex-1 overflow-y-auto px-5 pb-2">
 
         {/* 일차 탭 */}
-        <div className="flex gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth pb-1">
           {DAYS.map((d) => {
             const active = selectedDay === d;
             return (
               <button
                 key={d}
                 onClick={() => setSelectedDay(d)}
-                className="shrink-0 px-4 py-2 rounded-full transition-colors"
+                className="shrink-0 whitespace-nowrap px-4 py-2 rounded-full transition-colors"
                 style={{
                   background: active ? "#090738" : "transparent",
                   color: active ? "#fff" : "#7A858B",

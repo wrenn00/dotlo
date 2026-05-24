@@ -4,16 +4,31 @@ import { useEffect, useRef, useState } from "react";
 
 const DRAG_THRESHOLD = 5; // px — 이 이상 움직이면 드래그로 판정
 
-function getScrollableParent(el: Element | null): Element | null {
+interface ScrollTarget {
+  el: Element;
+  axis: "x" | "y" | "both";
+}
+
+function getScrollableParent(el: Element | null): ScrollTarget {
   if (!el || el === document.body || el === document.documentElement) {
-    return document.scrollingElement ?? document.documentElement;
+    return {
+      el: document.scrollingElement ?? document.documentElement,
+      axis: "y",
+    };
   }
   const style = window.getComputedStyle(el);
   const overflowY = style.overflowY;
-  const isScrollable =
+  const overflowX = style.overflowX;
+  const scrollableY =
     (overflowY === "auto" || overflowY === "scroll") &&
     el.scrollHeight > el.clientHeight;
-  if (isScrollable) return el;
+  const scrollableX =
+    (overflowX === "auto" || overflowX === "scroll") &&
+    el.scrollWidth > el.clientWidth;
+
+  if (scrollableX && scrollableY) return { el, axis: "both" };
+  if (scrollableX) return { el, axis: "x" };
+  if (scrollableY) return { el, axis: "y" };
   return getScrollableParent(el.parentElement);
 }
 
@@ -25,9 +40,12 @@ export default function TouchCursor() {
 
   // 드래그 상태 (리렌더 불필요 → ref)
   const dragRef = useRef({
+    startX: 0,
     startY: 0,
+    startScrollLeft: 0,
     startScrollTop: 0,
     target: null as Element | null,
+    axis: "y" as "x" | "y" | "both",
     moved: false,
   });
 
@@ -62,14 +80,21 @@ export default function TouchCursor() {
       // 드래그 처리
       const d = dragRef.current;
       if (d.target) {
+        const deltaX = d.startX - e.clientX;
         const deltaY = d.startY - e.clientY;
-        if (!d.moved && Math.abs(deltaY) >= DRAG_THRESHOLD) {
+        const maxDelta = Math.max(Math.abs(deltaX), Math.abs(deltaY));
+        if (!d.moved && maxDelta >= DRAG_THRESHOLD) {
           d.moved = true;
           setIsDragging(true);
           document.body.classList.add("dragging-scroll");
         }
         if (d.moved) {
-          d.target.scrollTop = d.startScrollTop + deltaY;
+          if (d.axis === "y" || d.axis === "both") {
+            d.target.scrollTop = d.startScrollTop + deltaY;
+          }
+          if (d.axis === "x" || d.axis === "both") {
+            d.target.scrollLeft = d.startScrollLeft + deltaX;
+          }
           // 텍스트 선택 방지
           e.preventDefault();
         }
@@ -78,11 +103,14 @@ export default function TouchCursor() {
 
     const onMouseDown = (e: MouseEvent) => {
       setIsPressed(true);
-      const target = getScrollableParent(e.target as Element);
+      const { el: target, axis } = getScrollableParent(e.target as Element);
       dragRef.current = {
+        startX: e.clientX,
         startY: e.clientY,
+        startScrollLeft: target?.scrollLeft ?? 0,
         startScrollTop: target?.scrollTop ?? 0,
         target,
+        axis,
         moved: false,
       };
     };
@@ -92,7 +120,11 @@ export default function TouchCursor() {
       const wasDragging = dragRef.current.moved;
       setIsDragging(false);
       document.body.classList.remove("dragging-scroll");
-      dragRef.current = { startY: 0, startScrollTop: 0, target: null, moved: false };
+      dragRef.current = {
+        startX: 0, startY: 0,
+        startScrollLeft: 0, startScrollTop: 0,
+        target: null, axis: "y", moved: false,
+      };
 
       // 드래그였다면 다음 click 이벤트 한 번 무시 (의도치 않은 버튼 클릭 방지)
       if (wasDragging) {

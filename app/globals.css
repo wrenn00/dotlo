@@ -163,3 +163,14 @@ body.dragging-scroll {
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* 가로 스크롤 칩 영역용 — 명시적 의도 표현 (전역에서도 숨겨지지만 의도 명확화) */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
