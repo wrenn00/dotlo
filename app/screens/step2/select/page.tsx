@@ -4,11 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PlaceThumbnail from "@/components/PlaceThumbnail";
 import Icon from "@/components/Icon";
+import { useKeyboard } from "@/components/KeyboardProvider";
 import places from "@/data/places.json";
 
 type Place = (typeof places)[number];
 
 const tokyoPlaces: Place[] = places.filter((p) => p.city === "tokyo");
+
+const INPUT_ID = "select-search";
 
 // 칩에 노출할 카테고리 (숙소 제외) + 동적 카운트
 const CHIP_CATEGORIES = ["맛집", "카페", "쇼핑", "관광", "야경"] as const;
@@ -75,6 +78,19 @@ export default function Step2SelectPage() {
   const [activeCat, setActiveCat] = useState("전체");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState("");
+  const { open: openKeyboard, close: closeKeyboard, isOpen: kbOpen, inputId } = useKeyboard();
+
+  const isFocused = kbOpen && inputId === INPUT_ID;
+
+  function handleBack() {
+    closeKeyboard();
+    router.back();
+  }
+
+  function handleNext() {
+    closeKeyboard();
+    router.push("/screens/step3");
+  }
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -104,7 +120,7 @@ export default function Step2SelectPage() {
 
       {/* 헤더 */}
       <div className="flex items-center px-5 pt-12 pb-2">
-        <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
+        <button onClick={handleBack} className="w-9 h-9 flex items-center justify-center">
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
             <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -121,23 +137,42 @@ export default function Step2SelectPage() {
         </p>
       </div>
 
-      {/* 검색바 */}
+      {/* 검색바 — 가상 키보드 트리거 */}
       <div className="px-5 mb-3">
         <div
-          className="flex items-center gap-2 px-4"
-          style={{ height: 44, background: "#F7F9FA", borderRadius: 12 }}
+          onClick={() => openKeyboard(INPUT_ID, query, setQuery)}
+          className="flex items-center gap-2 px-4 py-3.5 cursor-pointer"
+          style={{ background: "#F7F9FA", borderRadius: 16 }}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
             <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
-          <input
-            className="flex-1 bg-transparent outline-none text-sm"
-            style={{ color: "#090738" }}
-            placeholder="장소 이름으로 검색"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
+          <div className="flex-1 flex items-center min-w-0">
+            {query ? (
+              <span className="truncate" style={{ fontSize: 14, color: "#090738" }}>{query}</span>
+            ) : (
+              <span style={{ fontSize: 14, color: "#A1ADB3" }}>장소 이름으로 검색</span>
+            )}
+            {isFocused && (
+              <span className="ml-0.5 animate-pulse" style={{ width: 2, height: 16, background: "#00E1FF" }} />
+            )}
+          </div>
+          {query && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setQuery("");
+              }}
+              className="shrink-0 flex items-center justify-center"
+              style={{ width: 18, height: 18, borderRadius: "50%", background: "#A1ADB3" }}
+              aria-label="검색어 지우기"
+            >
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                <path d="M1 1l6 6M7 1L1 7" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
@@ -207,7 +242,7 @@ export default function Step2SelectPage() {
 
         {/* 다음 버튼 */}
         <button
-          onClick={() => router.push("/screens/step3")}
+          onClick={handleNext}
           disabled={selected.size === 0}
           className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80 disabled:opacity-40"
           style={{ background: "#090738" }}
