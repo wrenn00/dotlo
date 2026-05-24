@@ -172,24 +172,18 @@ export default function HomePage() {
         <SectionHeader title="이런 여행 어때요?" right="더보기" />
         <div className="flex gap-3 overflow-x-auto scrollbar-hide scroll-smooth px-5 pb-1">
           <SuggestCard
-            background="#29E3FF"
-            badgeBg="#E5FBFF"
-            badgeText="#00A8BF"
-            badgeLabel="미식 여행"
+            image="/images/trips/osaka.png"
+            badge="미식 여행"
             title={"현지인 맛집만\n골라가는 도시"}
             subtitle="오사카, 대만, 호치민"
-            buttonLabel="코스 8개 확인하기"
-            buttonTextColor="#00A8BF"
+            courseCount={8}
           />
           <SuggestCard
-            background="#5CE7FF"
-            badgeBg="#E5FBFF"
-            badgeText="#00A8BF"
-            badgeLabel="호캉스"
+            image="/images/trips/danang.png"
+            badge="호캉스"
             title={"가까운 해외에서\n즐기는 풀빌라"}
             subtitle="다낭, 푸켓, 발리"
-            buttonLabel="코스 4개 확인하기"
-            buttonTextColor="#00A8BF"
+            courseCount={4}
           />
         </div>
 
