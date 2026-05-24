@@ -29,10 +29,10 @@ function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
   return (
     <button
       onClick={onToggle}
-      className="flex items-start gap-3 text-left py-3 px-3 rounded-2xl transition-all"
+      className="flex items-start gap-3 text-left py-3 px-3 rounded-2xl transition-all shadow-card"
       style={{
         background: isSelected ? "#E5FBFF" : "#fff",
-        border: isSelected ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
+        border: isSelected ? "1.5px solid #00E1FF" : "none",
       }}
     >
       <PlaceThumbnail src={place.image} alt={place.name} category={place.category} size={52} />

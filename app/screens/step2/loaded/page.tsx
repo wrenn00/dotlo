@@ -55,8 +55,8 @@ export default function Step2LoadedPage() {
           {tokyoPlaces.map((p) => (
             <div
               key={p.id}
-              className="flex items-center gap-3 px-4 py-3"
-              style={{ background: "#fff", borderRadius: 14, border: "1px solid #DDE5E8" }}
+              className="flex items-center gap-3 px-4 py-3 shadow-card"
+              style={{ background: "#fff", borderRadius: 14 }}
             >
               <PlaceThumbnail src={p.image} alt={p.name} category={p.category} size={48} />
               <div className="flex-1 min-w-0">

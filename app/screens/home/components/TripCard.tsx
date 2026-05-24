@@ -17,8 +17,8 @@ interface TripCardProps {
 export default function TripCard({ title, date, dDay, participants, image }: TripCardProps) {
   return (
     <button
-      className="flex items-center gap-3 w-full p-3 text-left rounded-2xl transition-colors active:bg-cloudy-gray-50"
-      style={{ background: "#fff", border: "1px solid #EEF2F4" }}
+      className="flex items-center gap-3 w-full p-3 text-left rounded-2xl transition-colors active:bg-cloudy-gray-50 shadow-card"
+      style={{ background: "#fff" }}
     >
       {/* 썸네일 56x56 */}
       <div

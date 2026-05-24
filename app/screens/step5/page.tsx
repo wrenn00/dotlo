@@ -66,8 +66,10 @@ function CardView({ item, rank, dragging }: { item: Item; rank: number; dragging
       style={{
         height: 72,
         background: isTop ? "#E5FBFF" : "#fff",
-        border: isTop ? "2px solid #00E1FF" : "1.5px solid #DDE5E8",
-        boxShadow: dragging ? "0 8px 24px rgba(0,0,0,0.14)" : "none",
+        border: isTop ? "2px solid #00E1FF" : "none",
+        boxShadow: dragging
+          ? "0 8px 24px rgba(0,0,0,0.14)"
+          : "0 0 6.8px rgba(0,0,0,0.08)",
         transform: dragging ? "scale(1.03)" : "scale(1)",
         transition: "box-shadow 150ms, transform 150ms",
       }}

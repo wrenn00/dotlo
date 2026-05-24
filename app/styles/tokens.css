@@ -111,6 +111,13 @@
   --color-cat-food:   var(--color-star-yellow-500);
   --color-cat-tour:   var(--color-sky-blue-500);
   --color-cat-night:  var(--color-night-navy-600);
+
+  /* ═════════════════════════════════════════════════════════════════════════
+   * SHADOWS — 카드용 (border 대체)
+   * ═════════════════════════════════════════════════════════════════════════ */
+  --shadow-card:        0 0 6.8px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover:  0 2px 12px rgba(0, 0, 0, 0.10);
+  --shadow-card-strong: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
