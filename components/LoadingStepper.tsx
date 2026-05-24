@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Lottie from "lottie-react";
+import successCheck from "@/public/lottie/success-check.json";
 
 const FINAL_DELAY = 500;
 
@@ -12,6 +14,9 @@ interface Props {
   steps: string[];
   stepDurationMs?: number;
   onComplete: () => void;
+  completeMessage?: string;
+  completeSubMessage?: string;
+  completeDelayMs?: number;
 }
 
 // ─── 중앙 아이콘 ──────────────────────────────────────────────────────────────
@@ -43,28 +48,58 @@ export default function LoadingStepper({
   steps,
   stepDurationMs = 1500,
   onComplete,
+  completeMessage = "코스를 만들었어요!",
+  completeSubMessage = "잠시 후 결과를 보여드릴게요",
+  completeDelayMs = 1800,
 }: Props) {
   const [currentStep, setCurrentStep] = useState(0);
+  const [stage, setStage] = useState<"loading" | "complete">("loading");
 
   // 단계 진행
   useEffect(() => {
+    if (stage !== "loading") return;
     if (currentStep >= steps.length) return;
     const t = setTimeout(() => setCurrentStep((s) => s + 1), stepDurationMs);
     return () => clearTimeout(t);
-  }, [currentStep, steps.length, stepDurationMs]);
+  }, [currentStep, steps.length, stepDurationMs, stage]);
 
-  // 완료 후 onComplete
+  // 모든 단계 완료 → 완료 Lottie 단계로
   useEffect(() => {
     const total = steps.length * stepDurationMs + FINAL_DELAY;
-    const t = setTimeout(onComplete, total);
+    const t = setTimeout(() => setStage("complete"), total);
     return () => clearTimeout(t);
-  }, [steps.length, stepDurationMs, onComplete]);
+  }, [steps.length, stepDurationMs]);
+
+  // 완료 Lottie 잠깐 보여준 뒤 다음 화면
+  useEffect(() => {
+    if (stage !== "complete") return;
+    const t = setTimeout(onComplete, completeDelayMs);
+    return () => clearTimeout(t);
+  }, [stage, completeDelayMs, onComplete]);
+
+  const bgStyle = { background: "linear-gradient(180deg, #E5FBFF 0%, #F4F4FF 60%, #ffffff 100%)" };
+
+  // 완료 단계 — 체크 Lottie
+  if (stage === "complete") {
+    return (
+      <div className="flex flex-col h-full items-center justify-center px-8" style={bgStyle}>
+        <div
+          className="flex flex-col items-center"
+          style={{ animation: "fadeScale 400ms cubic-bezier(0.16,1,0.3,1)" }}
+        >
+          <div style={{ width: 180, height: 180 }}>
+            <Lottie animationData={successCheck} loop={false} autoplay />
+          </div>
+          <p style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 8 }}>{completeMessage}</p>
+          <p style={{ fontSize: 14, color: "#7A858B", marginTop: 8 }}>{completeSubMessage}</p>
+        </div>
+        <style>{`@keyframes fadeScale { from { opacity:0; transform:scale(0.92);} to { opacity:1; transform:scale(1);} }`}</style>
+      </div>
+    );
+  }
 
   return (
-    <div
-      className="flex flex-col h-full"
-      style={{ background: "linear-gradient(180deg, #E5FBFF 0%, #F4F4FF 60%, #ffffff 100%)" }}
-    >
+    <div className="flex flex-col h-full" style={bgStyle}>
       {/* 헤더 (뒤로가기 placeholder — 페이지에서 useRouter 처리는 생략) */}
       <div className="px-5 pt-12 shrink-0" style={{ height: 60 }} />
 

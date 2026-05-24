@@ -12,6 +12,7 @@ export default function Step6Page() {
       title="코스를 만들고 있어요"
       icon="create"
       steps={STEPS}
+      completeMessage="코스를 만들었어요!"
       onComplete={() => router.push("/screens/step7")}
     />
   );
