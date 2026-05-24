@@ -1,23 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 const RECENT = ["교토", "바르셀로나", "도쿄"];
 
 const POPULAR = [
-  { city: "도쿄", desc: "일본 · 동아시아" },
-  { city: "오사카", desc: "일본 · 동아시아" },
-  { city: "다낭", desc: "베트남 · 동남아" },
-  { city: "방콕", desc: "태국 · 동남아" },
-  { city: "상하이", desc: "중국 · 동아시아" },
+  { city: "도쿄",       desc: "일본 · 동아시아" },
+  { city: "오사카",     desc: "일본 · 동아시아" },
+  { city: "다낭",       desc: "베트남 · 동남아" },
+  { city: "방콕",       desc: "태국 · 동남아" },
+  { city: "상하이",     desc: "중국 · 동아시아" },
+  { city: "교토",       desc: "일본 · 동아시아" },
+  { city: "후쿠오카",   desc: "일본 · 동아시아" },
+  { city: "싱가포르",   desc: "싱가포르 · 동남아" },
+  { city: "바르셀로나", desc: "스페인 · 유럽" },
+  { city: "파리",       desc: "프랑스 · 유럽" },
 ];
-
-interface Prediction {
-  placeId: string;
-  description: string;
-  mainText: string;
-  secondaryText: string;
-}
 
 interface Props {
   open: boolean;
@@ -25,60 +23,20 @@ interface Props {
   onSelect: (city: string, placeId?: string) => void;
 }
 
-const DEBOUNCE_MS = 300;
-
 export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
   const [query, setQuery] = useState("");
-  const [predictions, setPredictions] = useState<Prediction[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  // debounce + abort
-  const abortRef = useRef<AbortController | null>(null);
+  const trimmed = query.trim();
+  const filtered = trimmed
+    ? POPULAR.filter((p) => {
+        const q = trimmed.toLowerCase();
+        return p.city.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+      })
+    : POPULAR;
 
-  useEffect(() => {
-    if (!query.trim()) {
-      setPredictions([]);
-      setError(null);
-      setLoading(false);
-      return;
-    }
-
-    const timer = setTimeout(async () => {
-      // 이전 요청 취소
-      abortRef.current?.abort();
-      const controller = new AbortController();
-      abortRef.current = controller;
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        const res = await fetch(
-          `/api/places/autocomplete?input=${encodeURIComponent(query)}`,
-          { signal: controller.signal },
-        );
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data.error ?? `HTTP ${res.status}`);
-        }
-        setPredictions(data.predictions ?? []);
-      } catch (e) {
-        if (e instanceof DOMException && e.name === "AbortError") return;
-        setError(e instanceof Error ? e.message : "검색 실패");
-        setPredictions([]);
-      } finally {
-        setLoading(false);
-      }
-    }, DEBOUNCE_MS);
-
-    return () => clearTimeout(timer);
-  }, [query]);
-
-  function handleSelect(city: string, placeId?: string) {
-    onSelect(city, placeId);
+  function handleSelect(city: string) {
+    onSelect(city);
     setQuery("");
-    setPredictions([]);
     onClose();
   }
 
@@ -136,156 +94,122 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
               <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
             <input
-              className="flex-1 bg-transparent outline-none text-sm"
+              type="text"
+              inputMode="search"
+              enterKeyHint="search"
+              className="flex-1 bg-transparent outline-none text-sm placeholder:text-cloudy-gray-400"
               style={{ color: "#090738" }}
               placeholder="도시 또는 국가"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && filtered.length > 0) {
+                  handleSelect(filtered[0].city);
+                }
+              }}
             />
-            {loading && (
-              <div
-                className="shrink-0"
-                style={{
-                  width: 14, height: 14,
-                  border: "2px solid #DDE5E8",
-                  borderTopColor: "#00E1FF",
-                  borderRadius: "50%",
-                  animation: "whereSpin 0.7s linear infinite",
-                }}
-              />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="shrink-0 flex items-center justify-center"
+                style={{ width: 18, height: 18, borderRadius: "50%", background: "#A1ADB3" }}
+                aria-label="검색어 지우기"
+              >
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                  <path d="M1 1l6 6M7 1L1 7" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              </button>
             )}
           </div>
         </div>
 
         <div className="overflow-y-auto flex-1 px-5 pb-6">
-          {/* ── 검색 모드: Google Places 결과 ── */}
-          {query.trim() ? (
-            <div>
-              {error && (
-                <p style={{ fontSize: 12, color: "#EF4444", padding: "12px 0" }}>
-                  {error}
-                </p>
-              )}
-              {!error && !loading && predictions.length === 0 && (
-                <p style={{ fontSize: 13, color: "#7A858B", padding: "12px 0" }}>
-                  검색 결과가 없습니다
-                </p>
-              )}
-              <div className="flex flex-col">
-                {predictions.map((p, idx) => (
+          {/* 검색 중이 아닐 때만 최근 검색 표시 */}
+          {!trimmed && (
+            <div className="mb-5">
+              <p className="text-xs font-semibold mb-2" style={{ color: "#7A858B" }}>
+                최근 검색
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                {RECENT.map((city) => (
                   <button
-                    key={p.placeId}
-                    onClick={() => handleSelect(p.mainText, p.placeId)}
-                    className="flex items-center gap-3 py-3 text-left"
-                    style={{
-                      borderBottom:
-                        idx < predictions.length - 1 ? "1px solid #DDE5E8" : "none",
-                    }}
+                    key={city}
+                    onClick={() => setQuery(city)}
+                    className="px-3 py-1.5 rounded-full text-sm font-medium"
+                    style={{ background: "#F7F9FA", color: "#090738" }}
                   >
-                    <div
-                      className="shrink-0 rounded-xl flex items-center justify-center"
-                      style={{ width: 44, height: 44, background: "#E5FBFF" }}
-                    >
-                      <svg width="18" height="22" viewBox="0 0 18 22" fill="none">
-                        <path
-                          d="M9 1C5.13 1 2 4.13 2 8c0 6 7 13 7 13s7-7 7-13c0-3.87-3.13-7-7-7z"
-                          stroke="#00E1FF"
-                          strokeWidth="1.5"
-                        />
-                        <circle cx="9" cy="8" r="2.5" stroke="#00E1FF" strokeWidth="1.5" />
-                      </svg>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p
-                        className="truncate"
-                        style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}
-                      >
-                        {p.mainText}
-                      </p>
-                      {p.secondaryText && (
-                        <p
-                          className="truncate"
-                          style={{ fontSize: 12, color: "#7A858B" }}
-                        >
-                          {p.secondaryText}
-                        </p>
-                      )}
-                    </div>
+                    {city}
                   </button>
                 ))}
               </div>
             </div>
-          ) : (
-            <>
-              {/* ── 빈 검색: 최근 + 인기 ── */}
-              <div className="mb-5">
-                <p className="text-xs font-semibold mb-2" style={{ color: "#7A858B" }}>
-                  최근 검색
-                </p>
-                <div className="flex gap-2 flex-wrap">
-                  {RECENT.map((city) => (
-                    <button
-                      key={city}
-                      onClick={() => handleSelect(city)}
-                      className="px-3 py-1.5 rounded-full text-sm font-medium"
-                      style={{ background: "#F7F9FA", color: "#090738" }}
-                    >
-                      {city}
-                    </button>
-                  ))}
-                </div>
-              </div>
+          )}
 
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold" style={{ color: "#7A858B" }}>
-                    인기 여행지
-                  </p>
-                  <span
-                    className="text-xs font-medium px-2 py-0.5 rounded-full"
-                    style={{ background: "#E5FBFF", color: "#00E1FF" }}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold" style={{ color: "#7A858B" }}>
+                {trimmed ? "검색 결과" : "인기 여행지"}
+              </p>
+              {!trimmed && (
+                <span
+                  className="text-xs font-medium px-2 py-0.5 rounded-full"
+                  style={{ background: "#E5FBFF", color: "#00E1FF" }}
+                >
+                  실시간
+                </span>
+              )}
+            </div>
+
+            {/* 결과 또는 빈 상태 */}
+            {filtered.length > 0 ? (
+              <div className="flex flex-col">
+                {filtered.map((item, idx) => (
+                  <button
+                    key={`${item.city}-${idx}`}
+                    onClick={() => handleSelect(item.city)}
+                    className="flex items-center gap-3 py-3 text-left"
+                    style={{
+                      borderBottom:
+                        idx < filtered.length - 1 ? "1px solid #DDE5E8" : "none",
+                    }}
                   >
-                    실시간
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  {POPULAR.map((item, idx) => (
-                    <button
-                      key={item.city}
-                      onClick={() => handleSelect(item.city)}
-                      className="flex items-center gap-3 py-3 text-left"
-                      style={{
-                        borderBottom:
-                          idx < POPULAR.length - 1 ? "1px solid #DDE5E8" : "none",
-                      }}
-                    >
-                      <div
-                        className="shrink-0 rounded-xl"
-                        style={{ width: 44, height: 44, background: "#DDE5E8" }}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>
-                          {item.city}
-                        </p>
-                        <p style={{ fontSize: 12, color: "#7A858B" }}>{item.desc}</p>
-                      </div>
+                    <div
+                      className="shrink-0 rounded-xl"
+                      style={{ width: 44, height: 44, background: "#DDE5E8" }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>
+                        {item.city}
+                      </p>
+                      <p style={{ fontSize: 12, color: "#7A858B" }}>{item.desc}</p>
+                    </div>
+                    {!trimmed && (
                       <span
                         className="text-sm font-bold shrink-0"
                         style={{ color: "#00E1FF" }}
                       >
                         {idx + 1}
                       </span>
-                    </button>
-                  ))}
-                </div>
+                    )}
+                  </button>
+                ))}
               </div>
-            </>
-          )}
+            ) : (
+              <div className="py-8 text-center">
+                <p style={{ fontSize: 13, color: "#7A858B" }}>
+                  &lsquo;{trimmed}&rsquo;에 대한 검색 결과가 없어요
+                </p>
+                <button
+                  onClick={() => handleSelect(trimmed)}
+                  className="mt-3 px-4 py-2 rounded-full text-sm font-medium"
+                  style={{ background: "#E5FBFF", color: "#00A8BF" }}
+                >
+                  &lsquo;{trimmed}&rsquo;로 직접 추가하기
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-
-        <style>{`
-          @keyframes whereSpin { to { transform: rotate(360deg); } }
-        `}</style>
       </div>
     </>
   );
