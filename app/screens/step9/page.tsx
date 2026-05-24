@@ -33,7 +33,7 @@ const PLACE_COORDS: Record<string, [number, number]> = {
 // ─── 데이터 ──────────────────────────────────────────────────────────────────
 
 const COURSE = {
-  title: "여유로운 오사카 한바퀴",
+  title: "불빛이 흐르는 도쿄의 밤",
   subtitle: "일정을 자유롭게 수정할 수 있어요",
   city: "도쿄",
   dateRange: "2026.04.17 금 ~ 04.23 목 6박 7일",
