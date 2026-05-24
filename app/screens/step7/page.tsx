@@ -246,6 +246,7 @@ export default function Step7Page() {
                     aiNote={currentCourse.aiNote}
                     bgHex={currentCourse.bgHex}
                     accentHex={currentCourse.accentHex}
+                    backgroundImage={currentCourse.backgroundImage}
                   />
                 </div>
 

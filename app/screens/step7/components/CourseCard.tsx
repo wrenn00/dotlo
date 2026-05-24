@@ -10,15 +10,38 @@ interface Props {
   aiNote: string;
   bgHex: string;
   accentHex: string;
+  backgroundImage?: string;
 }
 
-export default function CourseCard({ code, title, summary, aiNote, bgHex, accentHex }: Props) {
+export default function CourseCard({ code, title, summary, aiNote, bgHex, accentHex, backgroundImage }: Props) {
   const [bookmarked, setBookmarked] = useState(false);
 
   return (
-    <div className="relative flex flex-col p-5 rounded-2xl" style={{ background: bgHex }}>
+    <div
+      className="relative flex flex-col p-5 rounded-2xl overflow-hidden transition-colors duration-300"
+      style={{ background: bgHex }}
+    >
+      {/* 배경 그래픽 — 우측 하단, 살짝 잘림 */}
+      {backgroundImage && (
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            right: 0,
+            bottom: 0,
+            width: 192,
+            height: 192,
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right bottom",
+            opacity: 0.85,
+            transform: "translate(20%, 20%)",
+          }}
+        />
+      )}
+
       {/* 상단 라인 */}
-      <div className="flex items-center justify-between">
+      <div className="relative z-10 flex items-center justify-between">
         <div className="px-2.5 py-1 rounded-full" style={{ background: "#fff" }}>
           <span style={{ fontSize: 11, fontWeight: 700, color: accentHex }}>{code}</span>
         </div>
@@ -35,6 +58,7 @@ export default function CourseCard({ code, title, summary, aiNote, bgHex, accent
 
       {/* 제목 */}
       <h2
+        className="relative z-10"
         style={{
           fontSize: 24,
           fontWeight: 700,
@@ -48,10 +72,15 @@ export default function CourseCard({ code, title, summary, aiNote, bgHex, accent
       </h2>
 
       {/* 부제 */}
-      <p style={{ fontSize: 13, color: accentHex, marginTop: 6, fontWeight: 500 }}>{summary}</p>
+      <p className="relative z-10" style={{ fontSize: 13, color: accentHex, marginTop: 6, fontWeight: 500 }}>
+        {summary}
+      </p>
 
       {/* AI 노트 박스 */}
-      <div className="flex items-start gap-2 p-3 rounded-xl mt-4" style={{ background: "rgba(255,255,255,0.6)" }}>
+      <div
+        className="relative z-10 flex items-start gap-2 p-3 rounded-xl mt-4 backdrop-blur-sm"
+        style={{ background: "rgba(255,255,255,0.6)" }}
+      >
         <div
           className="shrink-0 flex items-center justify-center"
           style={{ width: 22, height: 22, borderRadius: "50%", background: accentHex }}

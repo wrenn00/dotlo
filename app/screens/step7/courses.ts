@@ -17,6 +17,7 @@ export interface Course {
   colorHex: string;
   bgHex: string;
   accentHex: string;
+  backgroundImage: string;
   aiNote: string;
   markers: CourseMarker[];
 }
@@ -34,6 +35,7 @@ export const courses: Course[] = [
     colorHex: "#00E1FF",
     bgHex: "#99EEFF",
     accentHex: "#00A8BF",
+    backgroundImage: "/images/a.png",
     aiNote: "현지인 맛집 동선으로\n점심·저녁 모두 최고의 미식 코스를 짰어요",
     markers: [
       { number: 1, lat: 35.7148, lng: 139.7967, name: "센소지" },
@@ -53,6 +55,7 @@ export const courses: Course[] = [
     colorHex: "#A5A5FF",
     bgHex: "#D6D6FF",
     accentHex: "#6F6FD9",
+    backgroundImage: "/images/b.png",
     aiNote: "해질녘 전망대부터 새벽 거리까지\n도쿄의 밤을 빠짐없이 담아냈어요",
     markers: [
       { number: 1, lat: 35.6586, lng: 139.7454, name: "도쿄타워" },
@@ -74,6 +77,7 @@ export const courses: Course[] = [
     colorHex: "#FFE400",
     bgHex: "#FFF080",
     accentHex: "#8F7F00",
+    backgroundImage: "/images/c.png",
     aiNote: "주요 쇼핑 거리를 효율적으로 도는\n동선으로 시간 낭비 없이 짰어요",
     markers: [
       { number: 1, lat: 35.6938, lng: 139.7036, name: "신주쿠 이세탄" },
