@@ -2,8 +2,9 @@ export type CourseId = "A" | "B" | "C";
 
 export interface CourseMarker {
   number: number;
-  x: string;
-  y: string;
+  lat: number;
+  lng: number;
+  name: string;
 }
 
 export interface Course {
@@ -20,6 +21,8 @@ export interface Course {
   markers: CourseMarker[];
 }
 
+export const TOKYO_CENTER: [number, number] = [35.6762, 139.6503];
+
 export const courses: Course[] = [
   {
     id: "A",
@@ -33,11 +36,11 @@ export const courses: Course[] = [
     accentHex: "#00A8BF",
     aiNote: "현지인 맛집 동선으로\n점심·저녁 모두 최고의 미식 코스를 짰어요",
     markers: [
-      { number: 1, x: "20%", y: "50%" },
-      { number: 2, x: "25%", y: "55%" },
-      { number: 3, x: "30%", y: "55%" },
-      { number: 4, x: "40%", y: "70%" },
-      { number: 5, x: "45%", y: "80%" },
+      { number: 1, lat: 35.7148, lng: 139.7967, name: "센소지" },
+      { number: 2, lat: 35.71, lng: 139.8107, name: "스카이트리" },
+      { number: 3, lat: 35.6852, lng: 139.7528, name: "간다 마츠야" },
+      { number: 4, lat: 35.6586, lng: 139.7454, name: "긴자 큐베이" },
+      { number: 5, lat: 35.6595, lng: 139.7004, name: "시부야 식당가" },
     ],
   },
   {
@@ -52,13 +55,13 @@ export const courses: Course[] = [
     accentHex: "#6F6FD9",
     aiNote: "야경 시간대를 마지막에 배치했고\n숙소를 기준으로 가까운 최적의 코스를 생성했어요",
     markers: [
-      { number: 1, x: "35%", y: "40%" },
-      { number: 2, x: "40%", y: "50%" },
-      { number: 3, x: "45%", y: "60%" },
-      { number: 4, x: "50%", y: "70%" },
-      { number: 5, x: "60%", y: "75%" },
-      { number: 6, x: "65%", y: "78%" },
-      { number: 7, x: "70%", y: "80%" },
+      { number: 1, lat: 35.6586, lng: 139.7454, name: "도쿄타워" },
+      { number: 2, lat: 35.6694, lng: 139.7, name: "롯폰기 힐스" },
+      { number: 3, lat: 35.6595, lng: 139.7004, name: "시부야 스카이" },
+      { number: 4, lat: 35.6938, lng: 139.7036, name: "신주쿠 전망대" },
+      { number: 5, lat: 35.71, lng: 139.8107, name: "스카이트리" },
+      { number: 6, lat: 35.6284, lng: 139.7387, name: "오다이바" },
+      { number: 7, lat: 35.6329, lng: 139.78, name: "레인보우 브릿지" },
     ],
   },
   {
@@ -73,11 +76,11 @@ export const courses: Course[] = [
     accentHex: "#8F7F00",
     aiNote: "주요 쇼핑 거리를 효율적으로 도는\n동선으로 시간 낭비 없이 짰어요",
     markers: [
-      { number: 1, x: "30%", y: "30%" },
-      { number: 2, x: "40%", y: "35%" },
-      { number: 3, x: "55%", y: "45%" },
-      { number: 4, x: "60%", y: "60%" },
-      { number: 5, x: "55%", y: "75%" },
+      { number: 1, lat: 35.6938, lng: 139.7036, name: "신주쿠 이세탄" },
+      { number: 2, lat: 35.6595, lng: 139.7004, name: "시부야 109" },
+      { number: 3, lat: 35.6664, lng: 139.7298, name: "오모테산도" },
+      { number: 4, lat: 35.6712, lng: 139.7029, name: "하라주쿠" },
+      { number: 5, lat: 35.6586, lng: 139.7454, name: "긴자 식스" },
     ],
   },
 ];

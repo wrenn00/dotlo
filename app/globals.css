@@ -174,3 +174,21 @@ body.dragging-scroll {
     display: none;
   }
 }
+
+/* Leaflet CourseMap — 마커 안 숫자 라벨 (말풍선 스타일 제거) */
+.map-marker-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  padding: 0 !important;
+}
+.map-marker-label::before {
+  display: none !important;
+}
+.leaflet-container {
+  font-family: inherit;
+  background: #eef2f4;
+}
