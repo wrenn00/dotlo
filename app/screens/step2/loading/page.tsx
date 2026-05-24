@@ -130,7 +130,7 @@ export default function Step2LoadingPage() {
               transition={{ duration: 0.4 }}
               className="flex flex-col items-center"
             >
-              <div style={{ width: 180, height: 180 }}>
+              <div style={{ width: 128, height: 128 }}>
                 <Lottie
                   animationData={successCheck}
                   loop={false}

@@ -87,7 +87,7 @@ export default function LoadingStepper({
           className="flex flex-col items-center"
           style={{ animation: "fadeScale 400ms cubic-bezier(0.16,1,0.3,1)" }}
         >
-          <div style={{ width: 180, height: 180 }}>
+          <div style={{ width: 128, height: 128 }}>
             <Lottie animationData={successCheck} loop={false} autoplay />
           </div>
           <p style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 8 }}>{completeMessage}</p>
