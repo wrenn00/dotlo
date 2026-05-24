@@ -87,53 +87,67 @@ function Header() {
 function MainBanner({ onStart }: { onStart: () => void }) {
   return (
     <div
-      className="relative overflow-hidden flex flex-col p-5 mx-5 rounded-2xl"
+      className="relative overflow-hidden flex flex-col p-6 mx-5 rounded-3xl"
       style={{
         background: "linear-gradient(135deg, #29E3FF 0%, #00A8BF 100%)",
-        minHeight: 142,
+        minHeight: 184,
       }}
     >
-      <h2 style={{ fontSize: 20, fontWeight: 700, color: "#fff", lineHeight: "26px" }}>
-        저장한 장소로
-        <br />
-        코스 자동 생성하기
-      </h2>
-      <p style={{ fontSize: 12, color: "rgba(255,255,255,0.9)", marginTop: 6 }}>
-        저장한 장소를 취향에 맞게 일정으로 짜드려요
-      </p>
+      {/* 텍스트/버튼 — 스파클 위로 올라오게 */}
+      <div className="relative z-10 flex flex-col h-full">
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#fff", lineHeight: "26px" }}>
+          저장한 장소로
+          <br />
+          코스 자동 생성하기
+        </h2>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.9)", marginTop: 6 }}>
+          저장한 장소를 취향에 맞게 일정으로 짜드려요
+        </p>
 
-      <button
-        onClick={onStart}
-        className="self-start mt-auto flex items-center gap-1 px-3 py-1.5 rounded-full"
-        style={{ background: "#fff" }}
-      >
-        <span style={{ fontSize: 12, fontWeight: 600, color: "#090738" }}>코스 만들기</span>
-        <svg width="6" height="10" viewBox="0 0 6 10" fill="none">
-          <path d="M1 1l4 4-4 4" stroke="#090738" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
+        <button
+          onClick={onStart}
+          className="self-start mt-auto flex items-center gap-1 px-3 py-1.5 rounded-full"
+          style={{ background: "#fff" }}
+        >
+          <span style={{ fontSize: 12, fontWeight: 600, color: "#090738" }}>코스 만들기</span>
+          <svg width="6" height="10" viewBox="0 0 6 10" fill="none">
+            <path d="M1 1l4 4-4 4" stroke="#090738" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
 
-      {/* 우측 별 장식 — absolute로 콘텐츠와 겹쳐 배치 */}
-      <Sparkle size={52} top={14} right={20} opacity={0.4} />
-      <Sparkle size={26} top={70} right={64} opacity={0.5} />
+      {/* 우측 하단 4점성 스파클 — 크고 부드럽게 */}
+      <Sparkle size={120} bottom={-14} right={-10} opacity={0.32} blur={1.6} />
+      <Sparkle size={56} bottom={88} right={96} opacity={0.5} blur={0.9} />
     </div>
   );
 }
 
-function Sparkle({ size, top, right, opacity }: { size: number; top: number; right: number; opacity: number }) {
+function Sparkle({
+  size,
+  bottom,
+  right,
+  opacity,
+  blur,
+}: {
+  size: number;
+  bottom: number;
+  right: number;
+  opacity: number;
+  blur: number;
+}) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      className="absolute"
-      style={{ top, right, opacity }}
+      viewBox="0 0 100 100"
+      fill="#fff"
+      className="absolute pointer-events-none"
+      style={{ bottom, right, opacity, filter: `blur(${blur}px)` }}
+      aria-hidden
     >
-      <path
-        d="M12 0c.5 5 4 8.5 9 9-5 .5-8.5 4-9 9-.5-5-4-8.5-9-9 5-.5 8.5-4 9-9z"
-        fill="#fff"
-      />
+      {/* 4점성 — 부드러운 다이아몬드 별 */}
+      <path d="M50 0 C 50 30, 55 45, 100 50 C 55 55, 50 70, 50 100 C 50 70, 45 55, 0 50 C 45 45, 50 30, 50 0 Z" />
     </svg>
   );
 }
