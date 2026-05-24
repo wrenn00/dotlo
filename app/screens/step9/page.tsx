@@ -1,12 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import StatsCard from "./components/StatsCard";
 import AIAnalysisBox, { type TasteItem } from "./components/AIAnalysisBox";
 import ShareSheet from "./components/ShareSheet";
 import DayTabs from "../step7/components/DayTabs";
 import TimelineItem, { type TimelineData } from "../step7/components/TimelineItem";
+
+// Leaflet SSR 회피
+const MiniMap = dynamic(() => import("@/components/MiniMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full animate-pulse" style={{ background: "#DDE5E8" }} />
+  ),
+});
+
+// 일정 제목 → 좌표 매핑
+const PLACE_COORDS: Record<string, [number, number]> = {
+  "인천 > 나리타":          [35.7647, 140.3863], // 나리타 공항
+  "APA 호텔 우에노":        [35.7118, 139.7745],
+  "이치란 라멘 우에노점":   [35.7102, 139.7727],
+  "센소지 절":              [35.7148, 139.7967],
+  "블루보틀 카페":          [35.6694, 139.6996],
+  "도쿄 스카이 트리":       [35.7100, 139.8108],
+  "기요미즈데라":           [34.9949, 135.7850],
+  "후시미 이나리 신사":     [34.9671, 135.7727],
+};
 
 // ─── 데이터 ──────────────────────────────────────────────────────────────────
 
@@ -83,8 +104,25 @@ export default function Step9Page() {
   const router = useRouter();
   const [selectedDay, setSelectedDay] = useState("1일차");
   const [shareOpen, setShareOpen] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
 
   const items = SCHEDULE[selectedDay] ?? [];
+
+  // 현재 일차 일정에서 좌표가 있는 항목만 마커로
+  const mapMarkers = items
+    .map((it) => {
+      const c = PLACE_COORDS[it.title];
+      return c ? { position: c, label: `${it.time} · ${it.title}` } : null;
+    })
+    .filter((m): m is NonNullable<typeof m> => !!m);
+
+  // 마커 평균 위치를 중심으로, 없으면 도쿄 기본
+  const mapCenter: [number, number] = mapMarkers.length
+    ? [
+        mapMarkers.reduce((s, m) => s + m.position[0], 0) / mapMarkers.length,
+        mapMarkers.reduce((s, m) => s + m.position[1], 0) / mapMarkers.length,
+      ]
+    : [35.6762, 139.6503];
 
   function handleAdd() {
     alert("여행에 추가되었습니다!");
@@ -161,7 +199,7 @@ export default function Step9Page() {
         {/* 일자별 일정 헤더 */}
         <div className="flex items-center justify-between mt-6 mb-3">
           <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>일자별 일정</span>
-          <button className="flex items-center gap-1">
+          <button onClick={() => setMapOpen(true)} className="flex items-center gap-1">
             <span style={{ fontSize: 12, color: "#090738", fontWeight: 500 }}>지도로 보기</span>
             <span style={{ fontSize: 13 }}>🗺️</span>
           </button>
@@ -225,6 +263,48 @@ export default function Step9Page() {
 
       {/* 공유 시트 */}
       <ShareSheet open={shareOpen} onClose={() => setShareOpen(false)} />
+
+      {/* 지도 모달 */}
+      {mapOpen && (
+        <div
+          className="absolute inset-0 flex flex-col"
+          style={{ background: "#fff", zIndex: 100 }}
+        >
+          {/* 헤더 */}
+          <div className="flex items-center justify-between px-5 pt-12 pb-3 shrink-0">
+            <button
+              onClick={() => setMapOpen(false)}
+              className="w-9 h-9 flex items-center justify-center"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 1l12 12M13 1L1 13" stroke="#090738" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </button>
+            <span style={{ fontSize: 16, fontWeight: 700, color: "#090738" }}>
+              {selectedDay} 지도
+            </span>
+            <div className="w-9" />
+          </div>
+
+          {/* 큰 지도 */}
+          <div className="flex-1 px-3 pb-3">
+            <MiniMap
+              center={mapCenter}
+              zoom={mapMarkers.length > 1 ? 11 : 13}
+              markers={mapMarkers}
+              height="100%"
+              scrollWheelZoom
+            />
+          </div>
+
+          {/* 일정 요약 */}
+          <div className="shrink-0 px-5 pb-8 pt-2">
+            <p style={{ fontSize: 12, color: "#7A858B", textAlign: "center" }}>
+              {mapMarkers.length}개 장소가 표시됐어요
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

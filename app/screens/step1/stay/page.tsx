@@ -1,13 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 
+// Leaflet은 SSR 불가 → dynamic import
+const MiniMap = dynamic(() => import("@/components/MiniMap"), {
+  ssr: false,
+  loading: () => (
+    <div
+      className="mt-4 animate-pulse"
+      style={{ height: 200, background: "#DDE5E8", borderRadius: 16 }}
+    />
+  ),
+});
+
 const PLACES = [
-  { id: 1, name: "도톤보리", sub: "오사카 미나미" },
-  { id: 2, name: "고노하나구", sub: "오사카 고노하나" },
-  { id: 3, name: "신주쿠", sub: "도쿄 신주쿠구" },
-  { id: 4, name: "시부야", sub: "도쿄 시부야구" },
+  { id: 1, name: "도톤보리",     sub: "오사카 미나미",   coords: [34.6687, 135.5026] as [number, number] },
+  { id: 2, name: "고노하나구",   sub: "오사카 고노하나", coords: [34.6845, 135.4438] as [number, number] },
+  { id: 3, name: "신주쿠",       sub: "도쿄 신주쿠구",   coords: [35.6896, 139.7006] as [number, number] },
+  { id: 4, name: "시부야",       sub: "도쿄 시부야구",   coords: [35.6595, 139.7004] as [number, number] },
 ];
 
 export default function StayPage() {
@@ -70,33 +82,14 @@ export default function StayPage() {
           />
         </div>
 
-        {/* 지도 placeholder */}
-        <div
-          className="flex items-center justify-center mt-4 relative overflow-hidden"
-          style={{ height: 200, background: "#DDE5E8", borderRadius: 16 }}
-        >
-          {/* 격자 라인 */}
-          <div className="absolute inset-0 opacity-30">
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className="absolute w-full" style={{ height: 1, background: "#7A858B", top: `${(i + 1) * 20}%` }} />
-            ))}
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className="absolute h-full" style={{ width: 1, background: "#7A858B", left: `${(i + 1) * 20}%` }} />
-            ))}
-          </div>
-          {/* 핀 */}
-          <div className="flex flex-col items-center gap-1">
-            <div
-              className="flex items-center justify-center"
-              style={{ width: 40, height: 40, background: "#00E1FF", borderRadius: "50%", boxShadow: "0 4px 12px rgba(56,198,175,0.4)" }}
-            >
-              <svg width="18" height="22" viewBox="0 0 18 22" fill="none">
-                <path d="M9 1C5.13 1 2 4.13 2 8c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="white" />
-                <circle cx="9" cy="8" r="2.5" fill="#00E1FF" />
-              </svg>
-            </div>
-            <span style={{ fontSize: 11, color: "#555E63", fontWeight: 500 }}>지도 미리보기</span>
-          </div>
+        {/* 지도 (Leaflet + OpenStreetMap) */}
+        <div className="mt-4">
+          <MiniMap
+            center={[34.6687, 135.5026]}
+            zoom={11}
+            markers={PLACES.map((p) => ({ position: p.coords, label: `${p.name} — ${p.sub}` }))}
+            height={200}
+          />
         </div>
 
         {/* 자주 머무는 지역 */}
