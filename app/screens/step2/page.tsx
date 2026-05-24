@@ -64,8 +64,8 @@ export default function Step2Page() {
           </button>
         </div>
 
-        {/* 구분선 — 위아래 적당한 여백 */}
-        <div className="flex items-center gap-3 my-6">
+        {/* 구분선 — 구글 연동 카드와 충분히 떨어뜨려서 하단 카드를 화면 아래로 */}
+        <div className="flex items-center gap-3 mt-24 mb-6">
           <div className="flex-1 h-px" style={{ background: "#DDE5E8" }} />
           <span style={{ fontSize: 13, color: "#7A858B" }}>또는</span>
           <div className="flex-1 h-px" style={{ background: "#DDE5E8" }} />
