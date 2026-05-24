@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Icon from "@/components/Icon";
 
 interface Props {
@@ -21,23 +22,20 @@ export default function CourseCard({ code, title, summary, aiNote, bgHex, accent
       className="relative flex flex-col p-5 rounded-2xl overflow-hidden transition-colors duration-300"
       style={{ background: bgHex }}
     >
-      {/* 배경 그래픽 — 우측 하단, 살짝 잘림 */}
+      {/* 배경 그래픽 — 우측 하단, 살짝 잘림 (next/image) */}
       {backgroundImage && (
         <div
           className="absolute pointer-events-none"
-          style={{
-            right: 0,
-            bottom: 0,
-            width: 192,
-            height: 192,
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "right bottom",
-            opacity: 0.85,
-            transform: "translate(20%, 20%)",
-          }}
-        />
+          style={{ right: 0, bottom: 0, width: 200, height: 200, transform: "translate(14%, 16%)", opacity: 0.9 }}
+        >
+          <Image
+            src={backgroundImage}
+            alt=""
+            fill
+            sizes="200px"
+            className="object-contain object-right-bottom"
+          />
+        </div>
       )}
 
       {/* 상단 라인 */}
