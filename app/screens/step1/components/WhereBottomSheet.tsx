@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useKeyboard } from "@/components/KeyboardProvider";
 
 const INPUT_ID = "where-search";
@@ -8,16 +9,15 @@ const INPUT_ID = "where-search";
 const RECENT = ["교토", "바르셀로나", "도쿄"];
 
 const POPULAR = [
-  { city: "도쿄",       desc: "일본 · 동아시아" },
-  { city: "오사카",     desc: "일본 · 동아시아" },
-  { city: "다낭",       desc: "베트남 · 동남아" },
-  { city: "방콕",       desc: "태국 · 동남아" },
-  { city: "상하이",     desc: "중국 · 동아시아" },
-  { city: "교토",       desc: "일본 · 동아시아" },
-  { city: "후쿠오카",   desc: "일본 · 동아시아" },
-  { city: "싱가포르",   desc: "싱가포르 · 동남아" },
-  { city: "바르셀로나", desc: "스페인 · 유럽" },
-  { city: "파리",       desc: "프랑스 · 유럽" },
+  { city: "도쿄",     country: "일본",     region: "동아시아", image: "/images/where/dokyo.png" },
+  { city: "오사카",   country: "일본",     region: "동아시아", image: "/images/where/osaka.png" },
+  { city: "다낭",     country: "베트남",   region: "동남아",   image: "/images/where/danang.png" },
+  { city: "방콕",     country: "태국",     region: "동남아",   image: "/images/where/bangkok.png" },
+  { city: "상하이",   country: "중국",     region: "동아시아", image: "/images/where/shanghai.png" },
+  { city: "교토",     country: "일본",     region: "동아시아", image: "/images/where/kyoto.png" },
+  { city: "후쿠오카", country: "일본",     region: "동아시아", image: "/images/where/fukuoka.png" },
+  { city: "싱가포르", country: "싱가포르", region: "동남아",   image: "/images/where/singapore.png" },
+  { city: "파리",     country: "프랑스",   region: "유럽",     image: "/images/where/paris.png" },
 ];
 
 interface Props {
@@ -34,7 +34,11 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
   const filtered = trimmed
     ? POPULAR.filter((p) => {
         const q = trimmed.toLowerCase();
-        return p.city.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+        return (
+          p.city.toLowerCase().includes(q) ||
+          p.country.toLowerCase().includes(q) ||
+          p.region.toLowerCase().includes(q)
+        );
       })
     : POPULAR;
 
@@ -199,14 +203,24 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
                     }}
                   >
                     <div
-                      className="shrink-0 rounded-xl"
-                      style={{ width: 44, height: 44, background: "#DDE5E8" }}
-                    />
+                      className="shrink-0 rounded-xl overflow-hidden relative"
+                      style={{ width: 48, height: 48, background: "#DDE5E8" }}
+                    >
+                      <Image
+                        src={item.image}
+                        alt={item.city}
+                        fill
+                        className="object-cover"
+                        sizes="48px"
+                      />
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>
                         {item.city}
                       </p>
-                      <p style={{ fontSize: 12, color: "#7A858B" }}>{item.desc}</p>
+                      <p style={{ fontSize: 12, color: "#7A858B" }}>
+                        {item.country} · {item.region}
+                      </p>
                     </div>
                     {!trimmed && (
                       <span
