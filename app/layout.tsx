@@ -1,19 +1,6 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import TouchCursor from "@/components/TouchCursor";
-
-const pretendard = localFont({
-  src: "../public/fonts/PretendardVariable.woff2",
-  variable: "--font-pretendard",
-  display: "swap",
-  fallback: [
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "system-ui",
-    "sans-serif",
-  ],
-});
 
 export const metadata: Metadata = {
   title: "dotlo prototype",
@@ -24,7 +11,17 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko" className={`${pretendard.variable} h-full antialiased`}>
+    <html lang="ko" className="h-full antialiased">
+      <head>
+        {/* Spoqa Han Sans Neo — jsDelivr CDN */}
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@01ff0283e4f36e159ebfe2b6e575d1d16cf42d4f/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo.css"
+        />
+      </head>
       <body className="h-full bg-[#1a1a1a] flex items-center justify-center">
         {/* 글래스 터치 인디케이터 (데스크톱만) */}
         <TouchCursor />
