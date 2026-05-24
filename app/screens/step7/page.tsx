@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Icon from "@/components/Icon";
@@ -61,39 +61,42 @@ const mapCourse = (c: (typeof courses)[number]) => ({
 export default function Step7Page() {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState<CourseId | null>(null);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [activeTab, setActiveTab] = useState<CourseId>("B");
   const [selectedDay, setSelectedDay] = useState("1일차");
+
+  const detailRef = useRef<HTMLDivElement>(null);
 
   const currentCourse = getCourse(activeTab);
   const items = SCHEDULE[selectedDay] ?? [];
 
-  const handleSelect = () => {
+  const handleExpand = () => {
     if (!selectedId) return;
     setActiveTab(selectedId);
-    setIsPanelOpen(true);
+    setShowDetail(true);
+    setTimeout(() => {
+      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   };
 
   return (
-    <div className="relative h-full overflow-hidden" style={{ background: "#fff" }}>
+    <div className="h-full overflow-y-auto overflow-x-hidden" style={{ background: "#fff" }}>
 
-      {/* ═══ 비교 뷰 ═══ */}
-      <div className="h-full overflow-y-auto pb-28">
+      {/* ═══ 섹션 1: 비교 뷰 (812px) ═══ */}
+      <section className="min-h-[812px] flex flex-col">
         {/* 헤더 */}
         <div className="px-5 pt-12 pb-2">
           <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
-            <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-              <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <Icon name="arrow_back_ios_new" size={22} className="text-night-navy-600" />
           </button>
         </div>
 
         {/* 타이틀 */}
         <div className="px-5">
-          <div className="self-start inline-flex items-center gap-1 px-2.5 py-1 rounded-full" style={{ background: "#C2F5FF" }}>
-            <Icon name="auto_awesome" size={13} fill className="text-sky-blue-600" />
-            <span style={{ fontSize: 11, fontWeight: 700, color: "#00A8BF" }}>AI 추천</span>
-          </div>
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sky-blue-100 text-sky-blue-600">
+            <Icon name="auto_awesome" size={13} fill />
+            <span style={{ fontSize: 11, fontWeight: 700 }}>AI 추천</span>
+          </span>
           <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 10, lineHeight: "30px" }}>
             코스를 만들었어요
           </h1>
@@ -102,15 +105,13 @@ export default function Step7Page() {
           </p>
         </div>
 
-        {/* 큰 지도 (모든 코스) */}
+        {/* 큰 지도 */}
         <div className="px-5 mt-5">
           <div className="relative" style={{ height: 380 }}>
             <CourseMap courses={courses.map(mapCourse)} center={TOKYO_CENTER} zoom={11} height="380px" showAll />
-
-            {/* 범례 */}
             <div
-              className="absolute flex flex-col gap-1 px-3 py-2.5 rounded-2xl"
-              style={{ left: 12, bottom: 12, background: "#fff", boxShadow: "0 2px 8px rgba(9,7,56,0.12)", zIndex: 1000 }}
+              className="absolute flex flex-col gap-1 px-3 py-2.5 rounded-2xl z-[500]"
+              style={{ left: 12, bottom: 12, background: "#fff", boxShadow: "0 2px 8px rgba(9,7,56,0.12)" }}
             >
               {courses.map((c) => (
                 <div key={c.id} className="flex items-center gap-2">
@@ -149,24 +150,10 @@ export default function Step7Page() {
           })}
         </div>
 
-        {/* 일러스트 */}
-        <div className="flex flex-col items-center text-center py-8">
-          <div
-            className="flex items-center justify-center rounded-full"
-            style={{ width: 72, height: 72, background: "var(--gradient-ai-glow, #E5FBFF)" }}
-          >
-            <Icon name="map" size={38} className="text-sky-blue-500" />
-          </div>
-          <p style={{ fontSize: 15, fontWeight: 700, color: "#090738", marginTop: 12 }}>코스를 선택해서 비교해 보세요!</p>
-          <p style={{ fontSize: 12, color: "#7A858B", marginTop: 4 }}>코스별 위치 동선을 비교하고 장소를 선정해요</p>
-        </div>
-      </div>
-
-      {/* ═══ 하단 고정 버튼 (패널 닫힘일 때만) ═══ */}
-      {!isPanelOpen && (
-        <div className="absolute bottom-0 left-0 right-0 px-5 pb-8 pt-3" style={{ background: "#fff", borderTop: "1px solid #EEF2F4" }}>
+        {/* 하단 버튼 */}
+        <div className="mt-auto px-5 pb-8 pt-5">
           <button
-            onClick={handleSelect}
+            onClick={handleExpand}
             disabled={!selectedId}
             className="w-full h-[52px] rounded-2xl text-base font-semibold transition-all"
             style={{
@@ -177,77 +164,55 @@ export default function Step7Page() {
             이 코스 선택하기
           </button>
         </div>
-      )}
+      </section>
 
-      {/* ═══ 스포트라이트 오버레이 ═══ */}
-      <div
-        className="absolute inset-0 transition-opacity duration-300"
-        style={{
-          background: "#000",
-          opacity: isPanelOpen ? 0.2 : 0,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* ═══ 스포트라이트 패널 ═══ */}
-      <div
-        className="absolute left-0 right-0 bottom-0 flex flex-col rounded-t-3xl"
-        style={{
-          height: "88%",
-          background: "#fff",
-          boxShadow: "0 -8px 30px rgba(9,7,56,0.18)",
-          transform: isPanelOpen ? "translateY(0)" : "translateY(100%)",
-          transition: "transform 0.5s cubic-bezier(0.32, 0.72, 0, 1)",
-          zIndex: 50,
-        }}
-      >
-        {/* 핸들 */}
-        <div className="flex justify-center pt-3 pb-1 shrink-0">
-          <button
-            onClick={() => setIsPanelOpen(false)}
-            className="rounded-full"
-            style={{ width: 40, height: 4, background: "#C2CCD1" }}
-            aria-label="패널 닫기"
-          />
-        </div>
-
-        {/* 내용 */}
-        <div className="flex-1 overflow-y-auto px-5 pb-4">
-          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full mt-2" style={{ background: "#C2F5FF" }}>
-            <Icon name="auto_awesome" size={13} fill className="text-sky-blue-600" />
-            <span style={{ fontSize: 11, fontWeight: 700, color: "#00A8BF" }}>AI 추천</span>
+      {/* ═══ 섹션 2: 상세 뷰 (조건부) ═══ */}
+      {showDetail && (
+        <section
+          ref={detailRef}
+          className="min-h-[812px] flex flex-col animate-slide-up"
+          style={{ borderTop: "1px solid #EEF2F4" }}
+        >
+          {/* 타이틀 */}
+          <div className="px-5 pt-8">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sky-blue-100 text-sky-blue-600">
+              <Icon name="auto_awesome" size={13} fill />
+              <span style={{ fontSize: 11, fontWeight: 700 }}>AI 추천</span>
+            </span>
+            <h2 style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 10, lineHeight: "30px" }}>
+              선택한 코스 상세
+            </h2>
+            <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6 }}>
+              탭으로 다른 코스도 비교해볼 수 있어요
+            </p>
           </div>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 10, lineHeight: "30px" }}>
-            코스를 만들었어요
-          </h1>
-          <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6, lineHeight: "20px" }}>
-            3가지 스타일로 골랐어요. 선택한 코스는 수정가능해요
-          </p>
 
           {/* A/B/C 탭 */}
-          <div className="flex p-1 rounded-full mt-5" style={{ background: "#F7F9FA" }}>
-            {courses.map((c) => {
-              const active = activeTab === c.id;
-              return (
-                <button
-                  key={c.id}
-                  onClick={() => setActiveTab(c.id)}
-                  className="flex-1 flex items-center justify-center py-2 rounded-full transition-all"
-                  style={{
-                    background: active ? "#fff" : "transparent",
-                    boxShadow: active ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
-                  }}
-                >
-                  <span style={{ fontSize: 13, fontWeight: active ? 700 : 500, color: active ? "#090738" : "#7A858B" }}>
-                    {c.id} {c.label.replace(" 코스", "")}
-                  </span>
-                </button>
-              );
-            })}
+          <div className="px-5 mt-5">
+            <div className="flex p-1 rounded-full" style={{ background: "#F7F9FA" }}>
+              {courses.map((c) => {
+                const active = activeTab === c.id;
+                return (
+                  <button
+                    key={c.id}
+                    onClick={() => setActiveTab(c.id)}
+                    className="flex-1 flex items-center justify-center py-2 rounded-full transition-all"
+                    style={{
+                      background: active ? "#fff" : "transparent",
+                      boxShadow: active ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
+                    }}
+                  >
+                    <span style={{ fontSize: 13, fontWeight: active ? 700 : 500, color: active ? "#090738" : "#7A858B" }}>
+                      {c.id} {c.label.replace(" 코스", "")}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* 코스 카드 — 동적 색상 */}
-          <div className="mt-4">
+          <div className="px-5 mt-4">
             <CourseCard
               code={currentCourse.code}
               title={currentCourse.title}
@@ -259,7 +224,7 @@ export default function Step7Page() {
           </div>
 
           {/* 작은 지도 — 현재 코스만 */}
-          <div className="mt-5" style={{ height: 200 }}>
+          <div className="px-5 mt-4" style={{ height: 200 }}>
             <CourseMap
               key={`detail-map-${activeTab}`}
               courses={[mapCourse(currentCourse)]}
@@ -271,7 +236,7 @@ export default function Step7Page() {
           </div>
 
           {/* 일자별 일정 */}
-          <div className="flex items-center justify-between mt-6 mb-3">
+          <div className="px-5 flex items-center justify-between mt-6 mb-3">
             <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>일자별 일정</span>
             <button className="flex items-center gap-1">
               <span style={{ fontSize: 12, color: "#090738", fontWeight: 500 }}>지도로 보기</span>
@@ -279,9 +244,11 @@ export default function Step7Page() {
             </button>
           </div>
 
-          <DayTabs days={DAYS} selected={selectedDay} onSelect={setSelectedDay} />
+          <div className="px-5">
+            <DayTabs days={DAYS} selected={selectedDay} onSelect={setSelectedDay} />
+          </div>
 
-          <div className="flex flex-col mt-4">
+          <div className="px-5 flex flex-col mt-4">
             {items.length === 0 ? (
               <div className="flex items-center justify-center py-12">
                 <p style={{ fontSize: 13, color: "#A1ADB3" }}>준비 중입니다</p>
@@ -294,31 +261,33 @@ export default function Step7Page() {
           </div>
 
           {/* 다시 만들기 */}
-          <div className="flex flex-col items-center text-center p-5 rounded-2xl mt-5" style={{ background: "#F7F9FA" }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>마음에 드는 게 없으신가요?</p>
-            <p style={{ fontSize: 12, color: "#7A858B", marginTop: 4 }}>조건을 바꾸거나 다시 만들어볼 수 있어요</p>
+          <div className="px-5 mt-5">
+            <div className="flex flex-col items-center text-center p-5 rounded-2xl" style={{ background: "#F7F9FA" }}>
+              <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>마음에 드는 게 없으신가요?</p>
+              <p style={{ fontSize: 12, color: "#7A858B", marginTop: 4 }}>조건을 바꾸거나 다시 만들어볼 수 있어요</p>
+              <button
+                onClick={() => router.push("/screens/step8")}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full mt-3"
+                style={{ background: "#fff", border: "1px solid #DDE5E8" }}
+              >
+                <Icon name="refresh" size={16} className="text-night-navy-600" />
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#090738" }}>다시 만들기</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 하단 버튼 */}
+          <div className="mt-auto px-5 pb-8 pt-5">
             <button
-              onClick={() => router.push("/screens/step8")}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full mt-3"
-              style={{ background: "#fff", border: "1px solid #DDE5E8" }}
+              onClick={() => router.push("/screens/step9")}
+              className="w-full h-[52px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
+              style={{ background: "#090738" }}
             >
-              <Icon name="refresh" size={16} className="text-night-navy-600" />
-              <span style={{ fontSize: 12, fontWeight: 600, color: "#090738" }}>다시 만들기</span>
+              이 코스 선택하기
             </button>
           </div>
-        </div>
-
-        {/* 패널 하단 버튼 */}
-        <div className="px-5 pb-8 pt-3 shrink-0" style={{ background: "#fff", borderTop: "1px solid #EEF2F4" }}>
-          <button
-            onClick={() => router.push("/screens/step9")}
-            className="w-full h-[52px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-            style={{ background: "#090738" }}
-          >
-            이 코스 선택하기
-          </button>
-        </div>
-      </div>
+        </section>
+      )}
     </div>
   );
 }
