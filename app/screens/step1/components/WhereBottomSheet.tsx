@@ -107,13 +107,8 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
         <div className="px-5 pb-3">
           <div
             onClick={focusSearch}
-            className="flex items-center gap-2 px-4 cursor-pointer"
-            style={{
-              height: 44,
-              background: "#F7F9FA",
-              borderRadius: 12,
-              outline: isFocused ? "2px solid #00E1FF" : "none",
-            }}
+            className="flex items-center gap-2 px-4 py-3.5 cursor-pointer"
+            style={{ background: "#F7F9FA", borderRadius: 16 }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
