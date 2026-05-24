@@ -179,12 +179,14 @@ export default function HomePage() {
             date="4.17 금 ~ 4.23 목 · 4박 5일"
             dDay="D-7"
             participants={{ type: "avatars", count: 3, label: "3명 함께" }}
+            image="/images/trips/osaka_home.png"
           />
           <TripCard
             title="도쿄 여행"
             date="5.17 금 ~ 4.23 목 · 6박 7일"
             dDay="D-30"
             participants={{ type: "single", icon: "👤", label: "혼자 여행" }}
+            image="/images/trips/dokyo_home.png"
           />
         </div>
 
@@ -221,6 +223,7 @@ export default function HomePage() {
             date="6.17 금 ~ 6.23 목 · 6박 7일"
             dDay="D-50"
             participants={{ type: "single", icon: "👤", label: "민지님이 초대했어요" }}
+            image="/images/trips/sang_home.png"
           />
         </div>
       </div>

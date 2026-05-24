@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 interface TripCardProps {
   title: string;
   date: string;
@@ -8,19 +10,31 @@ interface TripCardProps {
   participants:
     | { type: "avatars"; count: number; label: string }
     | { type: "single"; icon: string; label: string };
+  /** 썸네일 이미지 경로 — 없으면 회색 placeholder */
+  image?: string;
 }
 
-export default function TripCard({ title, date, dDay, participants }: TripCardProps) {
+export default function TripCard({ title, date, dDay, participants, image }: TripCardProps) {
   return (
     <button
       className="flex items-center gap-3 w-full px-3 py-3 text-left rounded-2xl transition-colors active:bg-gray-50"
       style={{ background: "#fff", border: "1px solid #DDE5E8" }}
     >
-      {/* 썸네일 */}
+      {/* 썸네일 — 이미지 있으면 표시, 없으면 회색 fallback */}
       <div
-        className="shrink-0 rounded-xl"
+        className="shrink-0 rounded-xl relative overflow-hidden"
         style={{ width: 59, height: 59, background: "#A1ADB3" }}
-      />
+      >
+        {image && (
+          <Image
+            src={image}
+            alt={title}
+            fill
+            sizes="59px"
+            className="object-cover"
+          />
+        )}
+      </div>
 
       {/* 본문 */}
       <div className="flex flex-col flex-1 min-w-0 gap-1">
