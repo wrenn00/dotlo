@@ -196,40 +196,47 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
                   <button
                     key={`${item.city}-${idx}`}
                     onClick={() => handleSelect(item.city)}
-                    className="flex items-center gap-3 py-3 text-left"
+                    className="flex items-center gap-4 py-3 text-left"
                     style={{
                       borderBottom:
                         idx < filtered.length - 1 ? "1px solid #DDE5E8" : "none",
                     }}
                   >
+                    {/* 1. 순위 숫자 — 좌측 (인기 모드에서만) */}
+                    {!trimmed && (
+                      <div
+                        className="shrink-0 text-center"
+                        style={{ width: 28 }}
+                      >
+                        <span style={{ fontSize: 18, fontWeight: 700, color: "#A1ADB3" }}>
+                          {idx + 1}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* 2. 도시 이미지 */}
                     <div
                       className="shrink-0 rounded-xl overflow-hidden relative"
-                      style={{ width: 48, height: 48, background: "#DDE5E8" }}
+                      style={{ width: 56, height: 56, background: "#DDE5E8" }}
                     >
                       <Image
                         src={item.image}
                         alt={item.city}
                         fill
                         className="object-cover"
-                        sizes="48px"
+                        sizes="56px"
                       />
                     </div>
+
+                    {/* 3. 도시 정보 */}
                     <div className="flex-1 min-w-0">
-                      <p style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>
+                      <p style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>
                         {item.city}
                       </p>
-                      <p style={{ fontSize: 12, color: "#7A858B" }}>
+                      <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>
                         {item.country} · {item.region}
                       </p>
                     </div>
-                    {!trimmed && (
-                      <span
-                        className="text-sm font-bold shrink-0"
-                        style={{ color: "#00E1FF" }}
-                      >
-                        {idx + 1}
-                      </span>
-                    )}
                   </button>
                 ))}
               </div>
