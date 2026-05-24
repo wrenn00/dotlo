@@ -43,19 +43,16 @@ function StatusBar() {
 function Header() {
   return (
     <div className="flex items-center justify-between px-5 py-2 shrink-0">
-      {/* dotlo 로고 (이미지 + 워드마크) */}
-      <div className="flex items-center gap-2">
+      {/* dotlo 로고 (이미지만) */}
+      <div className="flex items-center">
         <Image
           src="/images/logo.png"
           alt="Dotlo"
-          width={32}
-          height={28}
+          width={40}
+          height={34}
           priority
-          style={{ width: 32, height: "auto" }}
+          style={{ width: 40, height: "auto" }}
         />
-        <span style={{ fontSize: 18, fontWeight: 800, color: "#090738", letterSpacing: -0.5 }}>
-          dotlo
-        </span>
       </div>
 
       {/* 검색 + 알림 */}
