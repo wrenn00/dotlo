@@ -52,7 +52,9 @@ export default function Step3Page() {
 
         {/* 제목 */}
         <h1 style={{ fontSize: 24, fontWeight: 700, color: "#090738", lineHeight: "34px" }}>
-          오사카 여행{"\n"}어떻게 만들어드릴까요?
+          오사카 여행
+          <br />
+          어떻게 만들어드릴까요?
         </h1>
 
         {/* 옵션 카드 */}
@@ -109,9 +111,12 @@ export default function Step3Page() {
 
         <div className="flex-1" />
 
-        {/* 다음 버튼 */}
+        {/* 다음 버튼 — 빠른 생성은 step4/5 건너뛰고 바로 step6으로 */}
         <button
-          onClick={() => router.push("/screens/step4")}
+          onClick={() => {
+            if (selected === "quick") router.push("/screens/step6");
+            else if (selected === "custom") router.push("/screens/step4");
+          }}
           disabled={!selected}
           className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-all"
           style={{
