@@ -7,11 +7,18 @@ interface TabProps {
 }
 
 function Tab({ active, label, icon }: TabProps) {
-  const color = active ? "#5CE7FF" : "#A1ADB3";
+  const color = active ? "#00E1FF" : "#A1ADB3";
+  const textColor = active ? "#00E1FF" : "#7A858B";
   return (
-    <button className="flex flex-col items-center gap-1 flex-1">
+    <button className="flex flex-col items-center gap-0.5 flex-1 py-1.5">
       <div style={{ color }}>{icon}</div>
-      <span style={{ fontSize: 11, fontWeight: 500, color: active ? "#5CE7FF" : "#7A858B" }}>
+      <span
+        style={{
+          fontSize: 11,
+          fontWeight: active ? 700 : 500,
+          color: textColor,
+        }}
+      >
         {label}
       </span>
     </button>
@@ -68,17 +75,17 @@ const UserIcon = () => (
 export default function BottomTabBar() {
   return (
     <div
-      className="absolute bottom-0 left-0 right-0 flex justify-around items-start pt-2 pb-6"
+      className="absolute bottom-0 left-0 right-0 flex justify-around items-start pt-2 pb-5"
       style={{
         background: "#fff",
-        borderTop: "1px solid #DDE5E8",
+        borderTop: "1px solid #EEF2F4",
         zIndex: 30,
       }}
     >
-      <Tab active label="홈"      icon={<HomeIcon />} />
-      <Tab active={false} label="장소"   icon={<PlaceIcon />} />
+      <Tab active label="홈" icon={<HomeIcon />} />
+      <Tab active={false} label="장소" icon={<PlaceIcon />} />
       <Tab active={false} label="마이트립" icon={<MyTripIcon />} />
-      <Tab active={false} label="마이"   icon={<UserIcon />} />
+      <Tab active={false} label="마이" icon={<UserIcon />} />
     </div>
   );
 }

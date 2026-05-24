@@ -42,41 +42,39 @@ function StatusBar() {
 
 function Header() {
   return (
-    <div className="flex items-center justify-between px-5 py-2 shrink-0">
+    <div className="flex items-center justify-between px-5 py-3 shrink-0">
       {/* dotlo 로고 (이미지만) */}
-      <div className="flex items-center">
-        <Image
-          src="/images/logo.png"
-          alt="Dotlo"
-          width={40}
-          height={34}
-          priority
-          style={{ width: 40, height: "auto" }}
-        />
-      </div>
+      <Image
+        src="/images/logo.png"
+        alt="Dotlo"
+        width={32}
+        height={28}
+        priority
+        style={{ width: 32, height: "auto" }}
+      />
 
       {/* 검색 + 알림 */}
-      <div className="flex items-center gap-1">
-        <button className="w-9 h-9 flex items-center justify-center">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <circle cx="8" cy="8" r="6" stroke="#555E63" strokeWidth="1.8" />
-            <path d="M12.5 12.5L17 17" stroke="#555E63" strokeWidth="1.8" strokeLinecap="round" />
+      <div className="flex items-center gap-3">
+        <button className="flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="9" cy="9" r="6.5" stroke="#555E63" strokeWidth="1.8" />
+            <path d="M14 14L18.5 18.5" stroke="#555E63" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
         </button>
-        <button className="relative w-9 h-9 flex items-center justify-center">
-          <svg width="16" height="20" viewBox="0 0 16 20" fill="none">
+        <button className="relative flex items-center justify-center">
+          <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
             <path
-              d="M2 8a6 6 0 0112 0v5l2 2H0l2-2V8z"
+              d="M3 9a6 6 0 0112 0v5l1.5 2H1.5L3 14V9z"
               stroke="#555E63"
               strokeWidth="1.8"
               strokeLinejoin="round"
               fill="none"
             />
-            <path d="M6 18a2 2 0 004 0" stroke="#555E63" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M7 18a2 2 0 004 0" stroke="#555E63" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
           <div
             className="absolute"
-            style={{ top: 8, right: 7, width: 6, height: 6, background: "#5CE7FF", borderRadius: "50%", border: "1.5px solid #fff" }}
+            style={{ top: 1, right: 0, width: 6, height: 6, background: "#00E1FF", borderRadius: "50%", border: "1.5px solid #fff" }}
           />
         </button>
       </div>
@@ -91,14 +89,16 @@ function MainBanner({ onStart }: { onStart: () => void }) {
     <div
       className="relative overflow-hidden flex flex-col p-5 mx-5 rounded-2xl"
       style={{
-        background: "linear-gradient(135deg, #00E1FF 0%, #00A8BF 100%)",
-        minHeight: 169,
+        background: "linear-gradient(135deg, #29E3FF 0%, #00A8BF 100%)",
+        minHeight: 142,
       }}
     >
-      <p style={{ fontSize: 16, fontWeight: 700, color: "#fff", lineHeight: "22px" }}>
-        저장한 장소로{"\n"}코스 자동 생성하기
-      </p>
-      <p style={{ fontSize: 10, color: "rgba(255,255,255,0.85)", marginTop: 6 }}>
+      <h2 style={{ fontSize: 20, fontWeight: 700, color: "#fff", lineHeight: "26px" }}>
+        저장한 장소로
+        <br />
+        코스 자동 생성하기
+      </h2>
+      <p style={{ fontSize: 12, color: "rgba(255,255,255,0.9)", marginTop: 6 }}>
         저장한 장소를 취향에 맞게 일정으로 짜드려요
       </p>
 
@@ -107,15 +107,15 @@ function MainBanner({ onStart }: { onStart: () => void }) {
         className="self-start mt-auto flex items-center gap-1 px-3 py-1.5 rounded-full"
         style={{ background: "#fff" }}
       >
-        <span style={{ fontSize: 11, fontWeight: 600, color: "#090738" }}>코스 만들기</span>
+        <span style={{ fontSize: 12, fontWeight: 600, color: "#090738" }}>코스 만들기</span>
         <svg width="6" height="10" viewBox="0 0 6 10" fill="none">
-          <path d="M1 1l4 4-4 4" stroke="#A1ADB3" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1 1l4 4-4 4" stroke="#090738" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
-      {/* 우측 별 장식 */}
-      <Sparkle size={64} top={20} right={20} opacity={0.45} />
-      <Sparkle size={34} top={90} right={70} opacity={0.55} />
+      {/* 우측 별 장식 — absolute로 콘텐츠와 겹쳐 배치 */}
+      <Sparkle size={52} top={14} right={20} opacity={0.4} />
+      <Sparkle size={26} top={70} right={64} opacity={0.5} />
     </div>
   );
 }
@@ -142,9 +142,11 @@ function Sparkle({ size, top, right, opacity }: { size: number; top: number; rig
 
 function SectionHeader({ title, right }: { title: string; right?: string }) {
   return (
-    <div className="flex items-center justify-between px-5 mt-6 mb-3">
-      <span style={{ fontSize: 16, fontWeight: 600, color: "#090738" }}>{title}</span>
-      {right && <span style={{ fontSize: 12, color: "#7A858B", fontWeight: 500 }}>{right}</span>}
+    <div className="flex items-center justify-between px-5 mt-7 mb-3">
+      <span style={{ fontSize: 16, fontWeight: 700, color: "#090738" }}>{title}</span>
+      {right && (
+        <button style={{ fontSize: 13, color: "#7A858B", fontWeight: 500 }}>{right}</button>
+      )}
     </div>
   );
 }
@@ -166,14 +168,14 @@ export default function HomePage() {
       <Header />
 
       {/* 스크롤 영역 */}
-      <div className="flex-1 overflow-y-auto pb-24">
+      <div className="flex-1 overflow-y-auto pb-20">
 
         {/* 메인 배너 */}
         <MainBanner onStart={() => router.push("/screens/step1")} />
 
         {/* 다가오는 여행 */}
         <SectionHeader title="다가오는 여행" right="전체보기" />
-        <div className="flex flex-col gap-2 px-5">
+        <div className="flex flex-col gap-2.5 px-5">
           <TripCard
             title="오사카 여행"
             date="4.17 금 ~ 4.23 목 · 4박 5일"
@@ -192,7 +194,7 @@ export default function HomePage() {
 
         {/* 이런 여행 어때요 (가로 스크롤) */}
         <SectionHeader title="이런 여행 어때요?" right="더보기" />
-        <div className="flex gap-3 px-5 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide scroll-smooth px-5 pb-1">
           <SuggestCard
             background="#29E3FF"
             badgeBg="#E5FBFF"

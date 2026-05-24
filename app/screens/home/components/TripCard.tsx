@@ -5,8 +5,7 @@ import Image from "next/image";
 interface TripCardProps {
   title: string;
   date: string;
-  dDay: string;           // "D-7"
-  /** 동행자 표시 - 아바타 3개 + "3명 함께" 또는 단일 텍스트 */
+  dDay: string;
   participants:
     | { type: "avatars"; count: number; label: string }
     | { type: "single"; icon: string; label: string };
@@ -17,82 +16,89 @@ interface TripCardProps {
 export default function TripCard({ title, date, dDay, participants, image }: TripCardProps) {
   return (
     <button
-      className="flex items-center gap-3 w-full px-3 py-3 text-left rounded-2xl transition-colors active:bg-gray-50"
-      style={{ background: "#fff", border: "1px solid #DDE5E8" }}
+      className="flex items-center gap-3 w-full p-3 text-left rounded-2xl transition-colors active:bg-cloudy-gray-50"
+      style={{ background: "#fff", border: "1px solid #EEF2F4" }}
     >
-      {/* 썸네일 — 이미지 있으면 표시, 없으면 회색 fallback */}
+      {/* 썸네일 56x56 */}
       <div
         className="shrink-0 rounded-xl relative overflow-hidden"
-        style={{ width: 59, height: 59, background: "#A1ADB3" }}
+        style={{ width: 56, height: 56, background: "#DDE5E8" }}
       >
         {image && (
           <Image
             src={image}
             alt={title}
             fill
-            sizes="59px"
+            sizes="56px"
             className="object-cover"
           />
         )}
       </div>
 
       {/* 본문 */}
-      <div className="flex flex-col flex-1 min-w-0 gap-1">
-        <div className="flex items-center gap-2">
-          <span style={{ fontSize: 14, fontWeight: 600, color: "#090738" }} className="truncate">
+      <div className="flex flex-col flex-1 min-w-0 gap-0.5">
+        {/* 도시명 + D-day */}
+        <div className="flex items-center gap-1.5">
+          <span
+            className="truncate"
+            style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}
+          >
             {title}
           </span>
           <span
-            className="px-1.5 py-0.5 rounded-full shrink-0"
+            className="shrink-0 px-1.5 py-0.5 rounded-full"
             style={{ background: "#E5FBFF" }}
           >
-            <span style={{ fontSize: 10, fontWeight: 600, color: "#00E1FF" }}>{dDay}</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: "#006B7A" }}>
+              {dDay}
+            </span>
           </span>
         </div>
-        <span style={{ fontSize: 10, color: "#7A858B", fontWeight: 500 }}>{date}</span>
+
+        {/* 날짜 */}
+        <span style={{ fontSize: 12, color: "#7A858B" }}>{date}</span>
 
         {/* 동행자 */}
         <div className="flex items-center gap-1.5 mt-0.5">
           {participants.type === "avatars" ? (
             <>
-              <div className="flex -space-x-2">
+              <div className="flex -space-x-1.5">
                 {Array.from({ length: 3 }).map((_, i) => (
                   <div
                     key={i}
                     className="rounded-full shrink-0"
                     style={{
-                      width: 17,
-                      height: 17,
-                      background: "#A1ADB3",
+                      width: 14,
+                      height: 14,
+                      background: i === 0 ? "#A5A5FF" : i === 1 ? "#5CE7FF" : "#A1ADB3",
                       border: "1.5px solid #fff",
                     }}
                   />
                 ))}
               </div>
-              <span style={{ fontSize: 10, color: "#7A858B", fontWeight: 500, marginLeft: 4 }}>
+              <span style={{ fontSize: 11, color: "#7A858B", marginLeft: 4 }}>
                 {participants.label}
               </span>
             </>
           ) : (
             <>
-              <div
-                className="flex items-center justify-center"
-                style={{ width: 15, height: 15, borderRadius: "50%", background: "#E5FBFF" }}
-              >
-                <span style={{ fontSize: 9 }}>{participants.icon}</span>
-              </div>
-              <span style={{ fontSize: 10, color: "#7A858B", fontWeight: 500 }}>
-                {participants.label}
-              </span>
+              <span style={{ fontSize: 11 }}>{participants.icon}</span>
+              <span style={{ fontSize: 11, color: "#7A858B" }}>{participants.label}</span>
             </>
           )}
         </div>
       </div>
 
       {/* 우측 화살표 */}
-      <svg width="7" height="13" viewBox="0 0 7 13" fill="none" className="shrink-0">
+      <svg
+        width="6"
+        height="11"
+        viewBox="0 0 6 11"
+        fill="none"
+        className="shrink-0"
+      >
         <path
-          d="M1 1l5 5.5L1 12"
+          d="M1 1l4 4.5L1 10"
           stroke="#A1ADB3"
           strokeWidth="1.5"
           strokeLinecap="round"
