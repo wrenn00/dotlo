@@ -175,6 +175,20 @@ body.dragging-scroll {
   }
 }
 
+/* Material Symbols Rounded — 아이콘 폰트 기본 설정 */
+.material-symbols-rounded {
+  font-family: "Material Symbols Rounded";
+  font-weight: normal;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
 /* Leaflet CourseMap — 마커 안 숫자 라벨 (말풍선 스타일 제거) */
 .map-marker-label {
   background: transparent !important;

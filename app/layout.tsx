@@ -21,6 +21,11 @@ export default function RootLayout({
           crossOrigin="anonymous"
           href="https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@01ff0283e4f36e159ebfe2b6e575d1d16cf42d4f/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo.css"
         />
+        {/* Material Symbols Rounded — 가변 폰트 (opsz/wght/FILL/GRAD) */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..700,0..1,-50..200"
+        />
       </head>
       <body className="h-full bg-[#1a1a1a] flex items-center justify-center">
         {/* 글래스 터치 인디케이터 (데스크톱만) */}

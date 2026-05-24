@@ -187,7 +187,7 @@ export default function HomePage() {
             title="도쿄 여행"
             date="5.17 금 ~ 4.23 목 · 6박 7일"
             dDay="D-30"
-            participants={{ type: "single", icon: "👤", label: "혼자 여행" }}
+            participants={{ type: "single", icon: "person", label: "혼자 여행" }}
             image="/images/trips/dokyo_home.png"
           />
         </div>
@@ -224,7 +224,7 @@ export default function HomePage() {
             title="상하이 여행"
             date="6.17 금 ~ 6.23 목 · 6박 7일"
             dDay="D-50"
-            participants={{ type: "single", icon: "👤", label: "민지님이 초대했어요" }}
+            participants={{ type: "single", icon: "person_add", label: "민지님이 초대했어요" }}
             image="/images/trips/sang_home.png"
           />
         </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PlaceImage from "@/components/PlaceImage";
+import Icon from "@/components/Icon";
 
 // ─── 데이터 ──────────────────────────────────────────────────────────────────
 
@@ -194,8 +195,9 @@ export default function AddPlacePage() {
                     <PlaceImage placeName={p.name} width={48} height={48} />
                     <div className="flex-1 min-w-0">
                       <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{p.name}</p>
-                      <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
-                        ★ {p.rating} · {p.reviews.toLocaleString()}개 리뷰
+                      <p className="flex items-center gap-1" style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
+                        <Icon name="star" size={13} fill className="text-star-yellow-500" />
+                        {p.rating} · {p.reviews.toLocaleString()}개 리뷰
                       </p>
                       <p style={{ fontSize: 11, color: "#555E63", marginTop: 1 }}>{p.category}</p>
                       <p className="truncate" style={{ fontSize: 11, color: "#7A858B", marginTop: 1 }}>
@@ -287,7 +289,10 @@ export default function AddPlacePage() {
                       <div className="flex-1 min-w-0">
                         <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{p.name}</p>
                         <p style={{ fontSize: 11, color: "#555E63", marginTop: 2 }}>{p.category}</p>
-                        <p style={{ fontSize: 11, color: "#7A858B", marginTop: 1 }}>★ {p.rating}</p>
+                        <p className="flex items-center gap-1" style={{ fontSize: 11, color: "#7A858B", marginTop: 1 }}>
+                          <Icon name="star" size={12} fill className="text-star-yellow-500" />
+                          {p.rating}
+                        </p>
                       </div>
                       <CheckCircle active={isSel} />
                     </button>
@@ -301,7 +306,7 @@ export default function AddPlacePage() {
         {/* ── AI 추천 탭 ── */}
         {activeTab === "ai" && (
           <div className="flex flex-col items-center justify-center py-20 px-8">
-            <span style={{ fontSize: 36 }}>✨</span>
+            <Icon name="auto_awesome" size={44} fill className="text-sky-blue-500" />
             <p style={{ fontSize: 14, fontWeight: 700, color: "#090738", marginTop: 12 }}>
               AI 추천 콘텐츠 준비 중
             </p>

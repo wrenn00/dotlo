@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Icon from "@/components/Icon";
 
 interface TripCardProps {
   title: string;
@@ -82,7 +83,7 @@ export default function TripCard({ title, date, dDay, participants, image }: Tri
             </>
           ) : (
             <>
-              <span style={{ fontSize: 11 }}>{participants.icon}</span>
+              <Icon name={participants.icon} size={14} className="text-cloudy-gray-500" />
               <span style={{ fontSize: 11, color: "#7A858B" }}>{participants.label}</span>
             </>
           )}

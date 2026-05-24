@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Icon from "@/components/Icon";
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -274,7 +275,7 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
               </span>
             )}
             {sel.start && sel.end && (
-              <span style={{ fontSize: 12, color: "#7A858B" }}>→</span>
+              <Icon name="arrow_forward" size={14} className="text-cloudy-gray-500" />
             )}
             {sel.end && (
               <span style={{ fontSize: 12, color: "#00E1FF", fontWeight: 600 }}>

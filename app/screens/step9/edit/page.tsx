@@ -22,6 +22,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import PlaceActionSheet, { type PlaceInfo } from "./components/PlaceActionSheet";
 import { getCategoryColor } from "../../step7/components/categoryColors";
+import Icon from "@/components/Icon";
 
 // ─── 타입 / 데이터 ────────────────────────────────────────────────────────────
 
@@ -309,7 +310,7 @@ export default function Step9EditPage() {
               className="flex items-center gap-1.5 px-3 py-2 rounded-full transition-colors"
               style={{ background: "#C2F5FF" }}
             >
-              <span style={{ fontSize: 12 }}>✨</span>
+              <Icon name="auto_awesome" size={14} fill className="text-sky-blue-600" />
               <span style={{ fontSize: 12, fontWeight: 600, color: "#00A8BF" }}>{label}</span>
             </button>
           ))}
@@ -320,7 +321,7 @@ export default function Step9EditPage() {
           className="flex items-center gap-2 px-3 py-2 rounded-full mt-3"
           style={{ background: "#F7F9FA" }}
         >
-          <span style={{ fontSize: 14 }}>✨</span>
+          <Icon name="auto_awesome" size={16} fill className="text-sky-blue-600" />
           <input
             className="flex-1 bg-transparent outline-none text-sm"
             style={{ color: "#090738" }}

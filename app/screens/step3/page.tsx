@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Icon from "@/components/Icon";
 
 type Selected = "quick" | "custom" | null;
 
 const OPTIONS = [
   {
     key: "quick" as const,
-    icon: "⚡",
+    icon: "bolt",
     title: "빠른 생성",
     lines: [
       "기본 추천 기준으로 바로 코스를 짜드려요",
@@ -18,7 +19,7 @@ const OPTIONS = [
   },
   {
     key: "custom" as const,
-    icon: "📍",
+    icon: "tune",
     title: "직접 생성",
     lines: [
       "목적·취향·일정 밀도·",
@@ -82,7 +83,7 @@ export default function Step3Page() {
                 )}
 
                 {/* 아이콘 */}
-                <span style={{ fontSize: 36, lineHeight: 1 }}>{icon}</span>
+                <Icon name={icon} size={36} className={active ? "text-sky-blue-500" : "text-night-navy-600"} />
 
                 {/* 제목 */}
                 <p

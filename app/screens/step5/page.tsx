@@ -22,6 +22,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Icon from "@/components/Icon";
 
 // ─── 데이터 ──────────────────────────────────────────────────────────────────
 
@@ -32,9 +33,9 @@ interface Item {
 }
 
 const INITIAL: Item[] = [
-  { id: "food",     label: "미식", icon: "🍴" },
-  { id: "night",    label: "야경", icon: "🌙" },
-  { id: "shopping", label: "쇼핑", icon: "🛍️" },
+  { id: "food",     label: "미식", icon: "restaurant" },
+  { id: "night",    label: "야경", icon: "dark_mode" },
+  { id: "shopping", label: "쇼핑", icon: "shopping_bag" },
 ];
 
 function weightLabel(rank: number) {
@@ -47,10 +48,8 @@ function weightLabel(rank: number) {
 
 function DragHandle() {
   return (
-    <div className="grid grid-cols-2 gap-[3px] px-1">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="w-[4px] h-[4px] rounded-full" style={{ background: "#A1ADB3" }} />
-      ))}
+    <div className="px-1">
+      <Icon name="drag_indicator" size={22} className="text-cloudy-gray-400" />
     </div>
   );
 }
@@ -83,7 +82,7 @@ function CardView({ item, rank, dragging }: { item: Item; rank: number; dragging
 
       {/* 아이콘 + 텍스트 */}
       <div className="flex items-center gap-2 flex-1 min-w-0">
-        <span style={{ fontSize: 22 }}>{item.icon}</span>
+        <Icon name={item.icon} size={22} className="text-night-navy-600" />
         <div>
           <p style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>{item.label}</p>
           <p style={{ fontSize: 11, fontWeight: 600, color }}>{text}</p>

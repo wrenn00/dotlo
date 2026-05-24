@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import KeywordBottomSheet from "./components/KeywordBottomSheet";
+import Icon from "@/components/Icon";
 
 const CATEGORIES = [
-  { key: "미식",  emoji: "🍴", sub: "맛집 · 현지 음식" },
-  { key: "관광",  emoji: "🏛️", sub: "명소 · 랜드마크" },
-  { key: "쇼핑",  emoji: "🛍️", sub: "백화점 · 기념품샵" },
-  { key: "휴식",  emoji: "♨️", sub: "공원 · 온천" },
-  { key: "카페",  emoji: "☕", sub: "분위기 좋은 카페" },
+  { key: "미식",  icon: "restaurant",      sub: "맛집 · 현지 음식" },
+  { key: "관광",  icon: "account_balance", sub: "명소 · 랜드마크" },
+  { key: "쇼핑",  icon: "shopping_bag",    sub: "백화점 · 기념품샵" },
+  { key: "휴식",  icon: "spa",             sub: "공원 · 온천" },
+  { key: "카페",  icon: "local_cafe",      sub: "분위기 좋은 카페" },
 ] as const;
 
 type CategoryKey = (typeof CATEGORIES)[number]["key"];
@@ -58,7 +59,7 @@ export default function Step4Page() {
       {/* 카테고리 그리드 */}
       <div className="grid grid-cols-2 gap-3 px-5 shrink-0">
         {/* 일반 카테고리 5개 */}
-        {CATEGORIES.map(({ key, emoji, sub }) => {
+        {CATEGORIES.map(({ key, icon, sub }) => {
           const active = selected.has(key);
           return (
             <button
@@ -82,7 +83,7 @@ export default function Step4Page() {
                   </svg>
                 </div>
               )}
-              <span style={{ fontSize: 32 }}>{emoji}</span>
+              <Icon name={icon} size={32} className="text-night-navy-600" />
               <p style={{ fontSize: 15, fontWeight: 700, color: "#090738", marginTop: 8 }}>{key}</p>
               <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>{sub}</p>
             </button>
@@ -109,7 +110,7 @@ export default function Step4Page() {
               </svg>
             </div>
           )}
-          <span style={{ fontSize: 32 }}>➕</span>
+          <Icon name="add" size={32} className="text-night-navy-600" />
           <p style={{ fontSize: 15, fontWeight: 700, color: "#090738", marginTop: 8 }}>
             {hasCustom ? `${customKeywords.length}개 추가됨` : "직접 추가"}
           </p>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import Icon from "@/components/Icon";
 import CourseCard from "./components/CourseCard";
 import DayTabs from "./components/DayTabs";
 import TimelineItem, { type TimelineData } from "./components/TimelineItem";
@@ -90,7 +91,7 @@ export default function Step7Page() {
         {/* 타이틀 */}
         <div className="px-5">
           <div className="self-start inline-flex items-center gap-1 px-2.5 py-1 rounded-full" style={{ background: "#C2F5FF" }}>
-            <span style={{ fontSize: 11 }}>✨</span>
+            <Icon name="auto_awesome" size={13} fill className="text-sky-blue-600" />
             <span style={{ fontSize: 11, fontWeight: 700, color: "#00A8BF" }}>AI 추천</span>
           </div>
           <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 10, lineHeight: "30px" }}>
@@ -154,7 +155,7 @@ export default function Step7Page() {
             className="flex items-center justify-center rounded-full"
             style={{ width: 72, height: 72, background: "var(--gradient-ai-glow, #E5FBFF)" }}
           >
-            <span style={{ fontSize: 38 }}>🗺️</span>
+            <Icon name="map" size={38} className="text-sky-blue-500" />
           </div>
           <p style={{ fontSize: 15, fontWeight: 700, color: "#090738", marginTop: 12 }}>코스를 선택해서 비교해 보세요!</p>
           <p style={{ fontSize: 12, color: "#7A858B", marginTop: 4 }}>코스별 위치 동선을 비교하고 장소를 선정해요</p>
@@ -213,7 +214,7 @@ export default function Step7Page() {
         {/* 내용 */}
         <div className="flex-1 overflow-y-auto px-5 pb-4">
           <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full mt-2" style={{ background: "#C2F5FF" }}>
-            <span style={{ fontSize: 11 }}>✨</span>
+            <Icon name="auto_awesome" size={13} fill className="text-sky-blue-600" />
             <span style={{ fontSize: 11, fontWeight: 700, color: "#00A8BF" }}>AI 추천</span>
           </div>
           <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 10, lineHeight: "30px" }}>
@@ -274,7 +275,7 @@ export default function Step7Page() {
             <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>일자별 일정</span>
             <button className="flex items-center gap-1">
               <span style={{ fontSize: 12, color: "#090738", fontWeight: 500 }}>지도로 보기</span>
-              <span style={{ fontSize: 13 }}>🗺️</span>
+              <Icon name="map" size={15} className="text-night-navy-600" />
             </button>
           </div>
 
@@ -301,7 +302,7 @@ export default function Step7Page() {
               className="flex items-center gap-1.5 px-4 py-2 rounded-full mt-3"
               style={{ background: "#fff", border: "1px solid #DDE5E8" }}
             >
-              <span style={{ fontSize: 12 }}>🔄</span>
+              <Icon name="refresh" size={16} className="text-night-navy-600" />
               <span style={{ fontSize: 12, fontWeight: 600, color: "#090738" }}>다시 만들기</span>
             </button>
           </div>

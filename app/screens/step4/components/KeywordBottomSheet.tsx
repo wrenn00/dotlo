@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import Icon from "@/components/Icon";
 
 const SUGGESTIONS = [
-  { emoji: "🌙", label: "야경" },
-  { emoji: "🍰", label: "디저트" },
-  { emoji: "🏛️", label: "박물관" },
-  { emoji: "📜", label: "역사" },
-  { emoji: "🌊", label: "바다" },
-  { emoji: "🏞️", label: "강변" },
-  { emoji: "🎭", label: "공연·전시" },
+  { icon: "dark_mode",       label: "야경" },
+  { icon: "cake",            label: "디저트" },
+  { icon: "museum",          label: "박물관" },
+  { icon: "history_edu",     label: "역사" },
+  { icon: "waves",           label: "바다" },
+  { icon: "landscape",       label: "강변" },
+  { icon: "theater_comedy",  label: "공연·전시" },
 ];
 
 const MAX = 3;
@@ -100,7 +101,7 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
                   className="flex items-center gap-2 px-4 py-3 rounded-2xl"
                   style={{ border: "1.5px solid #00E1FF", background: "#E5FBFF" }}
                 >
-                  <span style={{ fontSize: 16 }}>⭐</span>
+                  <Icon name="star" size={18} fill className="text-sky-blue-500" />
                   <span style={{ fontSize: 14, fontWeight: 600, color: "#090738", flex: 1 }}>{kw}</span>
                   <button onClick={() => remove(kw)} className="w-6 h-6 flex items-center justify-center">
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -148,7 +149,7 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
             이런 건 어때요
           </p>
           <div className="flex flex-wrap gap-2">
-            {SUGGESTIONS.map(({ emoji, label }) => {
+            {SUGGESTIONS.map(({ icon, label }) => {
               const active = local.includes(label);
               const disabled = !active && local.length >= MAX;
               return (
@@ -163,7 +164,7 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
                     opacity: disabled ? 0.5 : 1,
                   }}
                 >
-                  <span style={{ fontSize: 14 }}>{emoji}</span>
+                  <Icon name={icon} size={16} />
                   <span style={{ fontSize: 13, fontWeight: 500 }}>{label}</span>
                 </button>
               );

@@ -1,5 +1,7 @@
 "use client";
 
+import Icon from "@/components/Icon";
+
 export interface TasteItem {
   label: string;
   percent: number;
@@ -24,7 +26,7 @@ export default function AIAnalysisBox({ bullets, totalPlaces, taste }: Props) {
           className="flex items-center justify-center"
           style={{ width: 24, height: 24, borderRadius: "50%", background: "#00E1FF" }}
         >
-          <span style={{ fontSize: 12 }}>✨</span>
+          <Icon name="auto_awesome" size={14} fill className="text-white" />
         </div>
         <span style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>
           AI가 이렇게 짰어요

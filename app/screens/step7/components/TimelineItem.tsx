@@ -3,6 +3,7 @@
 import PlaceImage from "@/components/PlaceImage";
 import { usePlaceData } from "@/lib/places-data";
 import { getCategoryColor } from "./categoryColors";
+import Icon from "@/components/Icon";
 
 export type IconType = "flight" | "hotel" | "food";
 export type TransportType = "walk" | "train" | "car";
@@ -28,15 +29,15 @@ interface Props {
 }
 
 const ICONS: Record<IconType, string> = {
-  flight: "✈️",
-  hotel:  "🛏️",
-  food:   "🍴",
+  flight: "flight",
+  hotel:  "hotel",
+  food:   "restaurant",
 };
 
 const TRANSPORT_ICON: Record<TransportType, string> = {
-  walk:  "🚶",
-  train: "🚆",
-  car:   "🚗",
+  walk:  "directions_walk",
+  train: "directions_train",
+  car:   "directions_car",
 };
 
 export default function TimelineItem({ data, isLast }: Props) {
@@ -56,7 +57,7 @@ export default function TimelineItem({ data, isLast }: Props) {
             className="flex items-center justify-center"
             style={{ width: 40, height: 40, borderRadius: "50%", background: "#00E1FF" }}
           >
-            <span style={{ fontSize: 18 }}>{ICONS[data.icon]}</span>
+            <Icon name={ICONS[data.icon]} size={22} className="text-white" />
           </div>
         </div>
 
@@ -93,7 +94,7 @@ export default function TimelineItem({ data, isLast }: Props) {
       {/* 이동 정보 */}
       {data.transport && !isLast && (
         <div className="flex items-center gap-1.5 pl-[64px] py-2">
-          <span style={{ fontSize: 11 }}>{TRANSPORT_ICON[data.transport.type]}</span>
+          <Icon name={TRANSPORT_ICON[data.transport.type]} size={15} className="text-cloudy-gray-500" />
           <span style={{ fontSize: 11, color: "#7A858B" }}>{data.transport.text}</span>
         </div>
       )}

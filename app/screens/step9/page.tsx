@@ -3,6 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import Icon from "@/components/Icon";
 import StatsCard from "./components/StatsCard";
 import AIAnalysisBox, { type TasteItem } from "./components/AIAnalysisBox";
 import ShareSheet from "./components/ShareSheet";
@@ -168,7 +169,7 @@ export default function Step9Page() {
           className="self-start flex items-center gap-1 px-2.5 py-1 rounded-full"
           style={{ background: "#C2F5FF" }}
         >
-          <span style={{ fontSize: 11 }}>✨</span>
+          <Icon name="auto_awesome" size={13} fill className="text-sky-blue-600" />
           <span style={{ fontSize: 11, fontWeight: 700, color: "#00A8BF" }}>선택한 코스</span>
         </div>
 
@@ -201,7 +202,7 @@ export default function Step9Page() {
           <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>일자별 일정</span>
           <button onClick={() => setMapOpen(true)} className="flex items-center gap-1">
             <span style={{ fontSize: 12, color: "#090738", fontWeight: 500 }}>지도로 보기</span>
-            <span style={{ fontSize: 13 }}>🗺️</span>
+            <Icon name="map" size={15} className="text-night-navy-600" />
           </button>
         </div>
 
@@ -219,7 +220,7 @@ export default function Step9Page() {
             className="flex items-center gap-1"
           >
             <span style={{ fontSize: 12, color: "#555E63" }}>코스 수정</span>
-            <span style={{ fontSize: 12 }}>✏️</span>
+            <Icon name="edit" size={15} className="text-cloudy-gray-600" />
           </button>
         </div>
 

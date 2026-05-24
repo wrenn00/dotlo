@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Icon from "@/components/Icon";
 
 function ArrowRight({ color = "#A1ADB3" }: { color?: string }) {
   return (
@@ -73,8 +74,8 @@ export default function Step2Page() {
         {/* 대체 옵션 */}
         <div className="flex flex-col gap-3">
           {[
-            { icon: "🔍", title: "직접 검색해서 추가하기", sub: "장소 이름과 주소로 찾기" },
-            { icon: "👍", title: "오사카 인기 장소 둘러보기", sub: "현지인이 자주 가는 곳 찾기" },
+            { icon: "search", title: "직접 검색해서 추가하기", sub: "장소 이름과 주소로 찾기" },
+            { icon: "thumb_up", title: "오사카 인기 장소 둘러보기", sub: "현지인이 자주 가는 곳 찾기" },
           ].map(({ icon, title, sub }) => (
             <button
               key={title}
@@ -82,7 +83,7 @@ export default function Step2Page() {
               className="flex items-center gap-3 px-4 text-left transition-colors"
               style={{ height: 64, background: "#F7F9FA", borderRadius: 16 }}
             >
-              <span style={{ fontSize: 22 }}>{icon}</span>
+              <Icon name={icon} size={22} className="text-night-navy-600" />
               <div className="flex-1">
                 <p style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>{title}</p>
                 <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>{sub}</p>

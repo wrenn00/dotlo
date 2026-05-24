@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Icon from "@/components/Icon";
 
 const TYPES = [
-  { key: "혼자", emoji: "🧍" },
-  { key: "친구", emoji: "👥" },
-  { key: "연인", emoji: "💑" },
-  { key: "가족", emoji: "👨‍👩‍👧" },
+  { key: "혼자", icon: "person" },
+  { key: "친구", icon: "group" },
+  { key: "연인", icon: "favorite" },
+  { key: "가족", icon: "family_restroom" },
 ] as const;
 
 type TravelType = (typeof TYPES)[number]["key"];
@@ -77,7 +78,7 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
 
         {/* 2×2 그리드 */}
         <div className="grid grid-cols-2 gap-3 px-5 py-4">
-          {TYPES.map(({ key, emoji }) => {
+          {TYPES.map(({ key, icon }) => {
             const selected = type === key;
             return (
               <button
@@ -90,7 +91,7 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
                   border: selected ? "2px solid #00E1FF" : "2px solid transparent",
                 }}
               >
-                <span style={{ fontSize: 28 }}>{emoji}</span>
+                <Icon name={icon} size={28} fill={selected} className={selected ? "text-sky-blue-500" : "text-night-navy-600"} />
                 <span
                   style={{
                     fontSize: 14,

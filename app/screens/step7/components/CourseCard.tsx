@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Icon from "@/components/Icon";
 
 interface Props {
   code: string;
@@ -55,7 +56,7 @@ export default function CourseCard({ code, title, summary, aiNote, bgHex, accent
           className="shrink-0 flex items-center justify-center"
           style={{ width: 22, height: 22, borderRadius: "50%", background: accentHex }}
         >
-          <span style={{ fontSize: 11 }}>✨</span>
+          <Icon name="auto_awesome" size={13} fill className="text-white" />
         </div>
         <p style={{ fontSize: 12, color: "#090738", lineHeight: "18px", whiteSpace: "pre-line", flex: 1 }}>
           {aiNote}

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PlaceImage from "@/components/PlaceImage";
 import { usePlaceData } from "@/lib/places-data";
+import Icon from "@/components/Icon";
 
 const CATEGORIES = ["전체", "맛집 12", "카페 7", "쇼핑 5", "관광 12"];
 
@@ -72,8 +73,9 @@ function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
 
       <div className="flex-1 min-w-0">
         <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{place.name}</p>
-        <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
-          ★ {rating} · {reviews.toLocaleString()}개 리뷰
+        <p className="flex items-center gap-1" style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
+          <Icon name="star" size={13} fill className="text-star-yellow-500" />
+          {rating} · {reviews.toLocaleString()}개 리뷰
         </p>
         <p style={{ fontSize: 12, color: "#555E63", marginTop: 1 }}>{place.region}</p>
         <p className="truncate" style={{ fontSize: 12, color: "#7A858B", marginTop: 1 }}>{place.desc}</p>
