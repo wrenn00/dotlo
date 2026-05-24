@@ -33,7 +33,7 @@ export function StepNavigation({
         <button
           onClick={() => router.push(toNext)}
           className="w-full h-[50px] rounded-2xl text-[16px] font-medium text-white transition-opacity active:opacity-80"
-          style={{ background: "#373C3E" }}
+          style={{ background: "#090738" }}
         >
           {nextLabel}
         </button>
@@ -44,7 +44,7 @@ export function StepNavigation({
         <button
           onClick={() => router.back()}
           className="w-full h-10 rounded-2xl text-[14px] font-medium transition-opacity active:opacity-70"
-          style={{ color: "#888E9C" }}
+          style={{ color: "#7A858B" }}
         >
           이전
         </button>
@@ -62,18 +62,18 @@ export function ProgressBar({ current }: { current: number }) {
     <div className="px-5 pt-3 pb-1">
       {/* 레이블 */}
       <div className="flex justify-between mb-1.5">
-        <span className="text-[11px] font-medium" style={{ color: "#888E9C" }}>
+        <span className="text-[11px] font-medium" style={{ color: "#7A858B" }}>
           STEP {current}
         </span>
-        <span className="text-[11px]" style={{ color: "#C4C7CF" }}>
+        <span className="text-[11px]" style={{ color: "#A1ADB3" }}>
           {current} / {TOTAL}
         </span>
       </div>
       {/* 트랙 */}
-      <div className="h-1 w-full rounded-full" style={{ background: "#F0F1F4" }}>
+      <div className="h-1 w-full rounded-full" style={{ background: "#EEF2F4" }}>
         <div
           className="h-full rounded-full transition-all duration-500"
-          style={{ width: `${pct}%`, background: "#373C3E" }}
+          style={{ width: `${pct}%`, background: "#090738" }}
         />
       </div>
     </div>

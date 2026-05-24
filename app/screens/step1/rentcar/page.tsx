@@ -58,12 +58,12 @@ export default function RentcarPage() {
           className="w-9 h-9 flex items-center justify-center"
         >
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
         <button
           onClick={() => router.push("/screens/step1")}
-          style={{ fontSize: 14, color: "#9CA3AF", fontWeight: 500 }}
+          style={{ fontSize: 14, color: "#7A858B", fontWeight: 500 }}
         >
           건너뛰기
         </button>
@@ -75,16 +75,16 @@ export default function RentcarPage() {
         {/* 배지 */}
         <div
           className="self-start px-3 py-1 rounded-full mb-4"
-          style={{ background: "#E2FBF3" }}
+          style={{ background: "#E5FBFF" }}
         >
-          <span style={{ fontSize: 12, fontWeight: 600, color: "#38C6AF" }}>선택사항</span>
+          <span style={{ fontSize: 12, fontWeight: 600, color: "#00E1FF" }}>선택사항</span>
         </div>
 
         {/* 제목 */}
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", lineHeight: "30px" }}>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "30px" }}>
           차 빌려서 다니실 건가요?
         </h1>
-        <p style={{ fontSize: 14, color: "#9CA3AF", marginTop: 8, lineHeight: "20px" }}>
+        <p style={{ fontSize: 14, color: "#7A858B", marginTop: 8, lineHeight: "20px" }}>
           이동 방식에 따라 동선과 코스가 달라져요
         </p>
 
@@ -100,8 +100,8 @@ export default function RentcarPage() {
                 style={{
                   padding: "16px",
                   borderRadius: 16,
-                  background: active ? "#F0FDFB" : "#F5F5F7",
-                  border: active ? "1.5px solid #38C6AF" : "1.5px solid transparent",
+                  background: active ? "#E5FBFF" : "#F7F9FA",
+                  border: active ? "1.5px solid #00E1FF" : "1.5px solid transparent",
                 }}
               >
                 {/* 아이콘 */}
@@ -110,8 +110,8 @@ export default function RentcarPage() {
                   style={{
                     width: 44, height: 44,
                     borderRadius: 12,
-                    background: active ? "#E2FBF3" : "#E5E7EB",
-                    color: active ? "#38C6AF" : "#9CA3AF",
+                    background: active ? "#E5FBFF" : "#DDE5E8",
+                    color: active ? "#00E1FF" : "#7A858B",
                   }}
                 >
                   {icon}
@@ -119,8 +119,8 @@ export default function RentcarPage() {
 
                 {/* 텍스트 */}
                 <div className="flex-1 min-w-0">
-                  <p style={{ fontSize: 15, fontWeight: 600, color: "#1A1A1A" }}>{label}</p>
-                  <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 3, lineHeight: "16px" }}>{desc}</p>
+                  <p style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>{label}</p>
+                  <p style={{ fontSize: 12, color: "#7A858B", marginTop: 3, lineHeight: "16px" }}>{desc}</p>
                 </div>
 
                 {/* 체크 원형 */}
@@ -129,8 +129,8 @@ export default function RentcarPage() {
                   style={{
                     width: 22, height: 22,
                     borderRadius: "50%",
-                    background: active ? "#38C6AF" : "transparent",
-                    border: active ? "none" : "1.5px solid #D1D5DB",
+                    background: active ? "#00E1FF" : "transparent",
+                    border: active ? "none" : "1.5px solid #A1ADB3",
                   }}
                 >
                   {active && (
@@ -150,7 +150,7 @@ export default function RentcarPage() {
         <button
           onClick={() => router.back()}
           className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-          style={{ background: "#1A1A1A" }}
+          style={{ background: "#090738" }}
         >
           선택 완료
         </button>

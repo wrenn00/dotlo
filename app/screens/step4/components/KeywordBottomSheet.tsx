@@ -79,15 +79,15 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
       >
         {/* 핸들 */}
         <div className="flex justify-center pt-3 pb-1 shrink-0">
-          <div className="w-10 h-1 rounded-full" style={{ background: "#E0E0E0" }} />
+          <div className="w-10 h-1 rounded-full" style={{ background: "#DDE5E8" }} />
         </div>
 
         <div className="overflow-y-auto flex-1 px-5 pb-2">
           {/* 제목 */}
-          <p style={{ fontSize: 20, fontWeight: 700, color: "#1A1A1A", marginTop: 8 }}>
+          <p style={{ fontSize: 20, fontWeight: 700, color: "#090738", marginTop: 8 }}>
             어떤 걸 원하세요?
           </p>
-          <p style={{ fontSize: 13, color: "#9CA3AF", marginTop: 4 }}>
+          <p style={{ fontSize: 13, color: "#7A858B", marginTop: 4 }}>
             자유롭게 적어주시면 AI가 반영해요
           </p>
 
@@ -98,13 +98,13 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
                 <div
                   key={kw}
                   className="flex items-center gap-2 px-4 py-3 rounded-2xl"
-                  style={{ border: "1.5px solid #38C6AF", background: "#F0FDFB" }}
+                  style={{ border: "1.5px solid #00E1FF", background: "#E5FBFF" }}
                 >
                   <span style={{ fontSize: 16 }}>⭐</span>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: "#1A1A1A", flex: 1 }}>{kw}</span>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: "#090738", flex: 1 }}>{kw}</span>
                   <button onClick={() => remove(kw)} className="w-6 h-6 flex items-center justify-center">
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M1 1l8 8M9 1L1 9" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" />
+                      <path d="M1 1l8 8M9 1L1 9" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                   </button>
                 </div>
@@ -115,15 +115,15 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
           {/* 입력 바 */}
           <div
             className="flex items-center gap-2 px-4 mt-4"
-            style={{ height: 46, background: "#F5F5F7", borderRadius: 12 }}
+            style={{ height: 46, background: "#F7F9FA", borderRadius: 12 }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="7" cy="7" r="5" stroke="#9CA3AF" strokeWidth="1.5" />
-              <path d="M11 11l3 3" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" />
+              <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
+              <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
             <input
               className="flex-1 bg-transparent outline-none text-sm"
-              style={{ color: "#1A1A1A" }}
+              style={{ color: "#090738" }}
               placeholder="예: 디저트, 산책, 풍경"
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -134,8 +134,8 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
                 onClick={addInput}
                 className="px-3 py-1 rounded-full text-xs font-semibold"
                 style={{
-                  background: local.length < MAX ? "#38C6AF" : "#E5E7EB",
-                  color: local.length < MAX ? "#fff" : "#9CA3AF",
+                  background: local.length < MAX ? "#00E1FF" : "#DDE5E8",
+                  color: local.length < MAX ? "#fff" : "#7A858B",
                 }}
               >
                 추가
@@ -144,7 +144,7 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
           </div>
 
           {/* 추천 섹션 */}
-          <p style={{ fontSize: 12, fontWeight: 600, color: "#9CA3AF", marginTop: 20, marginBottom: 10 }}>
+          <p style={{ fontSize: 12, fontWeight: 600, color: "#7A858B", marginTop: 20, marginBottom: 10 }}>
             이런 건 어때요
           </p>
           <div className="flex flex-wrap gap-2">
@@ -157,9 +157,9 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
                   onClick={() => !disabled && toggle(label)}
                   className="flex items-center gap-1.5 px-3 py-2 rounded-full transition-all"
                   style={{
-                    background: active ? "#38C6AF" : "#fff",
-                    border: `1.5px solid ${active ? "#38C6AF" : "#E5E7EB"}`,
-                    color: active ? "#fff" : disabled ? "#C4C7CF" : "#1A1A1A",
+                    background: active ? "#00E1FF" : "#fff",
+                    border: `1.5px solid ${active ? "#00E1FF" : "#DDE5E8"}`,
+                    color: active ? "#fff" : disabled ? "#A1ADB3" : "#090738",
                     opacity: disabled ? 0.5 : 1,
                   }}
                 >
@@ -173,7 +173,7 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
           {/* 최대 개수 안내 */}
           <p
             className="text-center mt-4"
-            style={{ fontSize: 12, color: local.length >= MAX ? "#38C6AF" : "#C4C7CF" }}
+            style={{ fontSize: 12, color: local.length >= MAX ? "#00E1FF" : "#A1ADB3" }}
           >
             {local.length >= MAX ? "최대 3개를 선택했어요" : "최대 3개까지 추가할 수 있어요"}
           </p>
@@ -184,7 +184,7 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
           <button
             onClick={handleConfirm}
             className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-            style={{ background: "#1A1A1A" }}
+            style={{ background: "#090738" }}
           >
             선택 완료
           </button>

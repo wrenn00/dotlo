@@ -38,9 +38,9 @@ const INITIAL: Item[] = [
 ];
 
 function weightLabel(rank: number) {
-  if (rank === 1) return { text: "가장 중요", color: "#38C6AF" };
-  if (rank === 2) return { text: "중요",     color: "#7FE0D8" };
-  return             { text: "보통",         color: "#9CA3AF" };
+  if (rank === 1) return { text: "가장 중요", color: "#00E1FF" };
+  if (rank === 2) return { text: "중요",     color: "#5CE7FF" };
+  return             { text: "보통",         color: "#7A858B" };
 }
 
 // ─── 드래그 핸들 아이콘 ───────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ function DragHandle() {
   return (
     <div className="grid grid-cols-2 gap-[3px] px-1">
       {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="w-[4px] h-[4px] rounded-full" style={{ background: "#CBD5E1" }} />
+        <div key={i} className="w-[4px] h-[4px] rounded-full" style={{ background: "#A1ADB3" }} />
       ))}
     </div>
   );
@@ -66,8 +66,8 @@ function CardView({ item, rank, dragging }: { item: Item; rank: number; dragging
       className="flex items-center gap-3 px-4 rounded-2xl select-none"
       style={{
         height: 72,
-        background: isTop ? "#F0FDFB" : "#fff",
-        border: isTop ? "2px solid #38C6AF" : "1.5px solid #E5E7EB",
+        background: isTop ? "#E5FBFF" : "#fff",
+        border: isTop ? "2px solid #00E1FF" : "1.5px solid #DDE5E8",
         boxShadow: dragging ? "0 8px 24px rgba(0,0,0,0.14)" : "none",
         transform: dragging ? "scale(1.03)" : "scale(1)",
         transition: "box-shadow 150ms, transform 150ms",
@@ -76,7 +76,7 @@ function CardView({ item, rank, dragging }: { item: Item; rank: number; dragging
       {/* 순위 */}
       <div
         className="flex items-center justify-center shrink-0 rounded-lg"
-        style={{ width: 32, height: 32, background: "#38C6AF" }}
+        style={{ width: 32, height: 32, background: "#00E1FF" }}
       >
         <span style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>{rank}</span>
       </div>
@@ -85,7 +85,7 @@ function CardView({ item, rank, dragging }: { item: Item; rank: number; dragging
       <div className="flex items-center gap-2 flex-1 min-w-0">
         <span style={{ fontSize: 22 }}>{item.icon}</span>
         <div>
-          <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>{item.label}</p>
+          <p style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>{item.label}</p>
           <p style={{ fontSize: 11, fontWeight: 600, color }}>{text}</p>
         </div>
       </div>
@@ -163,17 +163,17 @@ export default function Step5Page() {
       <div className="px-5 pt-12 pb-2 shrink-0">
         <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
 
       {/* 제목 */}
       <div className="px-5 pb-6 shrink-0">
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", lineHeight: "32px" }}>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "32px" }}>
           뭐가 가장 중요한가요?
         </h1>
-        <p style={{ fontSize: 13, color: "#9CA3AF", marginTop: 6 }}>
+        <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6 }}>
           위로 끌어올릴수록 더 많이 반영돼요
         </p>
       </div>
@@ -209,13 +209,13 @@ export default function Step5Page() {
         {/* 안내 박스 */}
         <div
           className="flex items-center gap-3 px-4 py-3 rounded-2xl mt-5"
-          style={{ background: "#F5F5F7" }}
+          style={{ background: "#F7F9FA" }}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0">
-            <circle cx="8" cy="8" r="7" stroke="#9CA3AF" strokeWidth="1.4" />
-            <path d="M8 7v4M8 5.5v.5" stroke="#9CA3AF" strokeWidth="1.4" strokeLinecap="round" />
+            <circle cx="8" cy="8" r="7" stroke="#7A858B" strokeWidth="1.4" />
+            <path d="M8 7v4M8 5.5v.5" stroke="#7A858B" strokeWidth="1.4" strokeLinecap="round" />
           </svg>
-          <p style={{ fontSize: 13, color: "#9CA3AF" }}>
+          <p style={{ fontSize: 13, color: "#7A858B" }}>
             손가락으로 길게 눌러서 순서를 바꿔보세요
           </p>
         </div>
@@ -226,7 +226,7 @@ export default function Step5Page() {
         <button
           onClick={() => router.push("/screens/step6")}
           className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-          style={{ background: "#1A1A1A" }}
+          style={{ background: "#090738" }}
         >
           다음
         </button>

@@ -20,7 +20,7 @@ export default function Step2LoadedPage() {
       <div className="flex items-center px-5 pt-12 pb-2">
         <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
@@ -30,28 +30,28 @@ export default function Step2LoadedPage() {
         {/* 연동완료 배지 */}
         <div
           className="self-start flex items-center gap-1.5 px-3 py-1.5 rounded-full mt-2 mb-4"
-          style={{ background: "#E2FBF3" }}
+          style={{ background: "#E5FBFF" }}
         >
           <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-            <path d="M1 5l3.5 3.5L11 1" stroke="#38C6AF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M1 5l3.5 3.5L11 1" stroke="#00E1FF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span style={{ fontSize: 12, fontWeight: 600, color: "#38C6AF" }}>연동완료</span>
+          <span style={{ fontSize: 12, fontWeight: 600, color: "#00E1FF" }}>연동완료</span>
         </div>
 
         {/* 제목 */}
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", lineHeight: "32px" }}>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "32px" }}>
           저장된 장소{" "}
-          <span style={{ color: "#38C6AF" }}>47개</span>
+          <span style={{ color: "#00E1FF" }}>47개</span>
           를{"\n"}가져왔어요
         </h1>
-        <p style={{ fontSize: 14, color: "#9CA3AF", marginTop: 8 }}>
+        <p style={{ fontSize: 14, color: "#7A858B", marginTop: 8 }}>
           이제 코스 생성에 활용할 수 있어요
         </p>
 
         {/* 섹션 헤더 */}
         <div className="flex items-center justify-between mt-6 mb-3">
-          <span style={{ fontSize: 14, fontWeight: 600, color: "#1A1A1A" }}>추가된 장소</span>
-          <button style={{ fontSize: 13, color: "#38C6AF", fontWeight: 600 }}>전체보기</button>
+          <span style={{ fontSize: 14, fontWeight: 600, color: "#090738" }}>추가된 장소</span>
+          <button style={{ fontSize: 13, color: "#00E1FF", fontWeight: 600 }}>전체보기</button>
         </div>
 
         {/* 장소 리스트 */}
@@ -60,18 +60,18 @@ export default function Step2LoadedPage() {
             <div
               key={p.id}
               className="flex items-center gap-3 px-4 py-3"
-              style={{ background: "#fff", borderRadius: 14, border: "1px solid #F0F0F0" }}
+              style={{ background: "#fff", borderRadius: 14, border: "1px solid #DDE5E8" }}
             >
               {/* 썸네일 */}
               <div
                 className="shrink-0 rounded-xl"
-                style={{ width: 48, height: 48, background: "#E5E7EB" }}
+                style={{ width: 48, height: 48, background: "#DDE5E8" }}
               />
               <div className="flex-1 min-w-0">
-                <p className="truncate" style={{ fontSize: 15, fontWeight: 600, color: "#1A1A1A" }}>
+                <p className="truncate" style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>
                   {p.name}
                 </p>
-                <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>{p.sub}</p>
+                <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>{p.sub}</p>
               </div>
             </div>
           ))}
@@ -83,7 +83,7 @@ export default function Step2LoadedPage() {
         <button
           onClick={() => router.push("/screens/step2/select")}
           className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-          style={{ background: "#1A1A1A" }}
+          style={{ background: "#090738" }}
         >
           다음
         </button>

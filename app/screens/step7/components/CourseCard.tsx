@@ -15,7 +15,7 @@ export default function CourseCard({ code, title, summary, aiNote }: Props) {
   return (
     <div
       className="relative flex flex-col p-5 rounded-2xl"
-      style={{ background: "#99F6E4" }}
+      style={{ background: "#5CE7FF" }}
     >
       {/* 상단 라인 */}
       <div className="flex items-center justify-between">
@@ -23,15 +23,15 @@ export default function CourseCard({ code, title, summary, aiNote }: Props) {
           className="px-2.5 py-1 rounded-full"
           style={{ background: "#fff" }}
         >
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#0F766E" }}>{code}</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#00A8BF" }}>{code}</span>
         </div>
         <button
           onClick={() => setBookmarked((b) => !b)}
           className="flex items-center justify-center transition-transform active:scale-90"
           style={{ width: 36, height: 36, borderRadius: "50%", background: "#fff" }}
         >
-          <svg width="14" height="16" viewBox="0 0 14 16" fill={bookmarked ? "#0F766E" : "none"}>
-            <path d="M1 1h12v14l-6-3.5L1 15V1z" stroke="#0F766E" strokeWidth="1.6" strokeLinejoin="round" />
+          <svg width="14" height="16" viewBox="0 0 14 16" fill={bookmarked ? "#00A8BF" : "none"}>
+            <path d="M1 1h12v14l-6-3.5L1 15V1z" stroke="#00A8BF" strokeWidth="1.6" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
@@ -41,7 +41,7 @@ export default function CourseCard({ code, title, summary, aiNote }: Props) {
         style={{
           fontSize: 24,
           fontWeight: 700,
-          color: "#0F172A",
+          color: "#090738",
           lineHeight: "32px",
           marginTop: 12,
           whiteSpace: "pre-line",
@@ -51,7 +51,7 @@ export default function CourseCard({ code, title, summary, aiNote }: Props) {
       </h2>
 
       {/* 부제 */}
-      <p style={{ fontSize: 13, color: "#0F766E", marginTop: 6, fontWeight: 500 }}>
+      <p style={{ fontSize: 13, color: "#00A8BF", marginTop: 6, fontWeight: 500 }}>
         {summary}
       </p>
 
@@ -62,14 +62,14 @@ export default function CourseCard({ code, title, summary, aiNote }: Props) {
       >
         <div
           className="shrink-0 flex items-center justify-center"
-          style={{ width: 22, height: 22, borderRadius: "50%", background: "#0F766E" }}
+          style={{ width: 22, height: 22, borderRadius: "50%", background: "#00A8BF" }}
         >
           <span style={{ fontSize: 11 }}>✨</span>
         </div>
         <p
           style={{
             fontSize: 12,
-            color: "#0F172A",
+            color: "#090738",
             lineHeight: "18px",
             whiteSpace: "pre-line",
             flex: 1,

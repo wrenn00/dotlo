@@ -21,6 +21,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import PlaceActionSheet, { type PlaceInfo } from "./components/PlaceActionSheet";
+import { getCategoryColor } from "../../step7/components/categoryColors";
 
 // ─── 타입 / 데이터 ────────────────────────────────────────────────────────────
 
@@ -52,7 +53,7 @@ function DragHandle() {
   return (
     <div className="grid grid-cols-2 gap-[3px] shrink-0">
       {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="w-[3px] h-[3px] rounded-full" style={{ background: "#9CA3AF" }} />
+        <div key={i} className="w-[3px] h-[3px] rounded-full" style={{ background: "#7A858B" }} />
       ))}
     </div>
   );
@@ -85,8 +86,8 @@ function SortableCard({ item, highlighted, onSelect, onRemove }: CardProps) {
         onClick={onSelect}
         className="flex items-center gap-3 px-3 py-3 rounded-2xl transition-all"
         style={{
-          background: highlighted ? "#CCFBF1" : "#F5F5F7",
-          border: highlighted ? "2px solid #22D3CC" : "2px solid transparent",
+          background: highlighted ? "#C2F5FF" : "#F7F9FA",
+          border: highlighted ? "2px solid #00E1FF" : "2px solid transparent",
           cursor: "pointer",
         }}
       >
@@ -103,22 +104,26 @@ function SortableCard({ item, highlighted, onSelect, onRemove }: CardProps) {
 
         {/* 시간 영역 */}
         <div className="flex flex-col items-center shrink-0" style={{ width: 50 }}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A" }}>{item.time}</span>
-          <span style={{ fontSize: 10, color: "#9CA3AF", marginTop: 2 }}>{item.duration}</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#090738" }}>{item.time}</span>
+          <span style={{ fontSize: 10, color: "#7A858B", marginTop: 2 }}>{item.duration}</span>
         </div>
 
         {/* 본문 */}
         <div className="flex-1 min-w-0">
-          <p style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A" }} className="truncate">
+          <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }} className="truncate">
             {item.title}
           </p>
           <div className="flex items-center gap-1 mt-0.5">
-            <div
-              className="px-1.5 py-0.5 rounded-full"
-              style={{ background: "#CCFBF1" }}
-            >
-              <span style={{ fontSize: 10, fontWeight: 600, color: "#0F766E" }}>{item.category}</span>
-            </div>
+            {(() => {
+              const c = getCategoryColor(item.category);
+              return (
+                <div className="px-1.5 py-0.5 rounded-full" style={{ background: c.bg }}>
+                  <span style={{ fontSize: 10, fontWeight: 600, color: c.text }}>
+                    {item.category}
+                  </span>
+                </div>
+              );
+            })()}
           </div>
         </div>
 
@@ -132,13 +137,13 @@ function SortableCard({ item, highlighted, onSelect, onRemove }: CardProps) {
         >
           {highlighted ? (
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M1 1l10 10M11 1L1 11" stroke="#1A1A1A" strokeWidth="1.6" strokeLinecap="round" />
+              <path d="M1 1l10 10M11 1L1 11" stroke="#090738" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
           ) : (
             <svg width="14" height="4" viewBox="0 0 14 4" fill="none">
-              <circle cx="2" cy="2" r="1.5" fill="#9CA3AF" />
-              <circle cx="7" cy="2" r="1.5" fill="#9CA3AF" />
-              <circle cx="12" cy="2" r="1.5" fill="#9CA3AF" />
+              <circle cx="2" cy="2" r="1.5" fill="#7A858B" />
+              <circle cx="7" cy="2" r="1.5" fill="#7A858B" />
+              <circle cx="12" cy="2" r="1.5" fill="#7A858B" />
             </svg>
           )}
         </button>
@@ -221,11 +226,11 @@ export default function Step9EditPage() {
       <div className="flex items-center justify-between px-5 pt-12 pb-3 shrink-0">
         <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M1 1l12 12M13 1L1 13" stroke="#1A1A1A" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M1 1l12 12M13 1L1 13" stroke="#090738" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
         </button>
-        <span style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1A" }}>코스 수정</span>
-        <button onClick={handleReset} style={{ fontSize: 13, color: "#9CA3AF", fontWeight: 500 }}>
+        <span style={{ fontSize: 16, fontWeight: 700, color: "#090738" }}>코스 수정</span>
+        <button onClick={handleReset} style={{ fontSize: 13, color: "#7A858B", fontWeight: 500 }}>
           초기화
         </button>
       </div>
@@ -242,9 +247,9 @@ export default function Step9EditPage() {
                 onClick={() => setSelectedDay(d)}
                 className="shrink-0 px-4 py-2 rounded-full transition-colors"
                 style={{
-                  background: active ? "#1A1A1A" : "transparent",
-                  color: active ? "#fff" : "#9CA3AF",
-                  border: active ? "none" : "1px solid #E5E7EB",
+                  background: active ? "#090738" : "transparent",
+                  color: active ? "#fff" : "#7A858B",
+                  border: active ? "none" : "1px solid #DDE5E8",
                 }}
               >
                 <span style={{ fontSize: 13, fontWeight: active ? 700 : 500 }}>{d}</span>
@@ -255,16 +260,16 @@ export default function Step9EditPage() {
 
         {/* 일차 헤더 */}
         <div className="flex items-center justify-between mt-5 mb-3">
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>
+          <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>
             {selectedDay} · {items.length}곳
           </span>
-          <span style={{ fontSize: 11, color: "#9CA3AF" }}>ⓘ 드래그로 순서 변경</span>
+          <span style={{ fontSize: 11, color: "#7A858B" }}>ⓘ 드래그로 순서 변경</span>
         </div>
 
         {/* 드래그 가능한 일정 리스트 */}
         {items.length === 0 ? (
           <div className="flex items-center justify-center py-12">
-            <p style={{ fontSize: 13, color: "#C4C7CF" }}>일정이 없습니다</p>
+            <p style={{ fontSize: 13, color: "#A1ADB3" }}>일정이 없습니다</p>
           </div>
         ) : (
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -288,12 +293,12 @@ export default function Step9EditPage() {
         <button
           onClick={() => router.push("/screens/step9/edit/add")}
           className="flex items-center justify-center gap-2 mt-3 py-4 rounded-2xl transition-colors"
-          style={{ border: "2px dashed #D1D5DB", background: "transparent" }}
+          style={{ border: "2px dashed #A1ADB3", background: "transparent" }}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M7 1v12M1 7h12" stroke="#9CA3AF" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M7 1v12M1 7h12" stroke="#7A858B" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
-          <span style={{ fontSize: 13, fontWeight: 600, color: "#9CA3AF" }}>장소 직접 추가</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#7A858B" }}>장소 직접 추가</span>
         </button>
 
         {/* AI 수정 옵션 칩 */}
@@ -302,10 +307,10 @@ export default function Step9EditPage() {
             <button
               key={label}
               className="flex items-center gap-1.5 px-3 py-2 rounded-full transition-colors"
-              style={{ background: "#CCFBF1" }}
+              style={{ background: "#C2F5FF" }}
             >
               <span style={{ fontSize: 12 }}>✨</span>
-              <span style={{ fontSize: 12, fontWeight: 600, color: "#0F766E" }}>{label}</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#00A8BF" }}>{label}</span>
             </button>
           ))}
         </div>
@@ -313,12 +318,12 @@ export default function Step9EditPage() {
         {/* AI 입력 바 */}
         <div
           className="flex items-center gap-2 px-3 py-2 rounded-full mt-3"
-          style={{ background: "#F5F5F7" }}
+          style={{ background: "#F7F9FA" }}
         >
           <span style={{ fontSize: 14 }}>✨</span>
           <input
             className="flex-1 bg-transparent outline-none text-sm"
-            style={{ color: "#1A1A1A" }}
+            style={{ color: "#090738" }}
             placeholder="AI에게 수정 요청"
           />
           <button
@@ -327,7 +332,7 @@ export default function Step9EditPage() {
               width: 32,
               height: 32,
               borderRadius: "50%",
-              background: "#22D3CC",
+              background: "#00E1FF",
             }}
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -342,7 +347,7 @@ export default function Step9EditPage() {
         <button
           onClick={() => router.push("/screens/step9")}
           className="w-full h-[52px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-          style={{ background: "#0F172A" }}
+          style={{ background: "#090738" }}
         >
           수정 완료
         </button>

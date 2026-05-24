@@ -6,29 +6,29 @@ import SuggestCard from "./components/SuggestCard";
 import BottomTabBar from "./components/BottomTabBar";
 
 // ─── Figma 색상 (figma-home-slim.json 기반) ───────────────────────────────────
-// mintMain    rgb(28,204,176)  #1CCCB0  — 메인 배너
-// mintAlt     rgb(94,213,194)  #5ED5C2  — 로고, 활성 탭, 풀빌라 카드
-// mintBadge   rgb(227,250,243) #E3FAF3  — D-day 배지 배경
-// mintText    rgb(41,204,178)  #29CCB2  — D-day 텍스트
-// gray        rgb(136,143,156) #888F9C  — 보조 텍스트
-// avatar      rgb(184,189,194) #B8BDC2  — 회색 placeholder
-// blue        rgb(77,163,252)  #4DA3FC  — 미식 카드
-// blueBadgeBg rgb(237,247,255) #EDF7FF
-// pageBg      rgb(252,252,252) #FCFCFC
-// btnTextDark rgb(35,59,54)    #233B36  — "코스 만들기" 글씨
+// mintMain    rgb(28,204,176)  #00E1FF  — 메인 배너
+// mintAlt     rgb(94,213,194)  #5CE7FF  — 로고, 활성 탭, 풀빌라 카드
+// mintBadge   rgb(227,250,243) #E5FBFF  — D-day 배지 배경
+// mintText    rgb(41,204,178)  #00E1FF  — D-day 텍스트
+// gray        rgb(136,143,156) #7A858B  — 보조 텍스트
+// avatar      rgb(184,189,194) #A1ADB3  — 회색 placeholder
+// blue        rgb(77,163,252)  #29E3FF  — 미식 카드
+// blueBadgeBg rgb(237,247,255) #E5FBFF
+// pageBg      rgb(252,252,252) #F7F9FA
+// btnTextDark rgb(35,59,54)    #090738  — "코스 만들기" 글씨
 
 // ─── 상단 상태바 ──────────────────────────────────────────────────────────────
 
 function StatusBar() {
   return (
     <div className="flex items-center justify-between px-6 pt-3 pb-2 shrink-0" style={{ background: "#fff" }}>
-      <span style={{ fontSize: 15, fontWeight: 700, color: "#111" }}>9:41</span>
+      <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>9:41</span>
       <div className="flex items-center gap-1.5">
         <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
-          <path d="M7.5 2C9.8 2 11.8 3 13.2 4.6L14.5 3.2C12.7 1.2 10.2 0 7.5 0S2.3 1.2.5 3.2L1.8 4.6C3.2 3 5.2 2 7.5 2zm0 4c1.1 0 2.1.4 2.8 1.1L11.7 5.7C10.6 4.6 9.1 4 7.5 4S4.4 4.6 3.3 5.7l1.4 1.4C5.4 6.4 6.4 6 7.5 6zm0 4c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#111" />
+          <path d="M7.5 2C9.8 2 11.8 3 13.2 4.6L14.5 3.2C12.7 1.2 10.2 0 7.5 0S2.3 1.2.5 3.2L1.8 4.6C3.2 3 5.2 2 7.5 2zm0 4c1.1 0 2.1.4 2.8 1.1L11.7 5.7C10.6 4.6 9.1 4 7.5 4S4.4 4.6 3.3 5.7l1.4 1.4C5.4 6.4 6.4 6 7.5 6zm0 4c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#090738" />
         </svg>
-        <div className="w-6 h-3 rounded-sm border border-[#111] flex items-center px-0.5">
-          <div className="h-2 w-4 rounded-sm" style={{ background: "#111" }} />
+        <div className="w-6 h-3 rounded-sm border border-[#090738] flex items-center px-0.5">
+          <div className="h-2 w-4 rounded-sm" style={{ background: "#090738" }} />
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@ function Header() {
           className="flex items-center justify-center"
           style={{
             width: 28, height: 28,
-            background: "linear-gradient(135deg, #5ED5C2 0%, #1CCCB0 100%)",
+            background: "linear-gradient(135deg, #5CE7FF 0%, #00E1FF 100%)",
             borderRadius: 7,
           }}
         >
@@ -59,7 +59,7 @@ function Header() {
             }}
           />
         </div>
-        <span style={{ fontSize: 18, fontWeight: 800, color: "#5ED5C2", letterSpacing: -0.5 }}>
+        <span style={{ fontSize: 18, fontWeight: 800, color: "#5CE7FF", letterSpacing: -0.5 }}>
           dotlo
         </span>
       </div>
@@ -68,24 +68,24 @@ function Header() {
       <div className="flex items-center gap-1">
         <button className="w-9 h-9 flex items-center justify-center">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <circle cx="8" cy="8" r="6" stroke="#6B7280" strokeWidth="1.8" />
-            <path d="M12.5 12.5L17 17" stroke="#6B7280" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="8" cy="8" r="6" stroke="#555E63" strokeWidth="1.8" />
+            <path d="M12.5 12.5L17 17" stroke="#555E63" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
         </button>
         <button className="relative w-9 h-9 flex items-center justify-center">
           <svg width="16" height="20" viewBox="0 0 16 20" fill="none">
             <path
               d="M2 8a6 6 0 0112 0v5l2 2H0l2-2V8z"
-              stroke="#6B7280"
+              stroke="#555E63"
               strokeWidth="1.8"
               strokeLinejoin="round"
               fill="none"
             />
-            <path d="M6 18a2 2 0 004 0" stroke="#6B7280" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M6 18a2 2 0 004 0" stroke="#555E63" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
           <div
             className="absolute"
-            style={{ top: 8, right: 7, width: 6, height: 6, background: "#5ED5C2", borderRadius: "50%", border: "1.5px solid #fff" }}
+            style={{ top: 8, right: 7, width: 6, height: 6, background: "#5CE7FF", borderRadius: "50%", border: "1.5px solid #fff" }}
           />
         </button>
       </div>
@@ -100,7 +100,7 @@ function MainBanner({ onStart }: { onStart: () => void }) {
     <div
       className="relative overflow-hidden flex flex-col p-5 mx-5 rounded-2xl"
       style={{
-        background: "linear-gradient(135deg, #1CCCB0 0%, #0D9488 100%)",
+        background: "linear-gradient(135deg, #00E1FF 0%, #00A8BF 100%)",
         minHeight: 169,
       }}
     >
@@ -116,9 +116,9 @@ function MainBanner({ onStart }: { onStart: () => void }) {
         className="self-start mt-auto flex items-center gap-1 px-3 py-1.5 rounded-full"
         style={{ background: "#fff" }}
       >
-        <span style={{ fontSize: 11, fontWeight: 600, color: "#233B36" }}>코스 만들기</span>
+        <span style={{ fontSize: 11, fontWeight: 600, color: "#090738" }}>코스 만들기</span>
         <svg width="6" height="10" viewBox="0 0 6 10" fill="none">
-          <path d="M1 1l4 4-4 4" stroke="#A8A8A9" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1 1l4 4-4 4" stroke="#A1ADB3" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
@@ -152,8 +152,8 @@ function Sparkle({ size, top, right, opacity }: { size: number; top: number; rig
 function SectionHeader({ title, right }: { title: string; right?: string }) {
   return (
     <div className="flex items-center justify-between px-5 mt-6 mb-3">
-      <span style={{ fontSize: 16, fontWeight: 600, color: "#141414" }}>{title}</span>
-      {right && <span style={{ fontSize: 12, color: "#888F9C", fontWeight: 500 }}>{right}</span>}
+      <span style={{ fontSize: 16, fontWeight: 600, color: "#090738" }}>{title}</span>
+      {right && <span style={{ fontSize: 12, color: "#7A858B", fontWeight: 500 }}>{right}</span>}
     </div>
   );
 }
@@ -164,7 +164,7 @@ export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="relative flex flex-col h-full" style={{ background: "#FCFCFC" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#F7F9FA" }}>
 
       <StatusBar />
       <Header />
@@ -196,24 +196,24 @@ export default function HomePage() {
         <SectionHeader title="이런 여행 어때요?" right="더보기" />
         <div className="flex gap-3 px-5 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
           <SuggestCard
-            background="#4DA3FC"
-            badgeBg="#EDF7FF"
-            badgeText="#2563EB"
+            background="#29E3FF"
+            badgeBg="#E5FBFF"
+            badgeText="#00A8BF"
             badgeLabel="미식 여행"
             title={"현지인 맛집만\n골라가는 도시"}
             subtitle="오사카, 대만, 호치민"
             buttonLabel="코스 8개 확인하기"
-            buttonTextColor="#2563EB"
+            buttonTextColor="#00A8BF"
           />
           <SuggestCard
-            background="#5ED5C2"
-            badgeBg="#E3FAF3"
-            badgeText="#0F766E"
+            background="#5CE7FF"
+            badgeBg="#E5FBFF"
+            badgeText="#00A8BF"
             badgeLabel="호캉스"
             title={"가까운 해외에서\n즐기는 풀빌라"}
             subtitle="다낭, 푸켓, 발리"
             buttonLabel="코스 4개 확인하기"
-            buttonTextColor="#0F766E"
+            buttonTextColor="#00A8BF"
           />
         </div>
 

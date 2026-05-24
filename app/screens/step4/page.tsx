@@ -42,17 +42,17 @@ export default function Step4Page() {
       <div className="px-5 pt-12 pb-2 shrink-0">
         <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
 
       {/* 제목 */}
       <div className="px-5 pb-4 shrink-0">
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", lineHeight: "32px" }}>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "32px" }}>
           어떤 카테고리에{"\n"}관심 있으세요?
         </h1>
-        <p style={{ fontSize: 13, color: "#9CA3AF", marginTop: 6 }}>여러 개 고를 수 있어요</p>
+        <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6 }}>여러 개 고를 수 있어요</p>
       </div>
 
       {/* 카테고리 그리드 */}
@@ -66,8 +66,8 @@ export default function Step4Page() {
               onClick={() => toggleCategory(key)}
               className="relative flex flex-col items-center justify-center py-6 rounded-2xl transition-all"
               style={{
-                background: active ? "#F0FDFB" : "#F5F5F7",
-                border: active ? "2px solid #38C6AF" : "2px solid transparent",
+                background: active ? "#E5FBFF" : "#F7F9FA",
+                border: active ? "2px solid #00E1FF" : "2px solid transparent",
                 minHeight: 120,
               }}
             >
@@ -75,7 +75,7 @@ export default function Step4Page() {
               {active && (
                 <div
                   className="absolute top-2.5 right-2.5 flex items-center justify-center"
-                  style={{ width: 20, height: 20, background: "#38C6AF", borderRadius: "50%" }}
+                  style={{ width: 20, height: 20, background: "#00E1FF", borderRadius: "50%" }}
                 >
                   <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
                     <path d="M1 4l2.5 2.5L9 1" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -83,8 +83,8 @@ export default function Step4Page() {
                 </div>
               )}
               <span style={{ fontSize: 32 }}>{emoji}</span>
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A", marginTop: 8 }}>{key}</p>
-              <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>{sub}</p>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#090738", marginTop: 8 }}>{key}</p>
+              <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>{sub}</p>
             </button>
           );
         })}
@@ -94,15 +94,15 @@ export default function Step4Page() {
           onClick={() => setSheetOpen(true)}
           className="relative flex flex-col items-center justify-center py-6 rounded-2xl transition-all"
           style={{
-            background: hasCustom ? "#F0FDFB" : "#F5F5F7",
-            border: hasCustom ? "2px solid #38C6AF" : "2px solid transparent",
+            background: hasCustom ? "#E5FBFF" : "#F7F9FA",
+            border: hasCustom ? "2px solid #00E1FF" : "2px solid transparent",
             minHeight: 120,
           }}
         >
           {hasCustom && (
             <div
               className="absolute top-2.5 right-2.5 flex items-center justify-center"
-              style={{ width: 20, height: 20, background: "#38C6AF", borderRadius: "50%" }}
+              style={{ width: 20, height: 20, background: "#00E1FF", borderRadius: "50%" }}
             >
               <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
                 <path d="M1 4l2.5 2.5L9 1" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -110,10 +110,10 @@ export default function Step4Page() {
             </div>
           )}
           <span style={{ fontSize: 32 }}>➕</span>
-          <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A", marginTop: 8 }}>
+          <p style={{ fontSize: 15, fontWeight: 700, color: "#090738", marginTop: 8 }}>
             {hasCustom ? `${customKeywords.length}개 추가됨` : "직접 추가"}
           </p>
-          <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>
+          <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
             {hasCustom ? "탭해서 수정" : "원하는 키워드 입력"}
           </p>
         </button>
@@ -122,21 +122,21 @@ export default function Step4Page() {
       {/* 직접 추가 키워드 칩 */}
       {hasCustom && (
         <div className="px-5 mt-4 shrink-0">
-          <p style={{ fontSize: 12, fontWeight: 600, color: "#9CA3AF", marginBottom: 8 }}>내가 추가</p>
+          <p style={{ fontSize: 12, fontWeight: 600, color: "#7A858B", marginBottom: 8 }}>내가 추가</p>
           <div className="flex flex-wrap gap-2">
             {customKeywords.map((kw) => (
               <div
                 key={kw}
                 className="flex items-center gap-1.5 pl-3 pr-2 py-1.5 rounded-full"
-                style={{ background: "#E2FBF3", border: "1px solid #38C6AF" }}
+                style={{ background: "#E5FBFF", border: "1px solid #00E1FF" }}
               >
-                <span style={{ fontSize: 12, fontWeight: 600, color: "#38C6AF" }}>{kw}</span>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#00E1FF" }}>{kw}</span>
                 <button
                   onClick={() => removeKeyword(kw)}
                   className="flex items-center justify-center w-4 h-4"
                 >
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                    <path d="M1 1l6 6M7 1L1 7" stroke="#38C6AF" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M1 1l6 6M7 1L1 7" stroke="#00E1FF" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
                 </button>
               </div>
@@ -154,8 +154,8 @@ export default function Step4Page() {
           disabled={totalSelected === 0}
           className="w-full h-[50px] rounded-2xl text-base font-semibold transition-all"
           style={{
-            background: totalSelected > 0 ? "#1A1A1A" : "#E5E7EB",
-            color: totalSelected > 0 ? "#fff" : "#9CA3AF",
+            background: totalSelected > 0 ? "#090738" : "#DDE5E8",
+            color: totalSelected > 0 ? "#fff" : "#7A858B",
           }}
         >
           다음

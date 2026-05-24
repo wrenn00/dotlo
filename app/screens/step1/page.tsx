@@ -46,10 +46,10 @@ function SelectChip({ icon, label, value, onClick }: ChipProps) {
       onClick={onClick}
       className="inline-flex items-center gap-2 self-start transition-all"
       style={{
-        background: hasValue ? "#F0FDFB" : "#F5F5F7",
+        background: hasValue ? "#E5FBFF" : "#F7F9FA",
         borderRadius: 16,
         padding: "12px 20px",
-        border: hasValue ? "1.5px solid #38C6AF" : "1.5px solid transparent",
+        border: hasValue ? "1.5px solid #00E1FF" : "1.5px solid transparent",
       }}
     >
       <span className="shrink-0">{icon}</span>
@@ -57,7 +57,7 @@ function SelectChip({ icon, label, value, onClick }: ChipProps) {
         style={{
           fontSize: 16,
           fontWeight: 500,
-          color: hasValue ? "#1A1A1A" : "#9CA3AF",
+          color: hasValue ? "#090738" : "#7A858B",
         }}
       >
         {hasValue ? value : label}
@@ -83,38 +83,38 @@ function OptionCard({ icon, title, subtitle, selected, onToggle }: CardProps) {
       className="flex items-center gap-3 w-full text-left transition-all"
       style={{
         minHeight: 70,
-        background: "#F8F9FB",
+        background: "#F7F9FA",
         borderRadius: 16,
         padding: "0 16px",
-        border: selected ? "1.5px solid #38C6AF" : "1.5px solid transparent",
+        border: selected ? "1.5px solid #00E1FF" : "1.5px solid transparent",
       }}
     >
       <div
         className="flex items-center justify-center shrink-0"
-        style={{ width: 35, height: 35, background: "#E7EAEF", borderRadius: 10 }}
+        style={{ width: 35, height: 35, background: "#DDE5E8", borderRadius: 10 }}
       >
         {icon}
       </div>
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span style={{ fontSize: 16, fontWeight: 500, color: "#000", lineHeight: "20px" }}>
+          <span style={{ fontSize: 16, fontWeight: 500, color: "#090738", lineHeight: "20px" }}>
             {title}
           </span>
           {/* 선택사항 배지 — 항상 표시 */}
           <div
             className="flex items-center justify-center shrink-0"
-            style={{ padding: "2px 8px", background: "#CCFBF1", borderRadius: 999 }}
+            style={{ padding: "2px 8px", background: "#C2F5FF", borderRadius: 999 }}
           >
-            <span style={{ fontSize: 10, fontWeight: 500, color: "#0D9488" }}>선택</span>
+            <span style={{ fontSize: 10, fontWeight: 500, color: "#00A8BF" }}>선택</span>
           </div>
         </div>
-        <span style={{ fontSize: 12, color: "#666B78", lineHeight: "15px", marginTop: 3 }}>
+        <span style={{ fontSize: 12, color: "#555E63", lineHeight: "15px", marginTop: 3 }}>
           {subtitle}
         </span>
       </div>
       {/* 우측 화살표 (선택 상태와 무관) */}
       <svg width="7" height="13" viewBox="0 0 7 13" fill="none" className="shrink-0">
-        <path d="M1 1l5 5.5L1 12" stroke="#A8A8A9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M1 1l5 5.5L1 12" stroke="#A1ADB3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </button>
   );
@@ -124,38 +124,38 @@ function OptionCard({ icon, title, subtitle, selected, onToggle }: CardProps) {
 
 const PinIcon = () => (
   <svg width="14" height="18" viewBox="0 0 14 18" fill="none">
-    <path d="M7 1C4.24 1 2 3.24 2 6c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z" stroke="#9CA3AF" strokeWidth="1.4" />
-    <circle cx="7" cy="6" r="1.5" stroke="#9CA3AF" strokeWidth="1.4" />
+    <path d="M7 1C4.24 1 2 3.24 2 6c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z" stroke="#7A858B" strokeWidth="1.4" />
+    <circle cx="7" cy="6" r="1.5" stroke="#7A858B" strokeWidth="1.4" />
   </svg>
 );
 
 const CalIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <rect x="1" y="3" width="14" height="12" rx="2" stroke="#9CA3AF" strokeWidth="1.4" />
-    <path d="M1 7h14M5 1v4M11 1v4" stroke="#9CA3AF" strokeWidth="1.4" strokeLinecap="round" />
+    <rect x="1" y="3" width="14" height="12" rx="2" stroke="#7A858B" strokeWidth="1.4" />
+    <path d="M1 7h14M5 1v4M11 1v4" stroke="#7A858B" strokeWidth="1.4" strokeLinecap="round" />
   </svg>
 );
 
 const PeopleIcon = () => (
   <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
-    <circle cx="6" cy="4" r="3" stroke="#9CA3AF" strokeWidth="1.4" />
-    <path d="M1 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#9CA3AF" strokeWidth="1.4" strokeLinecap="round" />
-    <circle cx="13" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.4" />
-    <path d="M13 9c1.93 0 3.5 1.57 3.5 3.5" stroke="#9CA3AF" strokeWidth="1.4" strokeLinecap="round" />
+    <circle cx="6" cy="4" r="3" stroke="#7A858B" strokeWidth="1.4" />
+    <path d="M1 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#7A858B" strokeWidth="1.4" strokeLinecap="round" />
+    <circle cx="13" cy="4" r="2.5" stroke="#7A858B" strokeWidth="1.4" />
+    <path d="M13 9c1.93 0 3.5 1.57 3.5 3.5" stroke="#7A858B" strokeWidth="1.4" strokeLinecap="round" />
   </svg>
 );
 
 const HotelIcon = () => (
   <svg width="22" height="15" viewBox="0 0 22 15" fill="none">
-    <path d="M2 13V4a1 1 0 011-1h16a1 1 0 011 1v9M0 14h22M8 14V9h3v5M11 14V9h3v5" stroke="#373C3E" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M2 13V4a1 1 0 011-1h16a1 1 0 011 1v9M0 14h22M8 14V9h3v5M11 14V9h3v5" stroke="#090738" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const CarIcon = () => (
   <svg width="18" height="16" viewBox="0 0 18 16" fill="none">
-    <path d="M3 6.5l2-4h8l2 4M1 6.5h16v6a1 1 0 01-1 1H2a1 1 0 01-1-1v-6z" stroke="#888E9C" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="4.5" cy="10" r="1" fill="#888E9C" />
-    <circle cx="13.5" cy="10" r="1" fill="#888E9C" />
+    <path d="M3 6.5l2-4h8l2 4M1 6.5h16v6a1 1 0 01-1 1H2a1 1 0 01-1-1v-6z" stroke="#7A858B" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="4.5" cy="10" r="1" fill="#7A858B" />
+    <circle cx="13.5" cy="10" r="1" fill="#7A858B" />
   </svg>
 );
 
@@ -179,7 +179,7 @@ export default function ScreenStep1() {
       <div className="px-5 pt-12 pb-2 shrink-0">
         <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
@@ -188,7 +188,7 @@ export default function ScreenStep1() {
       <div className="flex flex-col flex-1 overflow-y-auto px-5 pt-8 pb-2">
 
         {/* "이번 여행은" */}
-        <p style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", lineHeight: "30px" }}>
+        <p style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "30px" }}>
           이번 여행은
         </p>
 
@@ -215,14 +215,14 @@ export default function ScreenStep1() {
               value={sel.who ? `${sel.who.type} · ${sel.who.count}명` : undefined}
               onClick={() => setOpenSheet("who")}
             />
-            <span style={{ fontSize: 20, fontWeight: 700, color: "#1A1A1A" }}>
+            <span style={{ fontSize: 20, fontWeight: 700, color: "#090738" }}>
               떠날거에요
             </span>
           </div>
         </div>
 
         {/* 부제 */}
-        <p style={{ fontSize: 13, fontWeight: 500, color: "#888E9C", lineHeight: "16px", marginTop: 16 }}>
+        <p style={{ fontSize: 13, fontWeight: 500, color: "#7A858B", lineHeight: "16px", marginTop: 16 }}>
           몇 가지 질문에 답하면 맞춤 코스를 추천해드려요
         </p>
 
@@ -250,7 +250,7 @@ export default function ScreenStep1() {
         <button
           onClick={() => router.push("/screens/step2")}
           className="w-full h-[52px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-          style={{ background: "#374151" }}
+          style={{ background: "#090738" }}
         >
           다음
         </button>

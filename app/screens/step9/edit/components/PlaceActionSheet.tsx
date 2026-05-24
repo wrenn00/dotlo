@@ -19,28 +19,28 @@ interface Props {
 
 const Sparkle = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path d="M10 1l2.5 6 6 1-4.5 4.5 1.5 6.5-5.5-3.5-5.5 3.5 1.5-6.5L1.5 8l6-1L10 1z" fill="#22D3CC" />
+    <path d="M10 1l2.5 6 6 1-4.5 4.5 1.5 6.5-5.5-3.5-5.5 3.5 1.5-6.5L1.5 8l6-1L10 1z" fill="#00E1FF" />
   </svg>
 );
 
 const Clock = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <circle cx="10" cy="10" r="8" stroke="#374151" strokeWidth="1.6" />
-    <path d="M10 5v5l3 2" stroke="#374151" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="10" cy="10" r="8" stroke="#090738" strokeWidth="1.6" />
+    <path d="M10 5v5l3 2" stroke="#090738" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const Calendar = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <rect x="2" y="4" width="16" height="14" rx="2" stroke="#374151" strokeWidth="1.6" />
-    <path d="M2 8h16M7 2v4M13 2v4" stroke="#374151" strokeWidth="1.6" strokeLinecap="round" />
+    <rect x="2" y="4" width="16" height="14" rx="2" stroke="#090738" strokeWidth="1.6" />
+    <path d="M2 8h16M7 2v4M13 2v4" stroke="#090738" strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
 const Info = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <circle cx="10" cy="10" r="8" stroke="#374151" strokeWidth="1.6" />
-    <path d="M10 9v5M10 6v.5" stroke="#374151" strokeWidth="1.6" strokeLinecap="round" />
+    <circle cx="10" cy="10" r="8" stroke="#090738" strokeWidth="1.6" />
+    <path d="M10 9v5M10 6v.5" stroke="#090738" strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
@@ -52,7 +52,7 @@ const Trash = () => (
 
 const ChevronRight = () => (
   <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-    <path d="M1 1l5 5-5 5" stroke="#C4C7CF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M1 1l5 5-5 5" stroke="#A1ADB3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -72,7 +72,7 @@ function ActionRow({ icon, label, right, danger, isLast, onClick }: ActionProps)
     <button
       onClick={onClick}
       className="flex items-center gap-3 w-full py-4 text-left transition-colors active:bg-gray-50"
-      style={{ borderBottom: isLast ? "none" : "1px solid #F0F0F0" }}
+      style={{ borderBottom: isLast ? "none" : "1px solid #DDE5E8" }}
     >
       <div className="w-7 flex items-center justify-center shrink-0">{icon}</div>
       <span
@@ -80,7 +80,7 @@ function ActionRow({ icon, label, right, danger, isLast, onClick }: ActionProps)
           flex: 1,
           fontSize: 15,
           fontWeight: 500,
-          color: danger ? "#EF4444" : "#1A1A1A",
+          color: danger ? "#EF4444" : "#090738",
         }}
       >
         {label}
@@ -121,24 +121,24 @@ export default function PlaceActionSheet({ open, place, onClose, onRemove }: Pro
       >
         {/* 핸들 */}
         <div className="flex justify-center pt-3 pb-1 shrink-0">
-          <div className="w-10 h-1 rounded-full" style={{ background: "#E0E0E0" }} />
+          <div className="w-10 h-1 rounded-full" style={{ background: "#DDE5E8" }} />
         </div>
 
         {/* 헤더 (X) */}
         <div className="flex items-center justify-end px-5 pt-2 shrink-0">
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M1 1l12 12M13 1L1 13" stroke="#1A1A1A" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M1 1l12 12M13 1L1 13" stroke="#090738" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </button>
         </div>
 
         {/* 장소명 + 메타 */}
         <div className="px-5 pb-3 shrink-0">
-          <p style={{ fontSize: 18, fontWeight: 700, color: "#1A1A1A" }}>
+          <p style={{ fontSize: 18, fontWeight: 700, color: "#090738" }}>
             {place?.title ?? ""}
           </p>
-          <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 4 }}>
+          <p style={{ fontSize: 12, color: "#7A858B", marginTop: 4 }}>
             {place ? `${place.day} ${place.time}` : ""}
           </p>
         </div>
@@ -151,9 +151,9 @@ export default function PlaceActionSheet({ open, place, onClose, onRemove }: Pro
             right={
               <div
                 className="px-2 py-0.5 rounded-full"
-                style={{ background: "#CCFBF1" }}
+                style={{ background: "#C2F5FF" }}
               >
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#0F766E" }}>AI</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#00A8BF" }}>AI</span>
               </div>
             }
           />
@@ -161,7 +161,7 @@ export default function PlaceActionSheet({ open, place, onClose, onRemove }: Pro
             icon={<Clock />}
             label="머무는 시간 조정"
             right={
-              <span style={{ fontSize: 12, color: "#9CA3AF" }}>
+              <span style={{ fontSize: 12, color: "#7A858B" }}>
                 {place?.duration ?? ""}
               </span>
             }
@@ -182,7 +182,7 @@ export default function PlaceActionSheet({ open, place, onClose, onRemove }: Pro
           <button
             onClick={onClose}
             className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-            style={{ background: "#0F172A" }}
+            style={{ background: "#090738" }}
           >
             선택 완료
           </button>

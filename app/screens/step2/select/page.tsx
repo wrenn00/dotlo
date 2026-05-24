@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const CATEGORIES = ["전체", "맛집 12", "카페 7", "쇼핑 5", "관광 12"];
@@ -43,11 +43,54 @@ const PLACES = [
   },
 ];
 
+interface RealData {
+  rating?: number;
+  reviews?: number;
+  photoName?: string;
+  loaded: boolean;
+}
+
 export default function Step2SelectPage() {
   const router = useRouter();
   const [activeCat, setActiveCat] = useState("전체");
   const [selected, setSelected] = useState<Set<string>>(new Set(["1", "2", "3", "4"]));
   const [query, setQuery] = useState("");
+  const [realData, setRealData] = useState<Record<string, RealData>>({});
+
+  // 마운트 시 각 장소를 Text Search로 조회 — 실패는 조용히 무시
+  useEffect(() => {
+    let aborted = false;
+    Promise.all(
+      PLACES.map(async (p) => {
+        try {
+          const res = await fetch(
+            `/api/places/search?query=${encodeURIComponent(p.name)}`,
+          );
+          if (!res.ok) return [p.id, { loaded: true }] as const;
+          const data = await res.json();
+          const first = data.results?.[0];
+          if (!first) return [p.id, { loaded: true }] as const;
+          return [
+            p.id,
+            {
+              rating: first.rating ?? undefined,
+              reviews: first.userRatingCount ?? undefined,
+              photoName: first.photoName ?? undefined,
+              loaded: true,
+            } as RealData,
+          ] as const;
+        } catch {
+          return [p.id, { loaded: true }] as const;
+        }
+      }),
+    ).then((entries) => {
+      if (aborted) return;
+      setRealData(Object.fromEntries(entries));
+    });
+    return () => {
+      aborted = true;
+    };
+  }, []);
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -73,17 +116,17 @@ export default function Step2SelectPage() {
       <div className="flex items-center px-5 pt-12 pb-2">
         <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
 
       {/* 제목 */}
       <div className="px-5 mb-4">
-        <h1 style={{ fontSize: 20, fontWeight: 700, color: "#1A1A1A", lineHeight: "28px" }}>
+        <h1 style={{ fontSize: 20, fontWeight: 700, color: "#090738", lineHeight: "28px" }}>
           꼭 가고싶은 장소를{"\n"}선택해주세요
         </h1>
-        <p style={{ fontSize: 13, color: "#9CA3AF", marginTop: 6 }}>
+        <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6 }}>
           구글맵에 47개의 장소를 불러왔어요
         </p>
       </div>
@@ -92,15 +135,15 @@ export default function Step2SelectPage() {
       <div className="px-5 mb-3">
         <div
           className="flex items-center gap-2 px-4"
-          style={{ height: 44, background: "#F5F5F7", borderRadius: 12 }}
+          style={{ height: 44, background: "#F7F9FA", borderRadius: 12 }}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <circle cx="7" cy="7" r="5" stroke="#9CA3AF" strokeWidth="1.5" />
-            <path d="M11 11l3 3" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
+            <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
           <input
             className="flex-1 bg-transparent outline-none text-sm"
-            style={{ color: "#1A1A1A" }}
+            style={{ color: "#090738" }}
             placeholder="장소 이름으로 검색"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -118,8 +161,8 @@ export default function Step2SelectPage() {
               onClick={() => setActiveCat(cat)}
               className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
               style={{
-                background: active ? "#1A1A1A" : "#F5F5F7",
-                color: active ? "#fff" : "#6B7280",
+                background: active ? "#090738" : "#F7F9FA",
+                color: active ? "#fff" : "#555E63",
               }}
             >
               {cat}
@@ -130,10 +173,10 @@ export default function Step2SelectPage() {
 
       {/* 전체선택 / 선택수 */}
       <div className="flex items-center justify-between px-5 mb-2">
-        <button onClick={toggleAll} style={{ fontSize: 13, color: "#6B7280", fontWeight: 500 }}>
+        <button onClick={toggleAll} style={{ fontSize: 13, color: "#555E63", fontWeight: 500 }}>
           전체 선택
         </button>
-        <span style={{ fontSize: 13, fontWeight: 600, color: "#38C6AF" }}>
+        <span style={{ fontSize: 13, fontWeight: 600, color: "#00E1FF" }}>
           {selected.size}개 선택
         </span>
       </div>
@@ -148,21 +191,21 @@ export default function Step2SelectPage() {
               onClick={() => toggle(p.id)}
               className="flex items-start gap-3 text-left py-3 px-3 rounded-2xl transition-all"
               style={{
-                background: isSelected ? "#F0FDFB" : "#fff",
-                border: isSelected ? "1.5px solid #38C6AF" : "1.5px solid #F0F0F0",
+                background: isSelected ? "#E5FBFF" : "#fff",
+                border: isSelected ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
               }}
             >
               {/* 썸네일 */}
-              <div className="shrink-0 rounded-xl" style={{ width: 52, height: 52, background: "#E5E7EB" }} />
+              <div className="shrink-0 rounded-xl" style={{ width: 52, height: 52, background: "#DDE5E8" }} />
 
               {/* 정보 */}
               <div className="flex-1 min-w-0">
-                <p style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A" }}>{p.name}</p>
-                <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{p.name}</p>
+                <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
                   ★ {p.rating} · {p.reviews.toLocaleString()}개 리뷰
                 </p>
-                <p style={{ fontSize: 12, color: "#6B7280", marginTop: 1 }}>{p.region}</p>
-                <p className="truncate" style={{ fontSize: 12, color: "#9CA3AF", marginTop: 1 }}>{p.desc}</p>
+                <p style={{ fontSize: 12, color: "#555E63", marginTop: 1 }}>{p.region}</p>
+                <p className="truncate" style={{ fontSize: 12, color: "#7A858B", marginTop: 1 }}>{p.desc}</p>
               </div>
 
               {/* 체크 */}
@@ -170,8 +213,8 @@ export default function Step2SelectPage() {
                 className="shrink-0 flex items-center justify-center"
                 style={{
                   width: 22, height: 22, borderRadius: "50%",
-                  background: isSelected ? "#38C6AF" : "transparent",
-                  border: isSelected ? "none" : "1.5px solid #D1D5DB",
+                  background: isSelected ? "#00E1FF" : "transparent",
+                  border: isSelected ? "none" : "1.5px solid #A1ADB3",
                   marginTop: 2,
                 }}
               >
@@ -191,20 +234,20 @@ export default function Step2SelectPage() {
         {/* 알림 박스 */}
         <div
           className="flex items-center justify-between px-4 py-3 rounded-2xl"
-          style={{ background: "#F5F5F7" }}
+          style={{ background: "#F7F9FA" }}
         >
           <div className="flex items-center gap-2">
             <div
               className="flex items-center justify-center"
-              style={{ width: 28, height: 28, background: "#38C6AF", borderRadius: "50%" }}
+              style={{ width: 28, height: 28, background: "#00E1FF", borderRadius: "50%" }}
             >
               <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{selected.size}</span>
             </div>
-            <span style={{ fontSize: 13, color: "#1A1A1A", fontWeight: 500 }}>
+            <span style={{ fontSize: 13, color: "#090738", fontWeight: 500 }}>
               선택한 장소로 코스를 짤게요
             </span>
           </div>
-          <button style={{ fontSize: 13, color: "#38C6AF", fontWeight: 600 }}>미리보기</button>
+          <button style={{ fontSize: 13, color: "#00E1FF", fontWeight: 600 }}>미리보기</button>
         </div>
 
         {/* 다음 버튼 */}
@@ -212,7 +255,7 @@ export default function Step2SelectPage() {
           onClick={() => router.push("/screens/step3")}
           disabled={selected.size === 0}
           className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80 disabled:opacity-40"
-          style={{ background: "#1A1A1A" }}
+          style={{ background: "#090738" }}
         >
           다음
         </button>

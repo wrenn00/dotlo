@@ -25,7 +25,7 @@ function AppIcon({ label, background, children }: AppIconProps) {
       >
         {children}
       </div>
-      <span style={{ fontSize: 11, color: "#1A1A1A" }}>{label}</span>
+      <span style={{ fontSize: 11, color: "#090738" }}>{label}</span>
     </button>
   );
 }
@@ -49,7 +49,7 @@ const MessageIcon = () => (
 );
 
 const KakaoIcon = () => (
-  <span style={{ fontSize: 14, fontWeight: 900, color: "#1A1A1A", letterSpacing: -0.5 }}>
+  <span style={{ fontSize: 14, fontWeight: 900, color: "#090738", letterSpacing: -0.5 }}>
     TALK
   </span>
 );
@@ -75,10 +75,10 @@ function ActionRow({ label, icon, isLast, onClick }: ActionRowProps) {
     <button
       onClick={onClick}
       className="flex items-center justify-between w-full py-3.5"
-      style={{ borderBottom: isLast ? "none" : "1px solid #F0F0F0" }}
+      style={{ borderBottom: isLast ? "none" : "1px solid #DDE5E8" }}
     >
-      <span style={{ fontSize: 15, color: "#1A1A1A", fontWeight: 500 }}>{label}</span>
-      <div className="text-[#1A1A1A]">{icon}</div>
+      <span style={{ fontSize: 15, color: "#090738", fontWeight: 500 }}>{label}</span>
+      <div className="text-[#090738]">{icon}</div>
     </button>
   );
 }
@@ -126,7 +126,7 @@ export default function ShareSheet({ open, onClose }: Props) {
       >
         {/* 핸들 */}
         <div className="flex justify-center pt-3 pb-1 shrink-0">
-          <div className="w-10 h-1 rounded-full" style={{ background: "#E0E0E0" }} />
+          <div className="w-10 h-1 rounded-full" style={{ background: "#DDE5E8" }} />
         </div>
 
         {/* 헤더 */}
@@ -137,7 +137,7 @@ export default function ShareSheet({ open, onClose }: Props) {
             style={{
               width: 52, height: 52,
               borderRadius: 14,
-              background: "linear-gradient(135deg, #5EEAD4 0%, #22D3CC 100%)",
+              background: "linear-gradient(135deg, #5CE7FF 0%, #00E1FF 100%)",
             }}
           >
             <div
@@ -152,24 +152,24 @@ export default function ShareSheet({ open, onClose }: Props) {
 
           {/* 타이틀 */}
           <div className="flex-1 min-w-0">
-            <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>코스 공유하기</p>
-            <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>dotlo.com</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>코스 공유하기</p>
+            <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>dotlo.com</p>
           </div>
 
           {/* 닫기 */}
           <button
             onClick={onClose}
             className="flex items-center justify-center shrink-0"
-            style={{ width: 30, height: 30, borderRadius: "50%", background: "#F0F0F0" }}
+            style={{ width: 30, height: 30, borderRadius: "50%", background: "#DDE5E8" }}
           >
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-              <path d="M1 1l9 9M10 1l-9 9" stroke="#6B7280" strokeWidth="1.6" strokeLinecap="round" />
+              <path d="M1 1l9 9M10 1l-9 9" stroke="#555E63" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
           </button>
         </div>
 
         {/* 구분선 */}
-        <div className="h-px mx-5" style={{ background: "#F0F0F0" }} />
+        <div className="h-px mx-5" style={{ background: "#DDE5E8" }} />
 
         {/* 앱 아이콘 그리드 */}
         <div className="flex justify-around px-3 py-5 shrink-0">
@@ -188,7 +188,7 @@ export default function ShareSheet({ open, onClose }: Props) {
         </div>
 
         {/* 구분선 */}
-        <div className="h-px mx-5" style={{ background: "#F0F0F0" }} />
+        <div className="h-px mx-5" style={{ background: "#DDE5E8" }} />
 
         {/* 액션 리스트 */}
         <div className="flex flex-col px-5 overflow-y-auto">

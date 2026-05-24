@@ -159,8 +159,8 @@ export default function TouchCursor() {
           width="10" height="14" viewBox="0 0 10 14" fill="none"
           style={{ opacity: 0.85 }}
         >
-          <path d="M5 1L2 4h6L5 1z" fill="#1A1A1A" />
-          <path d="M5 13l3-3H2l3 3z" fill="#1A1A1A" />
+          <path d="M5 1L2 4h6L5 1z" fill="#090738" />
+          <path d="M5 13l3-3H2l3 3z" fill="#090738" />
         </svg>
       )}
     </div>

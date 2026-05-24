@@ -52,7 +52,8 @@ export async function GET(req: NextRequest) {
         body: JSON.stringify({
           input,
           languageCode: "ko",
-          includedPrimaryTypes: ["(cities)"],
+          // 도시·지역·국가 등 geocode 계열 (Places API New의 region collection)
+          includedPrimaryTypes: ["(regions)"],
         }),
       },
     );

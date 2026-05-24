@@ -22,7 +22,7 @@ interface Prediction {
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (city: string) => void;
+  onSelect: (city: string, placeId?: string) => void;
 }
 
 const DEBOUNCE_MS = 300;
@@ -75,8 +75,8 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
     return () => clearTimeout(timer);
   }, [query]);
 
-  function handleSelect(city: string) {
-    onSelect(city);
+  function handleSelect(city: string, placeId?: string) {
+    onSelect(city, placeId);
     setQuery("");
     setPredictions([]);
     onClose();
@@ -110,17 +110,17 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
       >
         {/* 핸들 */}
         <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full" style={{ background: "#E0E0E0" }} />
+          <div className="w-10 h-1 rounded-full" style={{ background: "#DDE5E8" }} />
         </div>
 
         {/* 헤더 */}
         <div className="flex items-center justify-between px-5 py-3">
-          <span style={{ fontSize: 18, fontWeight: 700, color: "#1A1A1A" }}>
+          <span style={{ fontSize: 18, fontWeight: 700, color: "#090738" }}>
             어디로 떠나시나요?
           </span>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 2l12 12M14 2L2 14" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+              <path d="M2 2l12 12M14 2L2 14" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         </div>
@@ -129,15 +129,15 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
         <div className="px-5 pb-3">
           <div
             className="flex items-center gap-2 px-4"
-            style={{ height: 44, background: "#F5F5F7", borderRadius: 12 }}
+            style={{ height: 44, background: "#F7F9FA", borderRadius: 12 }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="7" cy="7" r="5" stroke="#9CA3AF" strokeWidth="1.5" />
-              <path d="M11 11l3 3" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" />
+              <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
+              <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
             <input
               className="flex-1 bg-transparent outline-none text-sm"
-              style={{ color: "#1A1A1A" }}
+              style={{ color: "#090738" }}
               placeholder="도시 또는 국가"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -147,8 +147,8 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
                 className="shrink-0"
                 style={{
                   width: 14, height: 14,
-                  border: "2px solid #E5E7EB",
-                  borderTopColor: "#38C6AF",
+                  border: "2px solid #DDE5E8",
+                  borderTopColor: "#00E1FF",
                   borderRadius: "50%",
                   animation: "whereSpin 0.7s linear infinite",
                 }}
@@ -167,7 +167,7 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
                 </p>
               )}
               {!error && !loading && predictions.length === 0 && (
-                <p style={{ fontSize: 13, color: "#9CA3AF", padding: "12px 0" }}>
+                <p style={{ fontSize: 13, color: "#7A858B", padding: "12px 0" }}>
                   검색 결과가 없습니다
                 </p>
               )}
@@ -175,37 +175,37 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
                 {predictions.map((p, idx) => (
                   <button
                     key={p.placeId}
-                    onClick={() => handleSelect(p.mainText)}
+                    onClick={() => handleSelect(p.mainText, p.placeId)}
                     className="flex items-center gap-3 py-3 text-left"
                     style={{
                       borderBottom:
-                        idx < predictions.length - 1 ? "1px solid #F0F0F0" : "none",
+                        idx < predictions.length - 1 ? "1px solid #DDE5E8" : "none",
                     }}
                   >
                     <div
                       className="shrink-0 rounded-xl flex items-center justify-center"
-                      style={{ width: 44, height: 44, background: "#F0FDFB" }}
+                      style={{ width: 44, height: 44, background: "#E5FBFF" }}
                     >
                       <svg width="18" height="22" viewBox="0 0 18 22" fill="none">
                         <path
                           d="M9 1C5.13 1 2 4.13 2 8c0 6 7 13 7 13s7-7 7-13c0-3.87-3.13-7-7-7z"
-                          stroke="#38C6AF"
+                          stroke="#00E1FF"
                           strokeWidth="1.5"
                         />
-                        <circle cx="9" cy="8" r="2.5" stroke="#38C6AF" strokeWidth="1.5" />
+                        <circle cx="9" cy="8" r="2.5" stroke="#00E1FF" strokeWidth="1.5" />
                       </svg>
                     </div>
                     <div className="flex-1 min-w-0">
                       <p
                         className="truncate"
-                        style={{ fontSize: 15, fontWeight: 600, color: "#1A1A1A" }}
+                        style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}
                       >
                         {p.mainText}
                       </p>
                       {p.secondaryText && (
                         <p
                           className="truncate"
-                          style={{ fontSize: 12, color: "#9CA3AF" }}
+                          style={{ fontSize: 12, color: "#7A858B" }}
                         >
                           {p.secondaryText}
                         </p>
@@ -219,7 +219,7 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
             <>
               {/* ── 빈 검색: 최근 + 인기 ── */}
               <div className="mb-5">
-                <p className="text-xs font-semibold mb-2" style={{ color: "#9CA3AF" }}>
+                <p className="text-xs font-semibold mb-2" style={{ color: "#7A858B" }}>
                   최근 검색
                 </p>
                 <div className="flex gap-2 flex-wrap">
@@ -228,7 +228,7 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
                       key={city}
                       onClick={() => handleSelect(city)}
                       className="px-3 py-1.5 rounded-full text-sm font-medium"
-                      style={{ background: "#F5F5F7", color: "#1A1A1A" }}
+                      style={{ background: "#F7F9FA", color: "#090738" }}
                     >
                       {city}
                     </button>
@@ -238,12 +238,12 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
 
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold" style={{ color: "#9CA3AF" }}>
+                  <p className="text-xs font-semibold" style={{ color: "#7A858B" }}>
                     인기 여행지
                   </p>
                   <span
                     className="text-xs font-medium px-2 py-0.5 rounded-full"
-                    style={{ background: "#E2FBF3", color: "#38C6AF" }}
+                    style={{ background: "#E5FBFF", color: "#00E1FF" }}
                   >
                     실시간
                   </span>
@@ -256,22 +256,22 @@ export default function WhereBottomSheet({ open, onClose, onSelect }: Props) {
                       className="flex items-center gap-3 py-3 text-left"
                       style={{
                         borderBottom:
-                          idx < POPULAR.length - 1 ? "1px solid #F0F0F0" : "none",
+                          idx < POPULAR.length - 1 ? "1px solid #DDE5E8" : "none",
                       }}
                     >
                       <div
                         className="shrink-0 rounded-xl"
-                        style={{ width: 44, height: 44, background: "#E5E7EB" }}
+                        style={{ width: 44, height: 44, background: "#DDE5E8" }}
                       />
                       <div className="flex-1 min-w-0">
-                        <p style={{ fontSize: 15, fontWeight: 600, color: "#1A1A1A" }}>
+                        <p style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>
                           {item.city}
                         </p>
-                        <p style={{ fontSize: 12, color: "#9CA3AF" }}>{item.desc}</p>
+                        <p style={{ fontSize: 12, color: "#7A858B" }}>{item.desc}</p>
                       </div>
                       <span
                         className="text-sm font-bold shrink-0"
-                        style={{ color: "#38C6AF" }}
+                        style={{ color: "#00E1FF" }}
                       >
                         {idx + 1}
                       </span>

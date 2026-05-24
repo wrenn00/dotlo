@@ -43,8 +43,8 @@ function CheckCircle({ active }: { active: boolean }) {
       className="flex items-center justify-center shrink-0"
       style={{
         width: 22, height: 22, borderRadius: "50%",
-        background: active ? "#22D3CC" : "transparent",
-        border: active ? "none" : "1.5px solid #D1D5DB",
+        background: active ? "#00E1FF" : "transparent",
+        border: active ? "none" : "1.5px solid #A1ADB3",
       }}
     >
       {active && (
@@ -87,10 +87,10 @@ export default function AddPlacePage() {
       <div className="flex items-center justify-between px-5 pt-12 pb-3 shrink-0">
         <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M1 1l12 12M13 1L1 13" stroke="#1A1A1A" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M1 1l12 12M13 1L1 13" stroke="#090738" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
         </button>
-        <span style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1A" }}>장소 추가</span>
+        <span style={{ fontSize: 16, fontWeight: 700, color: "#090738" }}>장소 추가</span>
         <div className="w-9" />
       </div>
 
@@ -104,9 +104,9 @@ export default function AddPlacePage() {
               onClick={() => setSelectedDay(d)}
               className="shrink-0 px-4 py-1.5 rounded-full transition-colors"
               style={{
-                background: active ? "#1A1A1A" : "transparent",
-                color: active ? "#fff" : "#9CA3AF",
-                border: active ? "none" : "1px solid #E5E7EB",
+                background: active ? "#090738" : "transparent",
+                color: active ? "#fff" : "#7A858B",
+                border: active ? "none" : "1px solid #DDE5E8",
               }}
             >
               <span style={{ fontSize: 12, fontWeight: active ? 700 : 500 }}>{d}</span>
@@ -116,7 +116,7 @@ export default function AddPlacePage() {
       </div>
 
       {/* 메인 탭 (내 장소 / 검색 / AI 추천) */}
-      <div className="flex shrink-0" style={{ borderBottom: "1px solid #F0F0F0" }}>
+      <div className="flex shrink-0" style={{ borderBottom: "1px solid #DDE5E8" }}>
         {MAIN_TABS.map(({ id, label }) => {
           const active = activeTab === id;
           return (
@@ -129,7 +129,7 @@ export default function AddPlacePage() {
                 style={{
                   fontSize: 14,
                   fontWeight: active ? 700 : 500,
-                  color: active ? "#1A1A1A" : "#9CA3AF",
+                  color: active ? "#090738" : "#7A858B",
                 }}
               >
                 {label}
@@ -137,7 +137,7 @@ export default function AddPlacePage() {
               {active && (
                 <div
                   className="absolute bottom-0 left-1/2 -translate-x-1/2"
-                  style={{ width: "40%", height: 2, background: "#1A1A1A" }}
+                  style={{ width: "40%", height: 2, background: "#090738" }}
                 />
               )}
             </button>
@@ -161,8 +161,8 @@ export default function AddPlacePage() {
                     onClick={() => setActiveCat(cat)}
                     className="shrink-0 px-3 py-1.5 rounded-full"
                     style={{
-                      background: active ? "#1A1A1A" : "#F5F5F7",
-                      color: active ? "#fff" : "#6B7280",
+                      background: active ? "#090738" : "#F7F9FA",
+                      color: active ? "#fff" : "#555E63",
                     }}
                   >
                     <span style={{ fontSize: 12, fontWeight: active ? 700 : 500 }}>{cat}</span>
@@ -173,7 +173,7 @@ export default function AddPlacePage() {
 
             {/* 정렬 라벨 */}
             <div className="flex items-center px-5 pb-2">
-              <span style={{ fontSize: 12, color: "#9CA3AF" }}>추가일순</span>
+              <span style={{ fontSize: 12, color: "#7A858B" }}>추가일순</span>
             </div>
 
             {/* 장소 리스트 */}
@@ -186,18 +186,18 @@ export default function AddPlacePage() {
                     onClick={() => toggle(p.id)}
                     className="flex items-start gap-3 text-left py-3 px-3 rounded-2xl transition-all"
                     style={{
-                      background: isSel ? "#F0FDFB" : "#fff",
-                      border: isSel ? "1.5px solid #22D3CC" : "1.5px solid #F0F0F0",
+                      background: isSel ? "#E5FBFF" : "#fff",
+                      border: isSel ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
                     }}
                   >
-                    <div className="shrink-0 rounded-xl" style={{ width: 48, height: 48, background: "#E5E7EB" }} />
+                    <div className="shrink-0 rounded-xl" style={{ width: 48, height: 48, background: "#DDE5E8" }} />
                     <div className="flex-1 min-w-0">
-                      <p style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A" }}>{p.name}</p>
-                      <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{p.name}</p>
+                      <p style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
                         ★ {p.rating} · {p.reviews.toLocaleString()}개 리뷰
                       </p>
-                      <p style={{ fontSize: 11, color: "#6B7280", marginTop: 1 }}>{p.category}</p>
-                      <p className="truncate" style={{ fontSize: 11, color: "#9CA3AF", marginTop: 1 }}>
+                      <p style={{ fontSize: 11, color: "#555E63", marginTop: 1 }}>{p.category}</p>
+                      <p className="truncate" style={{ fontSize: 11, color: "#7A858B", marginTop: 1 }}>
                         {p.desc}
                       </p>
                     </div>
@@ -218,15 +218,15 @@ export default function AddPlacePage() {
             <div className="px-5 pt-3 pb-2">
               <div
                 className="flex items-center gap-2 px-4"
-                style={{ height: 44, background: "#F5F5F7", borderRadius: 12 }}
+                style={{ height: 44, background: "#F7F9FA", borderRadius: 12 }}
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="7" cy="7" r="5" stroke="#9CA3AF" strokeWidth="1.5" />
-                  <path d="M11 11l3 3" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" />
+                  <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
+                  <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
                 <input
                   className="flex-1 bg-transparent outline-none text-sm"
-                  style={{ color: "#1A1A1A" }}
+                  style={{ color: "#090738" }}
                   placeholder="장소 이름으로 검색"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -238,8 +238,8 @@ export default function AddPlacePage() {
             {recents.length > 0 && (
               <div className="px-5 py-3">
                 <div className="flex items-center justify-between mb-2">
-                  <span style={{ fontSize: 12, fontWeight: 600, color: "#9CA3AF" }}>최근 검색</span>
-                  <button onClick={() => setRecents([])} style={{ fontSize: 11, color: "#9CA3AF" }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: "#7A858B" }}>최근 검색</span>
+                  <button onClick={() => setRecents([])} style={{ fontSize: 11, color: "#7A858B" }}>
                     전체 삭제
                   </button>
                 </div>
@@ -249,9 +249,9 @@ export default function AddPlacePage() {
                       key={q}
                       onClick={() => setQuery(q)}
                       className="px-3 py-1.5 rounded-full"
-                      style={{ background: "#F5F5F7" }}
+                      style={{ background: "#F7F9FA" }}
                     >
-                      <span style={{ fontSize: 12, color: "#1A1A1A", fontWeight: 500 }}>{q}</span>
+                      <span style={{ fontSize: 12, color: "#090738", fontWeight: 500 }}>{q}</span>
                     </button>
                   ))}
                 </div>
@@ -260,7 +260,7 @@ export default function AddPlacePage() {
 
             {/* 인기 장소 */}
             <div className="px-5 pb-4">
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A", marginTop: 6, marginBottom: 10 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#090738", marginTop: 6, marginBottom: 10 }}>
                 오사카에서 다들 추가해요
               </p>
               <div className="flex flex-col gap-2">
@@ -272,21 +272,21 @@ export default function AddPlacePage() {
                       onClick={() => toggle(p.id)}
                       className="flex items-center gap-3 text-left py-3 px-3 rounded-2xl transition-all"
                       style={{
-                        background: isSel ? "#F0FDFB" : "#fff",
-                        border: isSel ? "1.5px solid #22D3CC" : "1.5px solid #F0F0F0",
+                        background: isSel ? "#E5FBFF" : "#fff",
+                        border: isSel ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
                       }}
                     >
                       <span
                         className="shrink-0 w-6 text-center"
-                        style={{ fontSize: 18, fontWeight: 700, color: "#C4C7CF" }}
+                        style={{ fontSize: 18, fontWeight: 700, color: "#A1ADB3" }}
                       >
                         {p.rank}
                       </span>
-                      <div className="shrink-0 rounded-xl" style={{ width: 44, height: 44, background: "#E5E7EB" }} />
+                      <div className="shrink-0 rounded-xl" style={{ width: 44, height: 44, background: "#DDE5E8" }} />
                       <div className="flex-1 min-w-0">
-                        <p style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A" }}>{p.name}</p>
-                        <p style={{ fontSize: 11, color: "#6B7280", marginTop: 2 }}>{p.category}</p>
-                        <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 1 }}>★ {p.rating}</p>
+                        <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{p.name}</p>
+                        <p style={{ fontSize: 11, color: "#555E63", marginTop: 2 }}>{p.category}</p>
+                        <p style={{ fontSize: 11, color: "#7A858B", marginTop: 1 }}>★ {p.rating}</p>
                       </div>
                       <CheckCircle active={isSel} />
                     </button>
@@ -301,10 +301,10 @@ export default function AddPlacePage() {
         {activeTab === "ai" && (
           <div className="flex flex-col items-center justify-center py-20 px-8">
             <span style={{ fontSize: 36 }}>✨</span>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A", marginTop: 12 }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#090738", marginTop: 12 }}>
               AI 추천 콘텐츠 준비 중
             </p>
-            <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 6, textAlign: "center" }}>
+            <p style={{ fontSize: 12, color: "#7A858B", marginTop: 6, textAlign: "center" }}>
               곧 맞춤형 추천 장소를 제공해드릴 예정이에요
             </p>
           </div>
@@ -312,18 +312,18 @@ export default function AddPlacePage() {
       </div>
 
       {/* 하단 영역 */}
-      <div className="shrink-0 px-5 pb-6 pt-3" style={{ background: "#fff", borderTop: "1px solid #F0F0F0" }}>
+      <div className="shrink-0 px-5 pb-6 pt-3" style={{ background: "#fff", borderTop: "1px solid #DDE5E8" }}>
         <div className="flex items-center justify-between mb-3">
-          <span style={{ fontSize: 13, color: "#6B7280", fontWeight: 500 }}>선택한 장소</span>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#22D3CC" }}>{selected.size}곳</span>
+          <span style={{ fontSize: 13, color: "#555E63", fontWeight: 500 }}>선택한 장소</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#00E1FF" }}>{selected.size}곳</span>
         </div>
         <button
           onClick={handleConfirm}
           disabled={selected.size === 0}
           className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-all"
           style={{
-            background: selected.size > 0 ? "#0F172A" : "#E5E7EB",
-            color: selected.size > 0 ? "#fff" : "#9CA3AF",
+            background: selected.size > 0 ? "#090738" : "#DDE5E8",
+            color: selected.size > 0 ? "#fff" : "#7A858B",
           }}
         >
           {selected.size > 0 ? `${selected.size}곳 일정에 추가` : "장소를 선택하세요"}

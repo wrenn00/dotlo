@@ -59,18 +59,18 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
       >
         {/* 핸들 */}
         <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full" style={{ background: "#E0E0E0" }} />
+          <div className="w-10 h-1 rounded-full" style={{ background: "#DDE5E8" }} />
         </div>
 
         {/* 헤더 */}
         <div className="flex items-center justify-between px-5 pt-2 pb-1">
           <div>
-            <p style={{ fontSize: 18, fontWeight: 700, color: "#1A1A1A" }}>누구와 떠나시나요?</p>
-            <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>동행자에 맞춰 코스가 달라져요</p>
+            <p style={{ fontSize: 18, fontWeight: 700, color: "#090738" }}>누구와 떠나시나요?</p>
+            <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>동행자에 맞춰 코스가 달라져요</p>
           </div>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 2l12 12M14 2L2 14" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+              <path d="M2 2l12 12M14 2L2 14" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         </div>
@@ -86,8 +86,8 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
                 className="flex flex-col items-center justify-center gap-2 rounded-2xl transition-all"
                 style={{
                   height: 90,
-                  background: selected ? "#F0FDFB" : "#F5F5F7",
-                  border: selected ? "2px solid #38C6AF" : "2px solid transparent",
+                  background: selected ? "#E5FBFF" : "#F7F9FA",
+                  border: selected ? "2px solid #00E1FF" : "2px solid transparent",
                 }}
               >
                 <span style={{ fontSize: 28 }}>{emoji}</span>
@@ -95,7 +95,7 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
                   style={{
                     fontSize: 14,
                     fontWeight: selected ? 700 : 500,
-                    color: selected ? "#38C6AF" : "#1A1A1A",
+                    color: selected ? "#00E1FF" : "#090738",
                   }}
                 >
                   {key}
@@ -107,7 +107,7 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
 
         {/* 인원 조절 */}
         <div className="px-5 pb-4">
-          <p style={{ fontSize: 14, fontWeight: 600, color: "#1A1A1A", marginBottom: 16 }}>
+          <p style={{ fontSize: 14, fontWeight: 600, color: "#090738", marginBottom: 16 }}>
             총 인원
           </p>
           <div className="flex items-center justify-center gap-8">
@@ -115,29 +115,29 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
             <button
               onClick={() => setCount((c) => Math.max(1, c - 1))}
               className="w-11 h-11 rounded-full flex items-center justify-center transition-opacity active:opacity-60"
-              style={{ background: "#F5F5F7" }}
+              style={{ background: "#F7F9FA" }}
             >
               <svg width="14" height="2" viewBox="0 0 14 2" fill="none">
-                <path d="M1 1h12" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+                <path d="M1 1h12" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </button>
 
             {/* 숫자 */}
             <div className="flex items-baseline gap-1.5">
-              <span style={{ fontSize: 40, fontWeight: 700, color: "#1A1A1A", lineHeight: 1 }}>
+              <span style={{ fontSize: 40, fontWeight: 700, color: "#090738", lineHeight: 1 }}>
                 {count}
               </span>
-              <span style={{ fontSize: 16, fontWeight: 500, color: "#9CA3AF" }}>명</span>
+              <span style={{ fontSize: 16, fontWeight: 500, color: "#7A858B" }}>명</span>
             </div>
 
             {/* 증가 */}
             <button
               onClick={() => setCount((c) => Math.min(20, c + 1))}
               className="w-11 h-11 rounded-full flex items-center justify-center transition-opacity active:opacity-60"
-              style={{ background: "#F5F5F7" }}
+              style={{ background: "#F7F9FA" }}
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1v12M1 7h12" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+                <path d="M7 1v12M1 7h12" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </button>
           </div>
@@ -148,7 +148,7 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
           <button
             onClick={handleConfirm}
             className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-            style={{ background: "#1A1A1A" }}
+            style={{ background: "#090738" }}
           >
             선택 완료
           </button>

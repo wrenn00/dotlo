@@ -42,7 +42,7 @@ export default function Step3Page() {
           className="w-9 h-9 flex items-center justify-center"
         >
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
@@ -51,7 +51,7 @@ export default function Step3Page() {
       <div className="flex flex-col flex-1 px-5 pt-4 pb-6">
 
         {/* 제목 */}
-        <h1 style={{ fontSize: 24, fontWeight: 700, color: "#1A1A1A", lineHeight: "34px" }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: "#090738", lineHeight: "34px" }}>
           오사카 여행{"\n"}어떻게 만들어드릴까요?
         </h1>
 
@@ -65,15 +65,15 @@ export default function Step3Page() {
                 onClick={() => setSelected(key)}
                 className="relative flex flex-col items-center text-center px-6 py-8 rounded-2xl transition-all"
                 style={{
-                  background: active ? "#F0FDFB" : "#F5F5F7",
-                  border: active ? "2px solid #38C6AF" : "2px solid transparent",
+                  background: active ? "#E5FBFF" : "#F7F9FA",
+                  border: active ? "2px solid #00E1FF" : "2px solid transparent",
                 }}
               >
                 {/* 추천 배지 */}
                 {badge && (
                   <div
                     className="absolute top-3 right-3 px-2.5 py-1 rounded-full"
-                    style={{ background: "#38C6AF" }}
+                    style={{ background: "#00E1FF" }}
                   >
                     <span style={{ fontSize: 11, fontWeight: 600, color: "#fff" }}>{badge}</span>
                   </div>
@@ -87,7 +87,7 @@ export default function Step3Page() {
                   style={{
                     fontSize: 18,
                     fontWeight: 700,
-                    color: active ? "#38C6AF" : "#1A1A1A",
+                    color: active ? "#00E1FF" : "#090738",
                     marginTop: 14,
                   }}
                 >
@@ -97,7 +97,7 @@ export default function Step3Page() {
                 {/* 부제 */}
                 <div className="mt-2">
                   {lines.map((line, i) => (
-                    <p key={i} style={{ fontSize: 13, color: "#9CA3AF", lineHeight: "20px" }}>
+                    <p key={i} style={{ fontSize: 13, color: "#7A858B", lineHeight: "20px" }}>
                       {line}
                     </p>
                   ))}
@@ -115,8 +115,8 @@ export default function Step3Page() {
           disabled={!selected}
           className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-all"
           style={{
-            background: selected ? "#1A1A1A" : "#E5E7EB",
-            color: selected ? "#fff" : "#9CA3AF",
+            background: selected ? "#090738" : "#DDE5E8",
+            color: selected ? "#fff" : "#7A858B",
           }}
         >
           다음

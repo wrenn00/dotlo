@@ -122,18 +122,18 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
       >
         {/* 핸들 */}
         <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full" style={{ background: "#E0E0E0" }} />
+          <div className="w-10 h-1 rounded-full" style={{ background: "#DDE5E8" }} />
         </div>
 
         {/* 헤더 */}
         <div className="flex items-center justify-between px-5 pt-2 pb-1">
           <div>
-            <p style={{ fontSize: 18, fontWeight: 700, color: "#1A1A1A" }}>언제 떠나시나요?</p>
-            <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>출발일과 도착일을 선택해주세요</p>
+            <p style={{ fontSize: 18, fontWeight: 700, color: "#090738" }}>언제 떠나시나요?</p>
+            <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>출발일과 도착일을 선택해주세요</p>
           </div>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 2l12 12M14 2L2 14" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+              <path d="M2 2l12 12M14 2L2 14" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         </div>
@@ -150,12 +150,12 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
                 onClick={() => setPicking(type)}
                 className="flex-1 flex flex-col items-center py-2.5 rounded-2xl"
                 style={{
-                  border: active ? "1.5px solid #38C6AF" : "1.5px solid #E5E7EB",
-                  background: active ? "#F0FDFB" : "#fff",
+                  border: active ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
+                  background: active ? "#E5FBFF" : "#fff",
                 }}
               >
-                <span style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 500 }}>{label}</span>
-                <span style={{ fontSize: 13, fontWeight: 600, color: val ? "#1A1A1A" : "#D1D5DB", marginTop: 2 }}>
+                <span style={{ fontSize: 11, color: "#7A858B", fontWeight: 500 }}>{label}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: val ? "#090738" : "#A1ADB3", marginTop: 2 }}>
                   {val ? `${val.month + 1}월 ${val.day}일` : "선택"}
                 </span>
               </button>
@@ -167,15 +167,15 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
         <div className="flex items-center justify-between px-5 py-2">
           <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center">
             <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
-              <path d="M7 1L1 7l6 6" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M7 1L1 7l6 6" stroke="#090738" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>
+          <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>
             {viewYear}년 {viewMonth + 1}월
           </span>
           <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center">
             <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
-              <path d="M1 1l6 6-6 6" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M1 1l6 6-6 6" stroke="#090738" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
         </div>
@@ -188,7 +188,7 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
                 style={{
                   fontSize: 12,
                   fontWeight: 600,
-                  color: i === 0 ? "#EF4444" : i === 6 ? "#3B82F6" : "#9CA3AF",
+                  color: i === 0 ? "#EF4444" : i === 6 ? "#00E1FF" : "#7A858B",
                 }}
               >
                 {d}
@@ -218,19 +218,19 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
                 {range && (
                   <div
                     className="absolute inset-0"
-                    style={{ background: "#E2FBF3" }}
+                    style={{ background: "#E5FBFF" }}
                   />
                 )}
                 {isRangeStart && (
                   <div
                     className="absolute top-0 bottom-0 right-0"
-                    style={{ left: "50%", background: "#E2FBF3" }}
+                    style={{ left: "50%", background: "#E5FBFF" }}
                   />
                 )}
                 {isRangeEnd && (
                   <div
                     className="absolute top-0 bottom-0 left-0"
-                    style={{ right: "50%", background: "#E2FBF3" }}
+                    style={{ right: "50%", background: "#E5FBFF" }}
                   />
                 )}
 
@@ -239,7 +239,7 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
                   onClick={() => handleDay(day)}
                   className="relative w-9 h-9 flex items-center justify-center rounded-full transition-colors"
                   style={{
-                    background: start || end ? "#38C6AF" : "transparent",
+                    background: start || end ? "#00E1FF" : "transparent",
                     zIndex: 1,
                   }}
                 >
@@ -253,8 +253,8 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
                           : col === 0
                           ? "#EF4444"
                           : col === 6
-                          ? "#3B82F6"
-                          : "#1A1A1A",
+                          ? "#00E1FF"
+                          : "#090738",
                     }}
                   >
                     {day}
@@ -269,15 +269,15 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
         {(sel.start || sel.end) && (
           <div className="px-5 py-2 flex gap-2 justify-center">
             {sel.start && (
-              <span style={{ fontSize: 12, color: "#38C6AF", fontWeight: 600 }}>
+              <span style={{ fontSize: 12, color: "#00E1FF", fontWeight: 600 }}>
                 {fmt(sel.start.year, sel.start.month, sel.start.day)}
               </span>
             )}
             {sel.start && sel.end && (
-              <span style={{ fontSize: 12, color: "#9CA3AF" }}>→</span>
+              <span style={{ fontSize: 12, color: "#7A858B" }}>→</span>
             )}
             {sel.end && (
-              <span style={{ fontSize: 12, color: "#38C6AF", fontWeight: 600 }}>
+              <span style={{ fontSize: 12, color: "#00E1FF", fontWeight: 600 }}>
                 {fmt(sel.end.year, sel.end.month, sel.end.day)}
               </span>
             )}
@@ -290,7 +290,7 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
             onClick={handleConfirm}
             disabled={!sel.start || !sel.end}
             className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity disabled:opacity-40"
-            style={{ background: "#1A1A1A" }}
+            style={{ background: "#090738" }}
           >
             선택 완료
           </button>

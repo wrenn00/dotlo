@@ -7,11 +7,11 @@ interface TabProps {
 }
 
 function Tab({ active, label, icon }: TabProps) {
-  const color = active ? "#5ED5C2" : "#B8BDC2";
+  const color = active ? "#5CE7FF" : "#A1ADB3";
   return (
     <button className="flex flex-col items-center gap-1 flex-1">
       <div style={{ color }}>{icon}</div>
-      <span style={{ fontSize: 11, fontWeight: 500, color: active ? "#5ED5C2" : "#888F9C" }}>
+      <span style={{ fontSize: 11, fontWeight: 500, color: active ? "#5CE7FF" : "#7A858B" }}>
         {label}
       </span>
     </button>
@@ -71,7 +71,7 @@ export default function BottomTabBar() {
       className="absolute bottom-0 left-0 right-0 flex justify-around items-start pt-2 pb-6"
       style={{
         background: "#fff",
-        borderTop: "1px solid #F0F0F0",
+        borderTop: "1px solid #DDE5E8",
         zIndex: 30,
       }}
     >

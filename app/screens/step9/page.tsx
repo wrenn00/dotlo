@@ -26,10 +26,10 @@ const COURSE = {
     "숙소 기준으로 동선이 가장 짧아요",
   ],
   taste: [
-    { label: "카페", percent: 40, color: "#5EEAD4" },
-    { label: "맛집", percent: 25, color: "#22D3CC" },
-    { label: "관광", percent: 20, color: "#374151" },
-    { label: "야경", percent: 15, color: "#1F2937" },
+    { label: "카페", percent: 40, color: "#A5A5FF" }, // nightfall-purple-500
+    { label: "맛집", percent: 25, color: "#FFE400" }, // star-yellow-500
+    { label: "관광", percent: 20, color: "#00E1FF" }, // sky-blue-500
+    { label: "야경", percent: 15, color: "#090738" }, // night-navy-600
   ] as TasteItem[],
   totalPlaces: 16,
 };
@@ -98,7 +98,7 @@ export default function Step9Page() {
       <div className="flex items-center justify-between px-5 pt-12 pb-2 shrink-0">
         <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
         <div className="flex items-center gap-2">
@@ -107,17 +107,17 @@ export default function Step9Page() {
             className="w-9 h-9 flex items-center justify-center"
           >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <circle cx="4" cy="9" r="2" stroke="#6B7280" strokeWidth="1.5" />
-              <circle cx="14" cy="4" r="2" stroke="#6B7280" strokeWidth="1.5" />
-              <circle cx="14" cy="14" r="2" stroke="#6B7280" strokeWidth="1.5" />
-              <path d="M5.5 8L12.5 5M5.5 10L12.5 13" stroke="#6B7280" strokeWidth="1.5" />
+              <circle cx="4" cy="9" r="2" stroke="#555E63" strokeWidth="1.5" />
+              <circle cx="14" cy="4" r="2" stroke="#555E63" strokeWidth="1.5" />
+              <circle cx="14" cy="14" r="2" stroke="#555E63" strokeWidth="1.5" />
+              <path d="M5.5 8L12.5 5M5.5 10L12.5 13" stroke="#555E63" strokeWidth="1.5" />
             </svg>
           </button>
           <button className="w-9 h-9 flex items-center justify-center">
             <svg width="18" height="4" viewBox="0 0 18 4" fill="none">
-              <circle cx="2" cy="2" r="1.5" fill="#6B7280" />
-              <circle cx="9" cy="2" r="1.5" fill="#6B7280" />
-              <circle cx="16" cy="2" r="1.5" fill="#6B7280" />
+              <circle cx="2" cy="2" r="1.5" fill="#555E63" />
+              <circle cx="9" cy="2" r="1.5" fill="#555E63" />
+              <circle cx="16" cy="2" r="1.5" fill="#555E63" />
             </svg>
           </button>
         </div>
@@ -128,17 +128,17 @@ export default function Step9Page() {
         {/* 선택한 코스 배지 */}
         <div
           className="self-start flex items-center gap-1 px-2.5 py-1 rounded-full"
-          style={{ background: "#CCFBF1" }}
+          style={{ background: "#C2F5FF" }}
         >
           <span style={{ fontSize: 11 }}>✨</span>
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#0F766E" }}>선택한 코스</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#00A8BF" }}>선택한 코스</span>
         </div>
 
         {/* 제목 */}
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", marginTop: 10 }}>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 10 }}>
           {COURSE.title}
         </h1>
-        <p style={{ fontSize: 13, color: "#9CA3AF", marginTop: 4 }}>{COURSE.subtitle}</p>
+        <p style={{ fontSize: 13, color: "#7A858B", marginTop: 4 }}>{COURSE.subtitle}</p>
 
         {/* 통계 카드 */}
         <div className="mt-5">
@@ -160,9 +160,9 @@ export default function Step9Page() {
 
         {/* 일자별 일정 헤더 */}
         <div className="flex items-center justify-between mt-6 mb-3">
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>일자별 일정</span>
+          <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>일자별 일정</span>
           <button className="flex items-center gap-1">
-            <span style={{ fontSize: 12, color: "#1A1A1A", fontWeight: 500 }}>지도로 보기</span>
+            <span style={{ fontSize: 12, color: "#090738", fontWeight: 500 }}>지도로 보기</span>
             <span style={{ fontSize: 13 }}>🗺️</span>
           </button>
         </div>
@@ -173,14 +173,14 @@ export default function Step9Page() {
         {/* 일차 헤더 + 수정 */}
         <div className="flex items-center justify-between mt-4 mb-3">
           <div className="flex items-baseline gap-2">
-            <span style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>{selectedDay}</span>
-            <span style={{ fontSize: 12, color: "#9CA3AF" }}>{DAY_HEADER[selectedDay]}</span>
+            <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>{selectedDay}</span>
+            <span style={{ fontSize: 12, color: "#7A858B" }}>{DAY_HEADER[selectedDay]}</span>
           </div>
           <button
             onClick={() => router.push("/screens/step9/edit")}
             className="flex items-center gap-1"
           >
-            <span style={{ fontSize: 12, color: "#6B7280" }}>코스 수정</span>
+            <span style={{ fontSize: 12, color: "#555E63" }}>코스 수정</span>
             <span style={{ fontSize: 12 }}>✏️</span>
           </button>
         </div>
@@ -189,7 +189,7 @@ export default function Step9Page() {
         <div className="flex flex-col">
           {items.length === 0 ? (
             <div className="flex items-center justify-center py-12">
-              <p style={{ fontSize: 13, color: "#C4C7CF" }}>준비 중입니다</p>
+              <p style={{ fontSize: 13, color: "#A1ADB3" }}>준비 중입니다</p>
             </div>
           ) : (
             items.map((item, idx) => (
@@ -201,9 +201,9 @@ export default function Step9Page() {
                   style={{ top: 24, right: 12 }}
                 >
                   <svg width="14" height="3" viewBox="0 0 14 3" fill="none">
-                    <circle cx="1.5" cy="1.5" r="1.5" fill="#9CA3AF" />
-                    <circle cx="7" cy="1.5" r="1.5" fill="#9CA3AF" />
-                    <circle cx="12.5" cy="1.5" r="1.5" fill="#9CA3AF" />
+                    <circle cx="1.5" cy="1.5" r="1.5" fill="#7A858B" />
+                    <circle cx="7" cy="1.5" r="1.5" fill="#7A858B" />
+                    <circle cx="12.5" cy="1.5" r="1.5" fill="#7A858B" />
                   </svg>
                 </button>
               </div>
@@ -217,7 +217,7 @@ export default function Step9Page() {
         <button
           onClick={handleAdd}
           className="w-full h-[56px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-          style={{ background: "#0F172A" }}
+          style={{ background: "#090738" }}
         >
           내 여행에 추가하기
         </button>
