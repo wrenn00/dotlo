@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const FINAL_DELAY = 500;
@@ -16,26 +17,20 @@ interface Props {
 // ─── 중앙 아이콘 ──────────────────────────────────────────────────────────────
 
 function CenterIcon({ kind }: { kind: "create" | "regenerate" }) {
-  if (kind === "regenerate") {
-    return (
-      <svg
-        width="28" height="28" viewBox="0 0 28 28" fill="none"
-        style={{ animation: "spinSlow 2s linear infinite" }}
-      >
-        <path
-          d="M5 14a9 9 0 0114.5-7.2M23 14a9 9 0 01-14.5 7.2"
-          stroke="#00E1FF"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-        <path d="M19 3v5h-5M9 25v-5h5" stroke="#00E1FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
-  }
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <path d="M14 2l3 8 8 1-6 6 2 9-7-4-7 4 2-9-6-6 8-1 3-8z" fill="#00E1FF" />
-    </svg>
+    <Image
+      src="/images/logo.png"
+      alt="Dotlo"
+      width={56}
+      height={48}
+      priority
+      style={{
+        width: 56,
+        height: "auto",
+        // regenerate: 천천히 회전하며 재생성 의도 표현
+        animation: kind === "regenerate" ? "spinSlow 2.4s linear infinite" : undefined,
+      }}
+    />
   );
 }
 

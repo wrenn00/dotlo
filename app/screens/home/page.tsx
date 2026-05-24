@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import TripCard from "./components/TripCard";
 import SuggestCard from "./components/SuggestCard";
@@ -40,26 +41,17 @@ function StatusBar() {
 function Header() {
   return (
     <div className="flex items-center justify-between px-5 py-2 shrink-0">
-      {/* dotlo 로고 (다이아몬드 + 텍스트) */}
+      {/* dotlo 로고 (이미지 + 워드마크) */}
       <div className="flex items-center gap-2">
-        <div
-          className="flex items-center justify-center"
-          style={{
-            width: 28, height: 28,
-            background: "linear-gradient(135deg, #5CE7FF 0%, #00E1FF 100%)",
-            borderRadius: 7,
-          }}
-        >
-          <div
-            style={{
-              width: 12, height: 12,
-              background: "#fff",
-              transform: "rotate(45deg)",
-              borderRadius: 2,
-            }}
-          />
-        </div>
-        <span style={{ fontSize: 18, fontWeight: 800, color: "#5CE7FF", letterSpacing: -0.5 }}>
+        <Image
+          src="/images/logo.png"
+          alt="Dotlo"
+          width={32}
+          height={28}
+          priority
+          style={{ width: 32, height: "auto" }}
+        />
+        <span style={{ fontSize: 18, fontWeight: 800, color: "#090738", letterSpacing: -0.5 }}>
           dotlo
         </span>
       </div>

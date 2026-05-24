@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 interface Props {
@@ -132,23 +133,14 @@ export default function ShareSheet({ open, onClose }: Props) {
         {/* 헤더 */}
         <div className="flex items-center gap-3 px-5 pt-3 pb-4 shrink-0">
           {/* dotlo 아이콘 */}
-          <div
-            className="flex items-center justify-center shrink-0"
-            style={{
-              width: 52, height: 52,
-              borderRadius: 14,
-              background: "linear-gradient(135deg, #5CE7FF 0%, #00E1FF 100%)",
-            }}
-          >
-            <div
-              style={{
-                width: 22, height: 22,
-                background: "#fff",
-                transform: "rotate(45deg)",
-                borderRadius: 4,
-              }}
-            />
-          </div>
+          <Image
+            src="/images/logo.png"
+            alt="Dotlo"
+            width={52}
+            height={45}
+            className="shrink-0"
+            style={{ width: 52, height: "auto" }}
+          />
 
           {/* 타이틀 */}
           <div className="flex-1 min-w-0">
