@@ -3,11 +3,22 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import Icon from "@/components/Icon";
 import CourseCard from "./components/CourseCard";
 import DayTabs from "./components/DayTabs";
 import TimelineItem, { type TimelineData } from "./components/TimelineItem";
 import { courses, getCourse, TOKYO_CENTER, type CourseId } from "./courses";
+
+const COURSE_ORDER: CourseId[] = ["A", "B", "C"];
+
+type SlideDirection = "forward" | "backward";
+
+const slideVariants: Variants = {
+  initial: (dir: SlideDirection) => ({ x: dir === "forward" ? "100%" : "-100%", opacity: 0 }),
+  animate: { x: 0, opacity: 1 },
+  exit: (dir: SlideDirection) => ({ x: dir === "forward" ? "-100%" : "100%", opacity: 0 }),
+};
 
 const CourseMap = dynamic(() => import("@/components/CourseMap"), {
   ssr: false,
@@ -63,7 +74,16 @@ export default function Step7Page() {
   const [selectedId, setSelectedId] = useState<CourseId | null>(null);
   const [showDetail, setShowDetail] = useState(false);
   const [activeTab, setActiveTab] = useState<CourseId>("B");
+  const [tabDirection, setTabDirection] = useState<SlideDirection>("forward");
   const [selectedDay, setSelectedDay] = useState("1일차");
+
+  const handleTabClick = (id: CourseId) => {
+    if (id === activeTab) return;
+    const cur = COURSE_ORDER.indexOf(activeTab);
+    const next = COURSE_ORDER.indexOf(id);
+    setTabDirection(next > cur ? "forward" : "backward");
+    setActiveTab(id);
+  };
 
   const detailRef = useRef<HTMLDivElement>(null);
 
@@ -189,8 +209,8 @@ export default function Step7Page() {
                 return (
                   <button
                     key={c.id}
-                    onClick={() => setActiveTab(c.id)}
-                    className="flex-1 flex items-center justify-center py-2 rounded-full transition-all"
+                    onClick={() => handleTabClick(c.id)}
+                    className="flex-1 flex items-center justify-center py-2 rounded-full transition-all active:scale-95"
                     style={{
                       background: active ? "#fff" : "transparent",
                       boxShadow: active ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
@@ -205,69 +225,83 @@ export default function Step7Page() {
             </div>
           </div>
 
-          {/* 코스 카드 — 동적 색상 */}
-          <div className="px-5 mt-4">
-            <CourseCard
-              code={currentCourse.code}
-              title={currentCourse.title}
-              summary={currentCourse.subtitle}
-              aiNote={currentCourse.aiNote}
-              bgHex={currentCourse.bgHex}
-              accentHex={currentCourse.accentHex}
-            />
-          </div>
-
-          {/* 작은 지도 — 현재 코스만 */}
-          <div className="px-5 mt-4" style={{ height: 200 }}>
-            <CourseMap
-              key={`detail-map-${activeTab}`}
-              courses={[mapCourse(currentCourse)]}
-              center={[currentCourse.markers[0].lat, currentCourse.markers[0].lng]}
-              zoom={12}
-              height="200px"
-              showAll
-            />
-          </div>
-
-          {/* 일자별 일정 */}
-          <div className="px-5 flex items-center justify-between mt-6 mb-3">
-            <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>일자별 일정</span>
-            <button className="flex items-center gap-1">
-              <span style={{ fontSize: 12, color: "#090738", fontWeight: 500 }}>지도로 보기</span>
-              <Icon name="map" size={15} className="text-night-navy-600" />
-            </button>
-          </div>
-
-          <div className="px-5">
-            <DayTabs days={DAYS} selected={selectedDay} onSelect={setSelectedDay} />
-          </div>
-
-          <div className="px-5 flex flex-col mt-4">
-            {items.length === 0 ? (
-              <div className="flex items-center justify-center py-12">
-                <p style={{ fontSize: 13, color: "#A1ADB3" }}>준비 중입니다</p>
-              </div>
-            ) : (
-              items.map((item, idx) => (
-                <TimelineItem key={idx} data={item} isLast={idx === items.length - 1} />
-              ))
-            )}
-          </div>
-
-          {/* 다시 만들기 */}
-          <div className="px-5 mt-5">
-            <div className="flex flex-col items-center text-center p-5 rounded-2xl" style={{ background: "#F7F9FA" }}>
-              <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>마음에 드는 게 없으신가요?</p>
-              <p style={{ fontSize: 12, color: "#7A858B", marginTop: 4 }}>조건을 바꾸거나 다시 만들어볼 수 있어요</p>
-              <button
-                onClick={() => router.push("/screens/step8")}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-full mt-3"
-                style={{ background: "#fff", border: "1px solid #DDE5E8" }}
+          {/* 탭 전환 슬라이드 영역 */}
+          <div className="relative overflow-hidden">
+            <AnimatePresence mode="wait" custom={tabDirection}>
+              <motion.div
+                key={activeTab}
+                custom={tabDirection}
+                variants={slideVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               >
-                <Icon name="refresh" size={16} className="text-night-navy-600" />
-                <span style={{ fontSize: 12, fontWeight: 600, color: "#090738" }}>다시 만들기</span>
-              </button>
-            </div>
+                {/* 코스 카드 — 동적 색상 */}
+                <div className="px-5 mt-4">
+                  <CourseCard
+                    code={currentCourse.code}
+                    title={currentCourse.title}
+                    summary={currentCourse.subtitle}
+                    aiNote={currentCourse.aiNote}
+                    bgHex={currentCourse.bgHex}
+                    accentHex={currentCourse.accentHex}
+                  />
+                </div>
+
+                {/* 작은 지도 — 현재 코스만 */}
+                <div className="px-5 mt-4" style={{ height: 200 }}>
+                  <CourseMap
+                    courses={[mapCourse(currentCourse)]}
+                    center={[currentCourse.markers[0].lat, currentCourse.markers[0].lng]}
+                    zoom={12}
+                    height="200px"
+                    showAll
+                  />
+                </div>
+
+                {/* 일자별 일정 */}
+                <div className="px-5 flex items-center justify-between mt-6 mb-3">
+                  <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>일자별 일정</span>
+                  <button className="flex items-center gap-1">
+                    <span style={{ fontSize: 12, color: "#090738", fontWeight: 500 }}>지도로 보기</span>
+                    <Icon name="map" size={15} className="text-night-navy-600" />
+                  </button>
+                </div>
+
+                <div className="px-5">
+                  <DayTabs days={DAYS} selected={selectedDay} onSelect={setSelectedDay} />
+                </div>
+
+                <div className="px-5 flex flex-col mt-4">
+                  {items.length === 0 ? (
+                    <div className="flex items-center justify-center py-12">
+                      <p style={{ fontSize: 13, color: "#A1ADB3" }}>준비 중입니다</p>
+                    </div>
+                  ) : (
+                    items.map((item, idx) => (
+                      <TimelineItem key={idx} data={item} isLast={idx === items.length - 1} />
+                    ))
+                  )}
+                </div>
+
+                {/* 다시 만들기 */}
+                <div className="px-5 mt-5">
+                  <div className="flex flex-col items-center text-center p-5 rounded-2xl" style={{ background: "#F7F9FA" }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>마음에 드는 게 없으신가요?</p>
+                    <p style={{ fontSize: 12, color: "#7A858B", marginTop: 4 }}>조건을 바꾸거나 다시 만들어볼 수 있어요</p>
+                    <button
+                      onClick={() => router.push("/screens/step8")}
+                      className="flex items-center gap-1.5 px-4 py-2 rounded-full mt-3"
+                      style={{ background: "#fff", border: "1px solid #DDE5E8" }}
+                    >
+                      <Icon name="refresh" size={16} className="text-night-navy-600" />
+                      <span style={{ fontSize: 12, fontWeight: 600, color: "#090738" }}>다시 만들기</span>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* 하단 버튼 */}
