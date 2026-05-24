@@ -4,15 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
-import { replaceColor } from "lottie-colorify";
-import successCheckRaw from "@/public/lottie/success-check.json";
-
-// 초록 계열 → sky-blue 로 치환 (흰 체크는 유지)
-const successCheck = replaceColor(
-  "#c8f1e0",
-  "#c2f5ff",
-  replaceColor("#2cda94", "#00e1ff", successCheckRaw)
-);
+// 색상은 scripts/update-lottie-colors.mjs로 JSON에 직접 sky-blue 베이크됨
+import successCheck from "@/public/lottie/success-check.json";
 
 type Stage = "loading" | "success";
 
