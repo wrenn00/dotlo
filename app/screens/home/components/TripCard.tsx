@@ -47,12 +47,10 @@ export default function TripCard({ title, date, dDay, participants, image }: Tri
             {title}
           </span>
           <span
-            className="shrink-0 px-1.5 py-0.5 rounded-full"
-            style={{ background: "#E5FBFF" }}
+            className="shrink-0 inline-flex items-center justify-center px-3 py-1 rounded-full leading-none"
+            style={{ background: "#E5FBFF", fontSize: 13, fontWeight: 700, color: "#006B7A" }}
           >
-            <span style={{ fontSize: 10, fontWeight: 600, color: "#006B7A" }}>
-              {dDay}
-            </span>
+            {dDay}
           </span>
         </div>
 
