@@ -56,7 +56,17 @@ export default function PageTransition({ children }: { children: React.ReactNode
 
   if (prevStep !== null && currStep !== null) {
     type = "horizontal";
-    direction = currStep > prevStep ? "forward" : "backward";
+    if (prevStep !== currStep) {
+      direction = currStep > prevStep ? "forward" : "backward";
+    } else {
+      // 같은 STEP 안에서 하위 경로 이동 — URL 깊이로 판별
+      const prevDepth = prev.split("/").filter(Boolean).length;
+      const currDepth = pathname.split("/").filter(Boolean).length;
+      if (currDepth !== prevDepth) {
+        direction = currDepth > prevDepth ? "forward" : "backward";
+      }
+      // 같은 깊이의 sibling 이동은 forward 기본값 유지
+    }
   } else if (isHome(prev) && currStep !== null) {
     direction = "forward";
   } else if (prevStep !== null && isHome(pathname)) {
