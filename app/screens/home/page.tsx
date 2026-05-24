@@ -86,47 +86,29 @@ function Header() {
 
 function MainBanner({ onStart }: { onStart: () => void }) {
   return (
-    <div style={{ margin: "0 20px" }}>
-      <div style={{
-        position: 'relative',
-        overflow: 'hidden',
-        borderRadius: '24px',
-        backgroundImage: 'url(/images/background.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        color: 'white',
-        padding: '28px',
-        minHeight: '260px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-      }}>
-
-        <div>
-          <h2 style={{ fontSize: '24px', fontWeight: 'bold', lineHeight: '1.3' }}>
-            저장한 장소로<br />
-            코스 자동 생성하기
-          </h2>
-          <p style={{ fontSize: '14px', marginTop: '12px', opacity: 0.9 }}>
-            저장한 장소를 취향에 맞게 일정으로 짜드려요
-          </p>
-        </div>
-
-        <button onClick={onStart} style={{
-          alignSelf: 'flex-start',
-          padding: '10px 20px',
-          backgroundColor: 'white',
-          color: '#090738',
-          fontSize: '14px',
-          fontWeight: 'bold',
-          borderRadius: '9999px',
-          border: 'none',
-          cursor: 'pointer'
-        }}>
-          코스 만들기 ›
+    <div className="mx-5">
+      <div
+        className="relative overflow-hidden rounded-3xl bg-sky-blue-500 text-white p-5"
+        style={{
+          aspectRatio: "2 / 1",
+          backgroundImage: "url(/images/background.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <h2 className="text-xl font-bold leading-tight">
+          저장한 장소로<br />
+          코스 자동 생성하기
+        </h2>
+        <p className="text-sm mt-2 opacity-90">
+          저장한 장소를 취향에 맞게 일정으로 짜드려요
+        </p>
+        <button
+          onClick={onStart}
+          className="mt-5 inline-flex items-center gap-1 px-4 py-2 bg-white text-night-navy-600 text-sm font-bold rounded-full"
+        >
+          코스 만들기 <span>›</span>
         </button>
-
       </div>
     </div>
   );
