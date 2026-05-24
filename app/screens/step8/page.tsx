@@ -12,7 +12,7 @@ export default function Step8Page() {
       title="코스를 다시 만들고 있어요"
       icon="regenerate"
       steps={STEPS}
-      onComplete={() => router.push("/screens/step9")}
+      onComplete={() => router.push("/screens/step7")}
     />
   );
 }
