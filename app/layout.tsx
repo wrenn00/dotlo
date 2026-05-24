@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import TouchCursor from "@/components/TouchCursor";
+import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   title: "dotlo prototype",
@@ -42,7 +43,7 @@ export default function RootLayout({
               "0 0 0 10px #2a2a2a, 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.08)",
           }}
         >
-          {children}
+          <PageTransition>{children}</PageTransition>
         </div>
       </body>
     </html>
