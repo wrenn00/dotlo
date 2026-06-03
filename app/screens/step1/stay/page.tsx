@@ -173,13 +173,23 @@ export default function StayPage() {
           </div>
         </div>
 
-        {/* 지도 — 세로 늘림 (260px) */}
-        <div className="overflow-hidden" style={{ marginTop: 13, width: "100%", height: 260, borderRadius: 12, background: "#B9B9C0" }}>
+        {/* 지도 — shrink-0으로 flex 부모에 의해 줄어들지 않게 고정 */}
+        <div
+          className="shrink-0 overflow-hidden"
+          style={{
+            marginTop: 13,
+            width: "100%",
+            height: 280,
+            minHeight: 280,
+            borderRadius: 12,
+            background: "#B9B9C0",
+          }}
+        >
           <MiniMap
             center={TOKYO_CENTER}
             zoom={13}
             markers={PLACES.map((p) => ({ position: p.coords, label: `${p.name} — ${p.sub}` }))}
-            height={260}
+            height={280}
           />
         </div>
 
