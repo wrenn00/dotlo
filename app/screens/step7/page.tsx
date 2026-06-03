@@ -1,66 +1,49 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
-import Icon from "@/components/Icon";
-import CourseCard from "./components/CourseCard";
-import DayTabs from "./components/DayTabs";
-import TimelineItem, { type TimelineData } from "./components/TimelineItem";
-import { courses, getCourse, TOKYO_CENTER, type CourseId } from "./courses";
-
-const COURSE_ORDER: CourseId[] = ["A", "B", "C"];
-
-type SlideDirection = "forward" | "backward";
-
-const slideVariants: Variants = {
-  initial: (dir: SlideDirection) => ({ x: dir === "forward" ? "100%" : "-100%", opacity: 0 }),
-  animate: { x: 0, opacity: 1 },
-  exit: (dir: SlideDirection) => ({ x: dir === "forward" ? "-100%" : "100%", opacity: 0 }),
-};
+import { ChevronLeft, Sparkles, Map as MapIcon, RotateCcw, ChevronDown, Star, Footprints } from "lucide-react";
+import PlaceThumbnail from "@/components/PlaceThumbnail";
+import { courses, getCourse, type CourseId } from "./courses";
 
 const CourseMap = dynamic(() => import("@/components/CourseMap"), {
   ssr: false,
-  loading: () => (
-    <div className="animate-pulse" style={{ height: "100%", background: "#EEF2F4", borderRadius: 24 }} />
-  ),
+  loading: () => <div className="w-full h-full" style={{ background: "rgba(255,255,255,0.2)" }} />,
 });
 
-const DAYS = ["1일차", "2일차", "3일차", "4일차"];
+interface TimelineEntry {
+  time: string;
+  title: string;
+  region: string;
+  category: string;
+  rating: number;
+  reviews: number;
+  description: string;
+  image: string;
+  tag: string;
+  next?: string;
+}
 
-const SCHEDULE: Record<string, TimelineData[]> = {
-  "1일차": [
-    {
-      time: "10:00",
-      icon: "flight",
-      category: "비행",
-      duration: "2시간 30분",
-      title: "인천 > 나리타",
-      subtitle: "인천 ICN 09:30 - NRT 12:00",
-      transport: { type: "train", text: "스카이라이너 60분 · 우에노 역" },
-    },
-    {
-      time: "13:30",
-      icon: "hotel",
-      category: "숙소",
-      duration: "30분",
-      title: "APA 호텔 우에노",
-      subtitle: "역 도보 3분",
-      transport: { type: "walk", text: "도보 5분 · 400m" },
-    },
-    {
-      time: "14:30",
-      icon: "food",
-      category: "식사",
-      duration: "1시간 30분",
-      title: "이치란 라멘 우에노점",
-      subtitle: "평균 웨이팅 10분",
-    },
+const TIMELINE: Record<CourseId, TimelineEntry[]> = {
+  A: [
+    { time: "11:00", title: "츠키지 시장 스시다이", region: "도쿄·츠키지", category: "맛집", rating: 4.5, reviews: 9200, description: "새벽부터 줄 서는 스시 명가", image: "/images/places/default.jpg", tag: "맛집", next: "도보 10분 · 800m" },
+    { time: "13:30", title: "이치란 라멘 시부야", region: "도쿄·시부야", category: "맛집", rating: 4.3, reviews: 8900, description: "혼자서도 편한 1인 라멘 부스", image: "/images/places/default.jpg", tag: "맛집", next: "지하철 15분 · 4km" },
+    { time: "16:00", title: "긴자 큐베이", region: "도쿄·긴자", category: "맛집", rating: 4.7, reviews: 980, description: "오마카세 스시의 정수", image: "/images/places/default.jpg", tag: "맛집", next: "도보 6분 · 500m" },
+    { time: "19:00", title: "함바그 비프 키친", region: "도쿄·시부야", category: "맛집", rating: 4.5, reviews: 4500, description: "치즈 듬뿍 일본식 함바그", image: "/images/places/default.jpg", tag: "맛집" },
   ],
-  "2일차": [],
-  "3일차": [],
-  "4일차": [],
+  B: [
+    { time: "18:00", title: "시부야 스카이", region: "도쿄·시부야", category: "야경", rating: 4.6, reviews: 5488, description: "360도 도시 전경 전망대", image: "/images/places/default.jpg", tag: "야경", next: "도보 10분 · 800m" },
+    { time: "19:30", title: "롯폰기 힐스 전망대", region: "도쿄·롯폰기", category: "야경", rating: 4.5, reviews: 12000, description: "도쿄타워가 보이는 야경 명소", image: "/images/places/default.jpg", tag: "야경", next: "지하철 15분 · 4km" },
+    { time: "21:00", title: "도쿄타워", region: "도쿄·미나토", category: "야경", rating: 4.6, reviews: 35000, description: "도쿄의 상징, 조명 든 333m 타워", image: "/images/places/default.jpg", tag: "야경", next: "도보 6분 · 500m" },
+    { time: "22:30", title: "오다이바 레인보우 브릿지", region: "도쿄·오다이바", category: "야경", rating: 4.4, reviews: 32000, description: "야경 끝판왕 강변 산책", image: "/images/places/default.jpg", tag: "야경" },
+  ],
+  C: [
+    { time: "10:00", title: "신주쿠 이세탄", region: "도쿄·신주쿠", category: "쇼핑", rating: 4.5, reviews: 15000, description: "도쿄 No.1 백화점", image: "/images/places/default.jpg", tag: "쇼핑", next: "지하철 8분 · 2km" },
+    { time: "13:00", title: "시부야 109", region: "도쿄·시부야", category: "쇼핑", rating: 4.3, reviews: 22000, description: "트렌드 패션 1번지", image: "/images/places/default.jpg", tag: "쇼핑", next: "도보 12분 · 1km" },
+    { time: "15:30", title: "오모테산도 거리", region: "도쿄·오모테산도", category: "쇼핑", rating: 4.6, reviews: 18000, description: "하이엔드 부티크 스트리트", image: "/images/places/default.jpg", tag: "쇼핑", next: "지하철 10분 · 3km" },
+    { time: "18:00", title: "긴자 식스", region: "도쿄·긴자", category: "쇼핑", rating: 4.6, reviews: 8500, description: "프리미엄 럭셔리 몰", image: "/images/places/default.jpg", tag: "쇼핑" },
+  ],
 };
 
 const mapCourse = (c: (typeof courses)[number]) => ({
@@ -71,252 +54,526 @@ const mapCourse = (c: (typeof courses)[number]) => ({
 
 export default function Step7Page() {
   const router = useRouter();
-  const [selectedId, setSelectedId] = useState<CourseId | null>(null);
-  const [showDetail, setShowDetail] = useState(false);
   const [activeTab, setActiveTab] = useState<CourseId>("B");
-  const [tabDirection, setTabDirection] = useState<SlideDirection>("forward");
-  const [selectedDay, setSelectedDay] = useState("1일차");
+  const [expanded, setExpanded] = useState(false);
 
-  const handleTabClick = (id: CourseId) => {
-    if (id === activeTab) return;
-    const cur = COURSE_ORDER.indexOf(activeTab);
-    const next = COURSE_ORDER.indexOf(id);
-    setTabDirection(next > cur ? "forward" : "backward");
-    setActiveTab(id);
-  };
-
-  const detailRef = useRef<HTMLDivElement>(null);
-
-  const currentCourse = getCourse(activeTab);
-  const items = SCHEDULE[selectedDay] ?? [];
-
-  const handleCardClick = (id: CourseId) => {
-    setSelectedId(id);
-    setActiveTab(id);
-    setShowDetail(true);
-    setTimeout(() => {
-      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
-  };
+  const course = getCourse(activeTab);
+  const items = TIMELINE[activeTab];
+  const visibleItems = expanded ? items : items.slice(0, 4);
 
   return (
-    <div className="h-full overflow-y-auto overflow-x-hidden" style={{ background: "#fff" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
 
-      {/* ═══ 섹션 1: 비교 뷰 (812px) ═══ */}
-      <section className="min-h-[812px] flex flex-col">
-        {/* 헤더 */}
-        <div className="px-5 pt-12 pb-2">
-          <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
-            <Icon name="arrow_back_ios_new" size={22} className="text-night-navy-600" />
-          </button>
-        </div>
+      {/* 헤더 */}
+      <div className="shrink-0" style={{ padding: "44px 14px 0" }}>
+        <button onClick={() => router.back()} className="flex items-center justify-center" style={{ width: 36, height: 36 }}>
+          <ChevronLeft size={24} color="#373C3E" strokeWidth={2} />
+        </button>
+      </div>
 
-        {/* 타이틀 */}
-        <div className="px-5">
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sky-blue-100 text-sky-blue-600">
-            <Icon name="auto_awesome" size={13} fill />
-            <span style={{ fontSize: 11, fontWeight: 700 }}>AI 추천</span>
-          </span>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 10, lineHeight: "30px" }}>
-            코스를 만들었어요
-          </h1>
-          <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6, lineHeight: "20px" }}>
-            3가지 코스를 비교해보고, 마음에 드는 코스를 선택하세요
-          </p>
-        </div>
+      {/* 본문 */}
+      <div className="flex flex-col flex-1 overflow-y-auto" style={{ padding: "0 21px 24px" }}>
 
-        {/* 큰 지도 */}
-        <div className="px-5 mt-5">
-          <div className="relative" style={{ height: 380 }}>
-            <CourseMap courses={courses.map(mapCourse)} center={TOKYO_CENTER} zoom={11} height="380px" showAll />
-            <div
-              className="absolute flex flex-col gap-1 px-3 py-2.5 rounded-2xl z-[500]"
-              style={{ left: 12, bottom: 12, background: "#fff", boxShadow: "0 2px 8px rgba(9,7,56,0.12)" }}
+        {/* AI 추천 칩 + 제목 블록 */}
+        <div className="flex flex-col" style={{ marginTop: 12, gap: 10 }}>
+          <div
+            className="inline-flex items-center self-start"
+            style={{
+              height: 28,
+              padding: "0 10px 0 7px",
+              gap: 6,
+              background: "#F2F2F6",
+              borderRadius: 27,
+            }}
+          >
+            <Sparkles size={16} color="#6060A0" fill="#6060A0" strokeWidth={0} />
+            <span
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 14,
+                fontWeight: 500,
+                lineHeight: "18px",
+                color: "#6060A0",
+              }}
             >
-              {courses.map((c) => (
-                <div key={c.id} className="flex items-center gap-2">
-                  <span style={{ width: 10, height: 10, borderRadius: "50%", background: c.colorHex }} />
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "#090738" }}>
-                    {c.id} {c.label}
-                  </span>
-                </div>
-              ))}
-            </div>
+              AI 추천
+            </span>
+          </div>
+          <div className="flex flex-col" style={{ gap: 6 }}>
+            <h1
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 22,
+                fontWeight: 700,
+                lineHeight: "28px",
+                color: "#373C3E",
+              }}
+            >
+              코스를 만들었어요
+            </h1>
+            <p
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 14,
+                fontWeight: 500,
+                lineHeight: "18px",
+                color: "#888E9C",
+              }}
+            >
+              3가지 스타일로 골랐어요. 선택한 코스는 수정가능해요
+            </p>
           </div>
         </div>
 
-        {/* 안내 */}
-        <div className="px-5 mt-5 flex items-center justify-between">
-          <p style={{ fontSize: 12, color: "#7A858B" }}>원하는 코스를 선택해주세요</p>
-          <Icon name="touch_app" size={14} className="text-cloudy-gray-400" />
-        </div>
-
-        {/* 3개 카드 */}
-        <div className="px-5 mt-2 grid grid-cols-3 gap-2">
+        {/* 탭 셀렉터 — 340x40 #F8F9FB radius 12 */}
+        <div
+          className="relative flex items-center"
+          style={{
+            marginTop: 16,
+            height: 40,
+            padding: 3,
+            background: "#F8F9FB",
+            borderRadius: 12,
+          }}
+        >
           {courses.map((c) => {
-            const active = selectedId === c.id;
+            const active = activeTab === c.id;
             return (
               <button
                 key={c.id}
-                onClick={() => handleCardClick(c.id)}
-                className="flex flex-col items-start text-left p-3 rounded-2xl transition-all active:scale-95"
+                onClick={() => setActiveTab(c.id)}
+                className="flex-1 flex items-center justify-center transition-all"
                 style={{
-                  background: active ? "#fff" : "#F7F9FA",
-                  border: active ? `2px solid ${c.colorHex}` : "2px solid transparent",
+                  height: 34,
+                  background: active ? "#FFFFFF" : "transparent",
+                  boxShadow: active ? "0 0 4px rgba(0,0,0,0.09)" : "none",
+                  borderRadius: 8,
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 12,
+                  fontWeight: 500,
+                  lineHeight: "15px",
+                  color: "#666C78",
                 }}
               >
-                <div className="flex items-center gap-1.5">
-                  <span style={{ width: 10, height: 10, borderRadius: "50%", background: c.colorHex }} />
-                  <span style={{ fontSize: 12, fontWeight: 700, color: "#090738" }}>{c.id}</span>
-                </div>
-                <span style={{ fontSize: 12, fontWeight: 600, color: "#090738", marginTop: 6 }}>{c.label}</span>
-                <span style={{ fontSize: 11, color: "#7A858B", marginTop: 2, lineHeight: "15px" }}>{c.description}</span>
+                {c.id} {c.label.replace(" 코스", "")}
               </button>
             );
           })}
         </div>
 
-        {/* 버튼 없음 — 카드 클릭이 곧 펼침 트리거 */}
-        <div className="flex-1" />
-      </section>
-
-      {/* ═══ 섹션 2: 상세 뷰 (조건부) ═══ */}
-      {showDetail && (
-        <section
-          ref={detailRef}
-          className="min-h-[812px] flex flex-col animate-slide-up"
-          style={{ borderTop: "1px solid #EEF2F4" }}
-        >
-          {/* 타이틀 */}
-          <div className="px-5 pt-8">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sky-blue-100 text-sky-blue-600">
-              <Icon name="auto_awesome" size={13} fill />
-              <span style={{ fontSize: 11, fontWeight: 700 }}>AI 추천</span>
-            </span>
-            <h2 style={{ fontSize: 22, fontWeight: 700, color: "#090738", marginTop: 10, lineHeight: "30px" }}>
-              선택한 코스 상세
-            </h2>
-            <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6 }}>
-              탭으로 다른 코스도 비교해볼 수 있어요
-            </p>
+        {/* 히어로 카드 — 344x271 + 하단 정보 영역 */}
+        <div className="flex flex-col" style={{ marginTop: 14, gap: 11 }}>
+          {/* 지도 영역 */}
+          <div
+            className="relative overflow-hidden"
+            style={{
+              height: 271,
+              background: course.bgHex,
+              borderRadius: 12,
+            }}
+          >
+            <CourseMap
+              courses={[mapCourse(course)]}
+              center={[course.markers[0].lat, course.markers[0].lng]}
+              zoom={12}
+              height="100%"
+              showAll
+            />
           </div>
 
-          {/* A/B/C 탭 */}
-          <div className="px-5 mt-5">
-            <div className="flex p-1 rounded-full" style={{ background: "#F7F9FA" }}>
-              {courses.map((c) => {
-                const active = activeTab === c.id;
-                return (
-                  <button
-                    key={c.id}
-                    onClick={() => handleTabClick(c.id)}
-                    className="flex-1 flex items-center justify-center py-2 rounded-full transition-all active:scale-95"
-                    style={{
-                      background: active ? "#fff" : "transparent",
-                      boxShadow: active ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
-                    }}
-                  >
-                    <span style={{ fontSize: 13, fontWeight: active ? 700 : 500, color: active ? "#090738" : "#7A858B" }}>
-                      {c.id} {c.label.replace(" 코스", "")}
-                    </span>
-                  </button>
-                );
-              })}
+          {/* 코스 정보 카드 — course color bg with white text */}
+          <div
+            className="relative overflow-hidden"
+            style={{
+              padding: "13px 14px",
+              background: course.colorHex,
+              borderRadius: 12,
+            }}
+          >
+            <div className="flex items-start" style={{ gap: 8 }}>
+              {/* 코스 칩 — 58x24 #EFEFFF radius 18 */}
+              <div
+                className="inline-flex items-center justify-center"
+                style={{
+                  height: 24,
+                  padding: "0 10px",
+                  background: "#EFEFFF",
+                  borderRadius: 18,
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: '"Spoqa Han Sans Neo"',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    lineHeight: "18px",
+                    color: course.accentHex,
+                  }}
+                >
+                  {course.id} 코스
+                </span>
+              </div>
+              <div className="flex flex-col" style={{ gap: 4, flex: 1 }}>
+                <p
+                  style={{
+                    fontFamily: '"Pretendard", "Spoqa Han Sans Neo"',
+                    fontSize: 18,
+                    fontWeight: 700,
+                    lineHeight: "21px",
+                    color: "#FFFFFF",
+                    whiteSpace: "pre-line",
+                  }}
+                >
+                  {course.title}
+                </p>
+                <p
+                  style={{
+                    fontFamily: '"Pretendard", "Spoqa Han Sans Neo"',
+                    fontSize: 10,
+                    fontWeight: 400,
+                    lineHeight: "12px",
+                    color: "#333333",
+                  }}
+                >
+                  {course.subtitle}
+                </p>
+              </div>
+            </div>
+
+            {/* AI 노트 박스 */}
+            <div
+              className="flex items-start"
+              style={{
+                marginTop: 18,
+                padding: "10px 12px 10px 32px",
+                background: "rgba(255,255,255,0.2)",
+                borderRadius: 12,
+                position: "relative",
+              }}
+            >
+              <Sparkles
+                size={16}
+                color="#F6F6FF"
+                fill="#F6F6FF"
+                strokeWidth={0}
+                style={{ position: "absolute", left: 10, top: 12 }}
+              />
+              <p
+                style={{
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 10,
+                  fontWeight: 500,
+                  lineHeight: "13px",
+                  color: "#333333",
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {course.aiNote}
+              </p>
             </div>
           </div>
+        </div>
 
-          {/* 탭 전환 슬라이드 영역 */}
-          <div className="relative overflow-hidden">
-            <AnimatePresence mode="wait" custom={tabDirection}>
-              <motion.div
-                key={activeTab}
-                custom={tabDirection}
-                variants={slideVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              >
-                {/* 코스 카드 — 동적 색상 */}
-                <div className="px-5 mt-4">
-                  <CourseCard
-                    code={currentCourse.code}
-                    title={currentCourse.title}
-                    summary={currentCourse.subtitle}
-                    aiNote={currentCourse.aiNote}
-                    bgHex={currentCourse.bgHex}
-                    accentHex={currentCourse.accentHex}
-                    backgroundImage={currentCourse.backgroundImage}
-                  />
+        {/* 코스 헤더 — "코스" + 지도로 보기 */}
+        <div className="flex items-center justify-between" style={{ marginTop: 22 }}>
+          <span
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 14,
+              fontWeight: 700,
+              lineHeight: "21px",
+              color: "#363636",
+            }}
+          >
+            코스
+          </span>
+          <button className="flex items-center" style={{ gap: 4 }}>
+            <span
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 12,
+                fontWeight: 500,
+                lineHeight: "15px",
+                color: "#888888",
+              }}
+            >
+              지도로 보기
+            </span>
+            <MapIcon size={14} color="#888888" strokeWidth={1.8} />
+          </button>
+        </div>
+
+        {/* 타임라인 리스트 */}
+        <div className="flex flex-col" style={{ marginTop: 12, gap: 18 }}>
+          {visibleItems.map((item, idx) => (
+            <div key={`${item.title}-${idx}`} className="flex">
+              {/* 좌측: 시간 + 아이콘 + 라인 */}
+              <div className="shrink-0 flex flex-col items-center" style={{ width: 33 }}>
+                <span
+                  style={{
+                    fontFamily: '"Spoqa Han Sans Neo"',
+                    fontSize: 10,
+                    fontWeight: 500,
+                    lineHeight: "13px",
+                    color: "#4B5969",
+                  }}
+                >
+                  {item.time}
+                </span>
+                <div
+                  className="flex items-center justify-center"
+                  style={{
+                    marginTop: 3,
+                    width: 25,
+                    height: 25,
+                    background: "#EFEFFF",
+                    borderRadius: 8,
+                  }}
+                >
+                  <Sparkles size={14} color={course.colorHex} fill={course.colorHex} strokeWidth={0} />
                 </div>
+                {idx < visibleItems.length - 1 && (
+                  <div className="flex-1 flex flex-col items-center" style={{ marginTop: 4, gap: 4 }}>
+                    <div style={{ width: 1, flex: 1, background: "#E6E8EB" }} />
+                    {item.next && (
+                      <Footprints size={14} color="#A0A0C0" strokeWidth={1.8} />
+                    )}
+                  </div>
+                )}
+              </div>
 
-                {/* 작은 지도 — 현재 코스만 */}
-                <div className="px-5 mt-4" style={{ height: 200 }}>
-                  <CourseMap
-                    courses={[mapCourse(currentCourse)]}
-                    center={[currentCourse.markers[0].lat, currentCourse.markers[0].lng]}
-                    zoom={12}
-                    height="200px"
-                    showAll
-                  />
-                </div>
-
-                {/* 일자별 일정 */}
-                <div className="px-5 flex items-center justify-between mt-6 mb-3">
-                  <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>일자별 일정</span>
-                  <button className="flex items-center gap-1">
-                    <span style={{ fontSize: 12, color: "#090738", fontWeight: 500 }}>지도로 보기</span>
-                    <Icon name="map" size={15} className="text-night-navy-600" />
-                  </button>
-                </div>
-
-                <div className="px-5">
-                  <DayTabs days={DAYS} selected={selectedDay} onSelect={setSelectedDay} />
-                </div>
-
-                <div className="px-5 flex flex-col mt-4">
-                  {items.length === 0 ? (
-                    <div className="flex items-center justify-center py-12">
-                      <p style={{ fontSize: 13, color: "#A1ADB3" }}>준비 중입니다</p>
+              {/* 우측: 카드 + 이동 안내 */}
+              <div className="flex-1" style={{ marginLeft: 8 }}>
+                <div
+                  className="relative"
+                  style={{
+                    padding: 9,
+                    background: "#F9FAFB",
+                    borderRadius: 8,
+                  }}
+                >
+                  <div className="flex items-start" style={{ gap: 8 }}>
+                    <div className="shrink-0">
+                      <PlaceThumbnail src={item.image} alt={item.title} category={item.category} size={51} />
                     </div>
-                  ) : (
-                    items.map((item, idx) => (
-                      <TimelineItem key={idx} data={item} isLast={idx === items.length - 1} />
-                    ))
-                  )}
-                </div>
-
-                {/* 다시 만들기 */}
-                <div className="px-5 mt-5">
-                  <div className="flex flex-col items-center text-center p-5 rounded-2xl" style={{ background: "#F7F9FA" }}>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>마음에 드는 게 없으신가요?</p>
-                    <p style={{ fontSize: 12, color: "#7A858B", marginTop: 4 }}>조건을 바꾸거나 다시 만들어볼 수 있어요</p>
-                    <button
-                      onClick={() => router.push("/screens/step8")}
-                      className="flex items-center gap-1.5 px-4 py-2 rounded-full mt-3"
-                      style={{ background: "#fff", border: "1px solid #DDE5E8" }}
+                    <div className="flex flex-col min-w-0" style={{ gap: 4, flex: 1 }}>
+                      <span
+                        className="truncate"
+                        style={{
+                          fontFamily: '"Spoqa Han Sans Neo"',
+                          fontSize: 14,
+                          fontWeight: 500,
+                          lineHeight: "18px",
+                          color: "#1A1A1A",
+                        }}
+                      >
+                        {item.title}
+                      </span>
+                      <div className="flex flex-col" style={{ gap: 2 }}>
+                        <div className="flex items-center whitespace-nowrap" style={{ gap: 5 }}>
+                          <span
+                            style={{
+                              fontFamily: '"Spoqa Han Sans Neo"',
+                              fontSize: 10,
+                              fontWeight: 500,
+                              lineHeight: "13px",
+                              color: "#555555",
+                            }}
+                          >
+                            {item.region.split("·").slice(-1)[0]}·{item.category}
+                          </span>
+                          <div className="flex items-center" style={{ gap: 1 }}>
+                            <Star size={11} color="#FFE770" fill="#FFE770" strokeWidth={0} />
+                            <span
+                              style={{
+                                fontFamily: '"Spoqa Han Sans Neo"',
+                                fontSize: 10,
+                                fontWeight: 500,
+                                lineHeight: "13px",
+                                color: "#555555",
+                              }}
+                            >
+                              {item.rating}({item.reviews.toLocaleString()})
+                            </span>
+                          </div>
+                        </div>
+                        <span
+                          className="truncate"
+                          style={{
+                            fontFamily: '"Spoqa Han Sans Neo"',
+                            fontSize: 10,
+                            fontWeight: 500,
+                            lineHeight: "13px",
+                            color: "#555555",
+                          }}
+                        >
+                          {item.description}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {/* 우상단 태그 칩 */}
+                  <div
+                    className="absolute inline-flex items-center justify-center"
+                    style={{
+                      top: 6,
+                      right: 6,
+                      height: 14,
+                      padding: "0 6px",
+                      background: "#EFEFFF",
+                      borderRadius: 4,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 8,
+                        fontWeight: 500,
+                        lineHeight: "10px",
+                        color: course.colorHex,
+                      }}
                     >
-                      <Icon name="refresh" size={16} className="text-night-navy-600" />
-                      <span style={{ fontSize: 12, fontWeight: 600, color: "#090738" }}>다시 만들기</span>
-                    </button>
+                      {item.tag}
+                    </span>
                   </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                {item.next && (
+                  <div className="flex items-center" style={{ marginTop: 4, gap: 4 }}>
+                    <Footprints size={13} color="#A0A0C0" strokeWidth={1.8} />
+                    <span
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 10,
+                        fontWeight: 500,
+                        lineHeight: "13px",
+                        color: "#767F89",
+                      }}
+                    >
+                      {item.next}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
 
-          {/* 하단 버튼 */}
-          <div className="mt-auto px-5 pb-8 pt-5">
-            <button
-              onClick={() => router.push("/screens/step9")}
-              className="w-full h-[52px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-              style={{ background: "#090738" }}
+        {/* 전체 일정 보기 버튼 */}
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          className="flex items-center justify-center w-full"
+          style={{
+            marginTop: 14,
+            height: 50,
+            background: "#FFFFFF",
+            border: "1px solid #E6E8EB",
+            borderRadius: 12,
+            gap: 8,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 16,
+              fontWeight: 500,
+              lineHeight: "20px",
+              letterSpacing: "-0.5px",
+              color: "#949494",
+            }}
+          >
+            {expanded ? "간략히 보기" : "전체 일정 보기"}
+          </span>
+          <ChevronDown
+            size={14}
+            color="#949494"
+            strokeWidth={2}
+            style={{ transform: expanded ? "rotate(180deg)" : "none", transition: "transform 200ms" }}
+          />
+        </button>
+
+        {/* 마음에 드는 게 없으신가요? 카드 */}
+        <div
+          className="flex flex-col items-center"
+          style={{
+            marginTop: 12,
+            padding: "22px 16px",
+            background: "#F9FAFB",
+            borderRadius: 8,
+            gap: 13,
+          }}
+        >
+          <div className="flex flex-col items-center" style={{ gap: 6 }}>
+            <p
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 16,
+                fontWeight: 700,
+                lineHeight: "20px",
+                color: "#1A1A1A",
+              }}
             >
-              이 코스 선택하기
-            </button>
+              마음에 드는 게 없으신가요?
+            </p>
+            <p
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 12,
+                fontWeight: 500,
+                lineHeight: "15px",
+                color: "#555555",
+              }}
+            >
+              조건을 바꾸거나 다시 만들어볼 수 있어요
+            </p>
           </div>
-        </section>
-      )}
+          <button
+            onClick={() => router.push("/screens/step8")}
+            className="flex items-center justify-center"
+            style={{
+              height: 32,
+              padding: "0 12px",
+              background: "#FFFFFF",
+              border: "1px solid #F5F5F5",
+              borderRadius: 8,
+              gap: 5,
+            }}
+          >
+            <RotateCcw size={14} color="#4B5969" strokeWidth={1.8} />
+            <span
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 12,
+                fontWeight: 500,
+                lineHeight: "15px",
+                color: "#4B5969",
+              }}
+            >
+              다시 만들기
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* 이 코스 저장하기 — 330x50 #090738 radius 12 */}
+      <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px", background: "#FFFFFF" }}>
+        <button
+          onClick={() => router.push("/screens/step9")}
+          className="w-full transition-opacity active:opacity-80"
+          style={{
+            height: 50,
+            background: "#090738",
+            borderRadius: 12,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 16,
+            fontWeight: 500,
+            lineHeight: "20px",
+            letterSpacing: "-0.5px",
+            color: "#FFFFFF",
+          }}
+        >
+          이 코스 저장하기
+        </button>
+      </div>
     </div>
   );
 }

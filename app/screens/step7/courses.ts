@@ -32,9 +32,9 @@ export const courses: Course[] = [
     description: "현지 맛집 중심",
     title: "맛있는 도쿄 일주",
     subtitle: "하루 평균 5곳 · 미식 위주",
-    colorHex: "#00E1FF",
-    bgHex: "#99EEFF",
-    accentHex: "#00A8BF",
+    colorHex: "#5DD6C3",
+    bgHex: "#B5EBE0",
+    accentHex: "#2A8E7A",
     backgroundImage: "/images/a.png",
     aiNote: "현지인 맛집 동선으로\n점심·저녁 모두 최고의 미식 코스를 짰어요",
     markers: [
