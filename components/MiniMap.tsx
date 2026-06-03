@@ -55,9 +55,10 @@ export default function MiniMap({
         scrollWheelZoom={scrollWheelZoom}
         style={{ height: "100%", width: "100%" }}
       >
+        {/* CartoDB Voyager — Google Maps 유사 스타일 (도로·랜드마크 강조, 깔끔한 톤) */}
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         />
         {markers.map((m, i) => (
           <Marker key={i} position={m.position}>

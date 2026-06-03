@@ -16,11 +16,15 @@ const MiniMap = dynamic(() => import("@/components/MiniMap"), {
 
 const INPUT_ID = "stay-search";
 
+// Tokyo 숙소 위치 — 신주쿠/시부야/아사쿠사 (도쿄 주요 호텔 거점)
 const PLACES = [
-  { id: 1, name: "도본토리",   sub: "오사카 미나미",   coords: [34.6687, 135.5026] as [number, number], image: "/images/where/osaka.png" },
-  { id: 2, name: "고노하나구", sub: "오사카 고노하나", coords: [34.6845, 135.4438] as [number, number], image: "/images/where/osaka.png" },
-  { id: 3, name: "우메다",     sub: "오사카 키타",     coords: [34.7024, 135.4959] as [number, number], image: "/images/where/osaka.png" },
+  { id: 1, name: "신주쿠",   sub: "도쿄 신주쿠구",  coords: [35.6896, 139.7006] as [number, number], image: "/images/where/dokyo.png" },
+  { id: 2, name: "시부야",   sub: "도쿄 시부야구",  coords: [35.6595, 139.7004] as [number, number], image: "/images/where/dokyo.png" },
+  { id: 3, name: "아사쿠사", sub: "도쿄 다이토구",  coords: [35.7148, 139.7967] as [number, number], image: "/images/where/dokyo.png" },
 ];
+
+// 도쿄 중심 (시부야~신주쿠 사이)
+const TOKYO_CENTER: [number, number] = [35.68, 139.74];
 
 export default function StayPage() {
   const router = useRouter();
@@ -172,7 +176,7 @@ export default function StayPage() {
         {/* 지도 — 330x218 radius 12 */}
         <div className="overflow-hidden" style={{ marginTop: 13, width: "100%", height: 218, borderRadius: 12, background: "#B9B9C0" }}>
           <MiniMap
-            center={[34.6687, 135.5026]}
+            center={TOKYO_CENTER}
             zoom={13}
             markers={PLACES.map((p) => ({ position: p.coords, label: `${p.name} — ${p.sub}` }))}
             height={218}
@@ -209,16 +213,16 @@ export default function StayPage() {
                   borderRadius: 12,
                   boxShadow: "0 0 6.8px rgba(0, 0, 0, 0.08)",
                   border: active ? "1.5px solid #2E2E70" : "1.5px solid transparent",
-                  padding: "0 8px",
+                  padding: "0 8px 0 12px",
                 }}
               >
-                <div className="flex items-center" style={{ gap: 8, flex: 1 }}>
-                  {/* 썸네일 50x50 */}
+                <div className="flex items-center" style={{ gap: 11, flex: 1 }}>
+                  {/* 썸네일 39x39 */}
                   <div
                     className="shrink-0 relative overflow-hidden"
-                    style={{ width: 50, height: 50, background: "#B9B9C0", borderRadius: 8 }}
+                    style={{ width: 39, height: 39, background: "#B9B9C0", borderRadius: 8 }}
                   >
-                    <Image src={p.image} alt={p.name} fill className="object-cover" sizes="50px" />
+                    <Image src={p.image} alt={p.name} fill className="object-cover" sizes="39px" />
                   </div>
                   {/* 텍스트 */}
                   <div className="flex flex-col" style={{ gap: 4 }}>
