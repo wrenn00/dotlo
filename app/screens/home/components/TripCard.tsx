@@ -13,8 +13,6 @@ interface TripCardProps {
   image?: string;
 }
 
-// 컬러 아바타 (3색 — Figma 디자인)
-const AVATAR_COLORS = ["#FFF9C2", "#EFEFFF", "#B9F7FF"];
 
 export default function TripCard({ title, date, dDay, participants, image }: TripCardProps) {
   return (
@@ -92,19 +90,16 @@ export default function TripCard({ title, date, dDay, participants, image }: Tri
           <div className="flex items-center" style={{ gap: 4, height: 20, marginTop: 0 }}>
             {participants.type === "avatars" ? (
               <div className="flex items-center">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      width: 20,
-                      height: 20,
-                      background: AVATAR_COLORS[i],
-                      border: "1px solid #FFFFFF",
-                      borderRadius: 116,
-                      marginLeft: i === 0 ? 0 : -4,
-                    }}
+                {/* 프로필 이미지 — 3캐릭터가 한 이미지에 들어있음 (156x60 → 52x20 표시) */}
+                <div className="relative shrink-0" style={{ width: 52, height: 20 }}>
+                  <Image
+                    src="/images/profile.png"
+                    alt=""
+                    fill
+                    sizes="52px"
+                    style={{ objectFit: "contain", objectPosition: "left center" }}
                   />
-                ))}
+                </div>
                 <span
                   style={{
                     marginLeft: 4,
