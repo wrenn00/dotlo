@@ -729,24 +729,24 @@ export default function Step7Page() {
                   width: 339,
                   background: "#FFFFFF",
                   borderRadius: 26,
-                  padding: "30px 17px 18px",
+                  padding: "26px 16px 18px",
                 }}
               >
                 {/* 아이콘 + 텍스트 */}
-                <div className="flex flex-col items-center" style={{ gap: 26 }}>
+                <div className="flex flex-col items-center" style={{ gap: 18 }}>
                   <div
                     className="flex items-center justify-center"
-                    style={{ width: 71, height: 71, background: "#F2F2F6", borderRadius: 92 }}
+                    style={{ width: 60, height: 60, background: "#F2F2F6", borderRadius: 92 }}
                   >
-                    <Bookmark size={36} color="#6060A0" fill="#6060A0" strokeWidth={0} />
+                    <Bookmark size={30} color="#6060A0" fill="#6060A0" strokeWidth={0} />
                   </div>
-                  <div className="flex flex-col items-center" style={{ gap: 10 }}>
+                  <div className="flex flex-col items-center" style={{ gap: 6 }}>
                     <p
                       style={{
                         fontFamily: '"Spoqa Han Sans Neo"',
-                        fontSize: 22,
+                        fontSize: 18,
                         fontWeight: 700,
-                        lineHeight: "28px",
+                        lineHeight: "24px",
                         color: "#373C3E",
                         textAlign: "center",
                       }}
@@ -756,10 +756,10 @@ export default function Step7Page() {
                     <p
                       style={{
                         fontFamily: '"Spoqa Han Sans Neo"',
-                        fontSize: 16,
+                        fontSize: 13,
                         fontWeight: 500,
-                        lineHeight: "20px",
-                        letterSpacing: "-0.5px",
+                        lineHeight: "18px",
+                        letterSpacing: "-0.3px",
                         color: "#888E9C",
                         textAlign: "center",
                       }}
@@ -770,21 +770,21 @@ export default function Step7Page() {
                 </div>
 
                 {/* 버튼 2개 */}
-                <div className="flex" style={{ marginTop: 26, gap: 11 }}>
+                <div className="flex" style={{ marginTop: 22, gap: 10 }}>
                   <button
                     onClick={() => setSavedModalOpen(false)}
                     className="transition-opacity active:opacity-80"
                     style={{
                       flex: 1,
-                      height: 57,
+                      height: 48,
                       background: "#FFFFFF",
                       border: "1px solid #F2F2F6",
-                      borderRadius: 16,
+                      borderRadius: 14,
                       fontFamily: '"Spoqa Han Sans Neo"',
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: 500,
-                      lineHeight: "20px",
-                      letterSpacing: "-0.5px",
+                      lineHeight: "18px",
+                      letterSpacing: "-0.3px",
                       color: "#1A1A1A",
                     }}
                   >
@@ -798,14 +798,14 @@ export default function Step7Page() {
                     className="transition-opacity active:opacity-80"
                     style={{
                       flex: 1,
-                      height: 57,
+                      height: 48,
                       background: "#090738",
-                      borderRadius: 16,
+                      borderRadius: 14,
                       fontFamily: '"Spoqa Han Sans Neo"',
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: 500,
-                      lineHeight: "20px",
-                      letterSpacing: "-0.5px",
+                      lineHeight: "18px",
+                      letterSpacing: "-0.3px",
                       color: "#FFFFFF",
                     }}
                   >
