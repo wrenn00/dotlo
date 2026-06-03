@@ -6,9 +6,8 @@ import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Sparkles, Map as MapIcon, RotateCcw, ChevronDown, Star, Footprints } from "lucide-react";
 import PlaceThumbnail from "@/components/PlaceThumbnail";
-import { courses, getCourse, type CourseId } from "./courses";
+import { buildCourses, getCourse, type Course, type CourseId } from "./courses";
 
-const AUTOPLAY_SEQUENCE: CourseId[] = ["A", "B", "C"];
 const AUTOPLAY_INTERVAL_MS = 1600;
 
 const CourseMap = dynamic(() => import("@/components/CourseMap"), {
@@ -29,35 +28,65 @@ interface TimelineEntry {
   next?: string;
 }
 
-const TIMELINE: Record<CourseId, TimelineEntry[]> = {
-  A: [
+// 카테고리별 타임라인 — step4에서 선택한 카테고리에 매칭
+const TIMELINE_BY_CATEGORY: Record<string, TimelineEntry[]> = {
+  미식: [
     { time: "11:00", title: "츠키지 시장 스시다이", region: "도쿄·츠키지", category: "맛집", rating: 4.5, reviews: 9200, description: "새벽부터 줄 서는 스시 명가", image: "/images/places/default.jpg", tag: "맛집", next: "도보 10분 · 800m" },
     { time: "13:30", title: "이치란 라멘 시부야", region: "도쿄·시부야", category: "맛집", rating: 4.3, reviews: 8900, description: "혼자서도 편한 1인 라멘 부스", image: "/images/places/default.jpg", tag: "맛집", next: "지하철 15분 · 4km" },
     { time: "16:00", title: "긴자 큐베이", region: "도쿄·긴자", category: "맛집", rating: 4.7, reviews: 980, description: "오마카세 스시의 정수", image: "/images/places/default.jpg", tag: "맛집", next: "도보 6분 · 500m" },
     { time: "19:00", title: "함바그 비프 키친", region: "도쿄·시부야", category: "맛집", rating: 4.5, reviews: 4500, description: "치즈 듬뿍 일본식 함바그", image: "/images/places/default.jpg", tag: "맛집" },
   ],
-  B: [
+  야경: [
     { time: "18:00", title: "시부야 스카이", region: "도쿄·시부야", category: "야경", rating: 4.6, reviews: 5488, description: "360도 도시 전경 전망대", image: "/images/places/default.jpg", tag: "야경", next: "도보 10분 · 800m" },
     { time: "19:30", title: "롯폰기 힐스 전망대", region: "도쿄·롯폰기", category: "야경", rating: 4.5, reviews: 12000, description: "도쿄타워가 보이는 야경 명소", image: "/images/places/default.jpg", tag: "야경", next: "지하철 15분 · 4km" },
     { time: "21:00", title: "도쿄타워", region: "도쿄·미나토", category: "야경", rating: 4.6, reviews: 35000, description: "도쿄의 상징, 조명 든 333m 타워", image: "/images/places/default.jpg", tag: "야경", next: "도보 6분 · 500m" },
     { time: "22:30", title: "오다이바 레인보우 브릿지", region: "도쿄·오다이바", category: "야경", rating: 4.4, reviews: 32000, description: "야경 끝판왕 강변 산책", image: "/images/places/default.jpg", tag: "야경" },
   ],
-  C: [
+  쇼핑: [
     { time: "10:00", title: "신주쿠 이세탄", region: "도쿄·신주쿠", category: "쇼핑", rating: 4.5, reviews: 15000, description: "도쿄 No.1 백화점", image: "/images/places/default.jpg", tag: "쇼핑", next: "지하철 8분 · 2km" },
     { time: "13:00", title: "시부야 109", region: "도쿄·시부야", category: "쇼핑", rating: 4.3, reviews: 22000, description: "트렌드 패션 1번지", image: "/images/places/default.jpg", tag: "쇼핑", next: "도보 12분 · 1km" },
     { time: "15:30", title: "오모테산도 거리", region: "도쿄·오모테산도", category: "쇼핑", rating: 4.6, reviews: 18000, description: "하이엔드 부티크 스트리트", image: "/images/places/default.jpg", tag: "쇼핑", next: "지하철 10분 · 3km" },
     { time: "18:00", title: "긴자 식스", region: "도쿄·긴자", category: "쇼핑", rating: 4.6, reviews: 8500, description: "프리미엄 럭셔리 몰", image: "/images/places/default.jpg", tag: "쇼핑" },
   ],
+  관광: [
+    { time: "10:00", title: "센소지", region: "도쿄·아사쿠사", category: "관광", rating: 4.5, reviews: 120000, description: "도쿄에서 가장 오래된 사찰", image: "/images/places/default.jpg", tag: "관광", next: "지하철 12분 · 3km" },
+    { time: "13:00", title: "도쿄 스카이트리", region: "도쿄·스미다", category: "관광", rating: 4.6, reviews: 92000, description: "634m 도쿄 랜드마크 전망대", image: "/images/places/default.jpg", tag: "관광", next: "지하철 25분 · 8km" },
+    { time: "16:00", title: "메이지 신궁", region: "도쿄·시부야", category: "관광", rating: 4.5, reviews: 85000, description: "도심 속 거대한 신사와 숲", image: "/images/places/default.jpg", tag: "관광" },
+  ],
+  휴식: [
+    { time: "10:30", title: "신주쿠 교엔", region: "도쿄·신주쿠", category: "휴식", rating: 4.6, reviews: 28000, description: "도심 속 광활한 정원", image: "/images/places/default.jpg", tag: "휴식", next: "도보 20분 · 1.6km" },
+    { time: "14:00", title: "우에노 공원", region: "도쿄·다이토", category: "휴식", rating: 4.3, reviews: 42000, description: "벚꽃 명소와 박물관 산책", image: "/images/places/default.jpg", tag: "휴식", next: "지하철 30분 · 12km" },
+    { time: "18:00", title: "오다이바 해변공원", region: "도쿄·미나토", category: "휴식", rating: 4.3, reviews: 32000, description: "레인보우 브릿지 뷰가 보이는 인공해변", image: "/images/places/default.jpg", tag: "휴식" },
+  ],
+  카페: [
+    { time: "10:00", title: "블루보틀 아오야마", region: "도쿄·아오야마", category: "카페", rating: 4.4, reviews: 5800, description: "미니멀한 일본 1호점", image: "/images/places/default.jpg", tag: "카페", next: "도보 15분 · 1km" },
+    { time: "13:00", title: "카페 르 카페", region: "도쿄·다이칸야마", category: "카페", rating: 4.5, reviews: 3200, description: "책과 함께하는 조용한 북카페", image: "/images/places/default.jpg", tag: "카페", next: "지하철 12분 · 4km" },
+    { time: "16:00", title: "스타벅스 리저브 로스터리", region: "도쿄·나카메구로", category: "카페", rating: 4.6, reviews: 22000, description: "세계에서 가장 큰 스타벅스", image: "/images/places/default.jpg", tag: "카페", next: "지하철 10분 · 3km" },
+    { time: "18:00", title: "오니버스 시부야", region: "도쿄·시부야", category: "카페", rating: 4.5, reviews: 4100, description: "드립 커피 핫플", image: "/images/places/default.jpg", tag: "카페" },
+  ],
 };
 
-const mapCourse = (c: (typeof courses)[number]) => ({
+function timelineFor(label: string): TimelineEntry[] {
+  return (
+    TIMELINE_BY_CATEGORY[label] ?? [
+      { time: "10:00", title: `${label} 추천 장소 1`, region: "도쿄", category: label, rating: 4.5, reviews: 1200, description: `${label} 우선 동선의 첫 스팟`, image: "/images/places/default.jpg", tag: label, next: "도보 10분 · 800m" },
+      { time: "13:00", title: `${label} 추천 장소 2`, region: "도쿄", category: label, rating: 4.4, reviews: 900,  description: `${label} 흐름을 이어가는 곳`,  image: "/images/places/default.jpg", tag: label, next: "지하철 12분 · 3km" },
+      { time: "16:00", title: `${label} 추천 장소 3`, region: "도쿄", category: label, rating: 4.6, reviews: 1500, description: `${label}의 핵심 스팟`,         image: "/images/places/default.jpg", tag: label },
+    ]
+  );
+}
+
+const mapCourse = (c: Course) => ({
   id: c.id,
   color: c.colorHex,
   markers: c.markers,
 });
 
+const DEFAULT_LABELS = ["미식", "야경", "쇼핑"];
+
 export default function Step7Page() {
   const router = useRouter();
+  const [courses, setCourses] = useState<Course[]>(() => buildCourses(DEFAULT_LABELS));
   const [activeTab, setActiveTab] = useState<CourseId>("A");
   const [autoPlaying, setAutoPlaying] = useState(true);
   const [expanded, setExpanded] = useState(false);
@@ -65,10 +94,38 @@ export default function Step7Page() {
   const tabBtnRefs = useRef<Record<CourseId, HTMLButtonElement | null>>({ A: null, B: null, C: null });
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
 
-  // 자동 사이클: A → B → C → A 한 바퀴 돌고 정지 (사용자가 탭하면 즉시 중단)
+  // step5(우선순위) 또는 step4(키워드) → 코스 탭 1~3개 구성
+  useEffect(() => {
+    try {
+      const priorityRaw = sessionStorage.getItem("dotlo:step5-priority");
+      const keywordsRaw = sessionStorage.getItem("dotlo:step4-keywords");
+      const labels: string[] = priorityRaw
+        ? JSON.parse(priorityRaw)
+        : keywordsRaw
+        ? JSON.parse(keywordsRaw)
+        : [];
+      if (Array.isArray(labels) && labels.length > 0) {
+        const next = buildCourses(labels);
+        if (next.length > 0) {
+          setCourses(next);
+          setActiveTab(next[0].id);
+        }
+      }
+    } catch {
+      /* fall back to defaults */
+    }
+  }, []);
+
+  // 자동 사이클: 첫 탭 → 끝 탭 → 첫 탭, 한 바퀴 돌고 정지
+  // 탭이 1개면 사이클 자체를 건너뛰고 즉시 정지
   useEffect(() => {
     if (!autoPlaying) return;
-    const fullCycle = [...AUTOPLAY_SEQUENCE, AUTOPLAY_SEQUENCE[0]];
+    if (courses.length <= 1) {
+      setAutoPlaying(false);
+      return;
+    }
+    const sequence = courses.map((c) => c.id);
+    const fullCycle = [...sequence, sequence[0]];
     setActiveTab(fullCycle[0]);
     let idx = 0;
     const timer = setInterval(() => {
@@ -81,7 +138,7 @@ export default function Step7Page() {
       setActiveTab(fullCycle[idx]);
     }, AUTOPLAY_INTERVAL_MS);
     return () => clearInterval(timer);
-  }, [autoPlaying]);
+  }, [autoPlaying, courses]);
 
   // 액티브 탭 위치 추적 → 인디케이터 부드럽게 이동
   useEffect(() => {
@@ -91,15 +148,15 @@ export default function Step7Page() {
     const wrapRect = wrap.getBoundingClientRect();
     const btnRect = btn.getBoundingClientRect();
     setIndicator({ left: btnRect.left - wrapRect.left, width: btnRect.width });
-  }, [activeTab]);
+  }, [activeTab, courses]);
 
   function handleTabClick(id: CourseId) {
     setAutoPlaying(false);
     setActiveTab(id);
   }
 
-  const course = getCourse(activeTab);
-  const items = TIMELINE[activeTab];
+  const course = getCourse(activeTab, courses);
+  const items = timelineFor(course.categoryKey);
   const visibleItems = expanded ? items : items.slice(0, 4);
 
   return (
