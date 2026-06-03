@@ -1,96 +1,216 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import Icon from "@/components/Icon";
-
-function ArrowRight({ color = "#A1ADB3" }: { color?: string }) {
-  return (
-    <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-      <path d="M1 1l5 5-5 5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
+import { ChevronLeft, ChevronRight, Search, ThumbsUp } from "lucide-react";
 
 export default function Step2Page() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col h-full" style={{ background: "#fff" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
 
       {/* 헤더 */}
-      <div className="flex items-center px-5 pt-12 pb-2">
-        <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
-          <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+      <div className="shrink-0" style={{ padding: "44px 14px 0" }}>
+        <button onClick={() => router.back()} className="flex items-center justify-center" style={{ width: 36, height: 36 }}>
+          <ChevronLeft size={24} color="#090738" strokeWidth={2} />
         </button>
       </div>
 
-      <div className="flex flex-col flex-1 overflow-y-auto px-5 pb-6">
+      {/* 본문 */}
+      <div className="flex flex-col flex-1 overflow-y-auto" style={{ padding: "0 21px", paddingBottom: 24 }}>
 
-        {/* 제목 */}
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "30px", marginTop: 12 }}>
-          어디를 가보고 싶으세요?
-        </h1>
-        <p style={{ fontSize: 14, color: "#7A858B", marginTop: 8, lineHeight: "22px" }}>
-          구글맵에 저장한 장소를 가져오면{"\n"}코스를 더 빠르게 짤 수 있어요
-        </p>
-
-        {/* 구글맵 연동 카드 */}
-        <div
-          className="flex flex-col items-center mt-6 px-5 py-6"
-          style={{ background: "#F7F9FA", borderRadius: 20 }}
-        >
-          {/* 구글맵 아이콘 */}
-          <div
-            className="flex items-center justify-center mb-4"
-            style={{ width: 64, height: 64, background: "#fff", borderRadius: 16, boxShadow: "0 2px 12px rgba(0,0,0,0.10)" }}
+        {/* 제목 + 부제 */}
+        <div className="flex flex-col" style={{ gap: 6, marginTop: 18 }}>
+          <h1
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 22,
+              fontWeight: 700,
+              lineHeight: "28px",
+              color: "#1A1A1A",
+            }}
           >
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <path d="M16 3C10.48 3 6 7.48 6 13c0 7.75 10 19 10 19s10-11.25 10-19c0-5.52-4.48-10-10-10z" fill="#00E1FF" />
-              <circle cx="16" cy="13" r="3.5" fill="white" />
-            </svg>
-          </div>
-          <p style={{ fontSize: 16, fontWeight: 700, color: "#090738" }}>구글맵 저장 장소 가져오기</p>
-          <p style={{ fontSize: 13, color: "#7A858B", marginTop: 4, textAlign: "center" }}>
-            구글 맵의 저장 장소를 모두 불러올게요
+            어디를 가보고 싶으세요?
+          </h1>
+          <p
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 14,
+              fontWeight: 500,
+              lineHeight: "20px",
+              color: "#888888",
+              whiteSpace: "pre-line",
+            }}
+          >
+            구글맵에 저장한 장소를 가져오면{"\n"}코스를 더 빠르게 짤 수 있어요
           </p>
+        </div>
+
+        {/* 구글맵 연동 카드 — 336x206 #FAFAFA radius 12 */}
+        <div
+          className="flex flex-col items-center"
+          style={{
+            marginTop: 32,
+            padding: "15px 21px",
+            gap: 26,
+            background: "#FAFAFA",
+            borderRadius: 12,
+          }}
+        >
+          {/* 상단: 구글 로고 + 텍스트 */}
+          <div className="flex flex-col items-center" style={{ gap: 15 }}>
+            {/* 구글맵 로고 51x51 #FFFFFF radius 10 */}
+            <div
+              className="flex items-center justify-center"
+              style={{ width: 51, height: 51, background: "#FFFFFF", borderRadius: 10 }}
+            >
+              <svg width="31" height="31" viewBox="0 0 24 24" fill="none">
+                {/* Google Maps style pin */}
+                <path d="M12 2C7.58 2 4 5.58 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.42-3.58-8-8-8z" fill="#EA4335" />
+                <circle cx="12" cy="10" r="3" fill="#FFFFFF" />
+                <path d="M19 7.5l-3 1.5-3-1.5 3-1.5 3 1.5z" fill="#34A853" opacity="0.9" />
+                <path d="M9 6L6 7.5 9 9V6z" fill="#FBBC04" opacity="0.9" />
+                <path d="M15 6l3 1.5L15 9V6z" fill="#4285F4" opacity="0.9" />
+              </svg>
+            </div>
+
+            {/* 텍스트 */}
+            <div className="flex flex-col items-center" style={{ gap: 5 }}>
+              <p
+                style={{
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 16,
+                  fontWeight: 500,
+                  lineHeight: "20px",
+                  color: "#1A1A1A",
+                  textAlign: "center",
+                }}
+              >
+                구글맵 저장 장소 가져오기
+              </p>
+              <p
+                style={{
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 12,
+                  fontWeight: 400,
+                  lineHeight: "15px",
+                  color: "#888888",
+                  textAlign: "center",
+                }}
+              >
+                구글 맵의 저장 장소를 모두 불러올게요
+              </p>
+            </div>
+          </div>
+
+          {/* 연동 버튼 — 294x44 #090738 radius 12 */}
           <button
             onClick={() => router.push("/screens/step2/loading")}
-            className="w-full mt-5 h-[46px] rounded-2xl font-semibold text-white transition-opacity active:opacity-80"
-            style={{ background: "#00E1FF", fontSize: 15 }}
+            className="w-full"
+            style={{
+              height: 44,
+              background: "#090738",
+              borderRadius: 12,
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 14,
+              fontWeight: 500,
+              lineHeight: "20px",
+              letterSpacing: "-0.5px",
+              color: "#FFFFFF",
+            }}
           >
             구글 계정 연동하기
           </button>
         </div>
 
-        {/* 구분선 — mt-auto로 화면 아래쪽에 고정 (부모가 flex-col flex-1이라 작동) */}
-        <div className="flex items-center gap-3 mt-auto mb-6">
-          <div className="flex-1 h-px" style={{ background: "#DDE5E8" }} />
-          <span style={{ fontSize: 13, color: "#7A858B" }}>또는</span>
-          <div className="flex-1 h-px" style={{ background: "#DDE5E8" }} />
-        </div>
+        {/* 또는 구분선 + 옵션 카드 — 큰 여백 두고 아래쪽 */}
+        <div style={{ marginTop: "auto", paddingTop: 60 }}>
+          <div className="flex flex-col" style={{ gap: 13 }}>
+            {/* 또는 디바이더 */}
+            <div className="flex items-center" style={{ gap: 0 }}>
+              <div style={{ flex: 1, height: 1, background: "#D8D8E9" }} />
+              <span
+                style={{
+                  padding: "0 12px",
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 12,
+                  fontWeight: 500,
+                  lineHeight: "15px",
+                  color: "#888E9C",
+                }}
+              >
+                또는
+              </span>
+              <div style={{ flex: 1, height: 1, background: "#D8D8E9" }} />
+            </div>
 
-        {/* 대체 옵션 */}
-        <div className="flex flex-col gap-3">
-          {[
-            { icon: "search", title: "직접 검색해서 추가하기", sub: "장소 이름과 주소로 찾기" },
-            { icon: "thumb_up", title: "오사카 인기 장소 둘러보기", sub: "현지인이 자주 가는 곳 찾기" },
-          ].map(({ icon, title, sub }) => (
-            <button
-              key={title}
-              onClick={() => router.push("/screens/step2/select")}
-              className="flex items-center gap-3 px-4 text-left transition-colors"
-              style={{ height: 64, background: "#F7F9FA", borderRadius: 16 }}
-            >
-              <Icon name={icon} size={22} className="text-night-navy-600" />
-              <div className="flex-1">
-                <p style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>{title}</p>
-                <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>{sub}</p>
-              </div>
-              <ArrowRight />
-            </button>
-          ))}
+            {/* 옵션 카드 2개 — 336x70 #FAFAFA radius 12 */}
+            <div className="flex flex-col" style={{ gap: 9 }}>
+              {[
+                {
+                  Icon: Search,
+                  iconBg: "#E0FBFF",
+                  iconColor: "#00E1FF",
+                  title: "직접 검색해서 추가하기",
+                  sub: "장소 이름과 주소로 찾기",
+                },
+                {
+                  Icon: ThumbsUp,
+                  iconBg: "#FFF9C2",
+                  iconColor: "#FFE400",
+                  title: "오사카 인기 장소 둘러보기",
+                  sub: "현지인이 자주 가는 곳 찾기",
+                },
+              ].map(({ Icon, iconBg, iconColor, title, sub }) => (
+                <button
+                  key={title}
+                  onClick={() => router.push("/screens/step2/select")}
+                  className="relative w-full text-left"
+                  style={{ height: 70, background: "#FAFAFA", borderRadius: 12 }}
+                >
+                  {/* 컬러 원 아이콘 */}
+                  <div
+                    className="absolute flex items-center justify-center"
+                    style={{ left: 13, top: 18, width: 35, height: 35, background: iconBg, borderRadius: "50%" }}
+                  >
+                    <Icon size={20} color={iconColor} strokeWidth={2.2} fill={iconColor === "#FFE400" ? iconColor : "transparent"} />
+                  </div>
+                  {/* 텍스트 */}
+                  <div className="absolute flex flex-col" style={{ left: 58, top: 18, gap: 4 }}>
+                    <span
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 16,
+                        fontWeight: 500,
+                        lineHeight: "20px",
+                        color: "#000000",
+                      }}
+                    >
+                      {title}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 12,
+                        fontWeight: 400,
+                        lineHeight: "15px",
+                        color: "#666C78",
+                      }}
+                    >
+                      {sub}
+                    </span>
+                  </div>
+                  {/* 우측 chevron */}
+                  <div
+                    className="absolute flex items-center justify-center"
+                    style={{ right: 12, top: 22, width: 27, height: 27 }}
+                  >
+                    <ChevronRight size={18} color="#A8A8A9" strokeWidth={1.8} />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
