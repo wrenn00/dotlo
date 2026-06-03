@@ -106,13 +106,12 @@ export default function SuggestCard({
         </div>
       )}
 
-      {/* "코스 N개 확인하기" 버튼 — 우측 하단 */}
+      {/* "코스 N개 확인하기" 버튼 — 우측 하단 (auto width + nowrap으로 줄바꿈 방지) */}
       <button
-        className="absolute inline-flex items-center"
+        className="absolute inline-flex items-center whitespace-nowrap"
         style={{
-          left: 148,
-          top: 110,
-          width: 107,
+          right: 10,
+          bottom: 9,
           height: 23,
           padding: "0 10px",
           background: "#FFFFFF",
@@ -127,6 +126,7 @@ export default function SuggestCard({
             fontWeight: 500,
             lineHeight: "13px",
             color: "#5B5F67",
+            whiteSpace: "nowrap",
           }}
         >
           코스 {courseCount}개 확인하기
