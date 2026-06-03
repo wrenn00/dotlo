@@ -28,20 +28,20 @@ export default function Step2LoadedPage() {
           className="inline-flex items-center justify-center self-start"
           style={{
             marginTop: 11,
-            height: 38,
-            padding: "0 16px 0 13px",
-            gap: 5,
+            height: 46,
+            padding: "0 20px 0 16px",
+            gap: 6,
             background: "#F2F2F6",
             borderRadius: 32,
           }}
         >
-          <Check size={18} color="#2E2E70" strokeWidth={2.4} />
+          <Check size={20} color="#2E2E70" strokeWidth={2.4} />
           <span
             style={{
               fontFamily: '"Spoqa Han Sans Neo"',
-              fontSize: 14,
-              fontWeight: 500,
-              lineHeight: "18px",
+              fontSize: 15,
+              fontWeight: 600,
+              lineHeight: "20px",
               color: "#2E2E70",
             }}
           >
