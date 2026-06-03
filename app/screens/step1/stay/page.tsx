@@ -138,20 +138,20 @@ export default function StayPage() {
           </div>
         </div>
 
-        {/* 검색바 — 330x52 #F8F9FB radius 8 + lucide Search */}
+        {/* 검색바 — 세로 패딩 더 크게 */}
         <div
           onClick={focusSearch}
-          className="flex items-center cursor-pointer"
+          className="shrink-0 flex items-center cursor-pointer"
           style={{
             marginTop: 26,
-            height: 52,
-            padding: "0 15px",
-            gap: 10,
+            height: 72,
+            padding: "0 20px",
+            gap: 12,
             background: "#F8F9FB",
-            borderRadius: 8,
+            borderRadius: 12,
           }}
         >
-          <Search size={20} color="#8995A2" strokeWidth={1.8} />
+          <Search size={22} color="#8995A2" strokeWidth={1.8} />
           <div className="flex-1 flex items-center min-w-0">
             {query ? (
               <span
