@@ -1,0 +1,87 @@
+{
+  "미식": [
+    { "name": "아후리 에비스 본점", "subRegion": "에비스", "rating": 4.5, "reviews": 9800, "description": "유자 향이 특징인 깔끔한 라멘 전문점" },
+    { "name": "규카츠 모토무라 신주쿠점", "subRegion": "신주쿠", "rating": 4.6, "reviews": 18500, "description": "직접 구워 먹는 규카츠가 인기인 식당" },
+    { "name": "우오베이 시부야점", "subRegion": "시부야", "rating": 4.4, "reviews": 15700, "description": "고속 레일로 제공되는 회전초밥 체험" },
+    { "name": "스시 다이", "subRegion": "도요스", "rating": 4.7, "reviews": 8900, "description": "도요스 시장의 대표적인 스시 맛집" },
+    { "name": "츠케멘 미치", "subRegion": "오쿠보", "rating": 4.6, "reviews": 5400, "description": "진한 육수의 츠케멘으로 유명한 전문점" },
+    { "name": "긴자 큐베이", "subRegion": "긴자", "rating": 4.8, "reviews": 4300, "description": "오랜 전통을 자랑하는 고급 스시 오마카세" },
+    { "name": "몬자 다루마 츠키시마점", "subRegion": "츠키시마", "rating": 4.4, "reviews": 3800, "description": "도쿄식 몬자야키를 맛볼 수 있는 인기 식당" },
+    { "name": "스시잔마이 본점", "subRegion": "츠키지", "rating": 4.4, "reviews": 11200, "description": "24시간 운영하는 유명 초밥 전문점" },
+    { "name": "텐푸라 콘도", "subRegion": "긴자", "rating": 4.7, "reviews": 2900, "description": "미쉐린 스타를 받은 텐푸라 전문점" },
+    { "name": "우나기 히로카와 도쿄점", "subRegion": "교바시", "rating": 4.5, "reviews": 4700, "description": "숯불 장어덮밥으로 유명한 레스토랑" }
+  ],
+  "관광": [
+    { "name": "도쿄도청 전망실", "subRegion": "신주쿠", "rating": 4.5, "reviews": 28400, "description": "무료로 도쿄 시내를 감상할 수 있는 전망 공간" },
+    { "name": "고쿄 히가시교엔", "subRegion": "치요다", "rating": 4.6, "reviews": 19300, "description": "일본 황궁 부속 정원으로 조성된 공원" },
+    { "name": "하마리큐 정원", "subRegion": "츄오", "rating": 4.5, "reviews": 17800, "description": "도심 속 전통 일본 정원을 즐길 수 있는 장소" },
+    { "name": "조조지", "subRegion": "미나토", "rating": 4.5, "reviews": 12100, "description": "도쿄 타워와 함께 사진 찍기 좋은 사찰" },
+    { "name": "도쿄역 역사관", "subRegion": "마루노우치", "rating": 4.4, "reviews": 7200, "description": "도쿄역의 역사와 건축을 살펴볼 수 있는 공간" },
+    { "name": "네즈 신사", "subRegion": "분쿄", "rating": 4.6, "reviews": 11600, "description": "붉은 도리이 길이 아름다운 신사" },
+    { "name": "야나카 긴자", "subRegion": "야나카", "rating": 4.4, "reviews": 13400, "description": "옛 도쿄 분위기가 남아있는 전통 상점가" },
+    { "name": "가구라자카 거리", "subRegion": "가구라자카", "rating": 4.5, "reviews": 8900, "description": "골목 산책과 맛집 탐방이 인기인 거리" },
+    { "name": "에도성 유적지", "subRegion": "치요다", "rating": 4.5, "reviews": 10800, "description": "에도 시대 역사를 느낄 수 있는 유적지" },
+    { "name": "아사쿠사 문화관광센터", "subRegion": "아사쿠사", "rating": 4.4, "reviews": 9500, "description": "아사쿠사 전경을 감상할 수 있는 무료 전망 공간" }
+  ],
+  "쇼핑": [
+    { "name": "시부야 PARCO", "subRegion": "시부야", "rating": 4.5, "reviews": 14200, "description": "패션과 캐릭터 스토어가 모인 복합 쇼핑몰" },
+    { "name": "라포레 하라주쿠", "subRegion": "하라주쿠", "rating": 4.4, "reviews": 11300, "description": "일본 스트리트 패션의 중심지" },
+    { "name": "오모테산도 힐즈", "subRegion": "오모테산도", "rating": 4.5, "reviews": 15100, "description": "고급 브랜드가 입점한 쇼핑 명소" },
+    { "name": "도큐 플라자 긴자", "subRegion": "긴자", "rating": 4.4, "reviews": 8700, "description": "쇼핑과 전망을 동시에 즐길 수 있는 공간" },
+    { "name": "신주쿠 이세탄", "subRegion": "신주쿠", "rating": 4.6, "reviews": 20900, "description": "일본 대표 백화점 중 하나" },
+    { "name": "시부야 히카리에", "subRegion": "시부야", "rating": 4.4, "reviews": 12500, "description": "쇼핑과 전시가 함께하는 복합 문화 공간" },
+    { "name": "다이버시티 도쿄 플라자", "subRegion": "오다이바", "rating": 4.5, "reviews": 31700, "description": "실물 크기 건담으로 유명한 쇼핑몰" },
+    { "name": "롯폰기 힐즈", "subRegion": "롯폰기", "rating": 4.5, "reviews": 24800, "description": "쇼핑과 전망대를 함께 즐길 수 있는 명소" },
+    { "name": "아쿠아시티 오다이바", "subRegion": "오다이바", "rating": 4.4, "reviews": 16300, "description": "레인보우 브리지 전망이 아름다운 쇼핑몰" },
+    { "name": "도쿄 솔라마치", "subRegion": "오시아게", "rating": 4.5, "reviews": 22100, "description": "스카이트리 아래 위치한 대형 쇼핑몰" }
+  ],
+  "카페": [
+    { "name": "온리 센스 커피", "subRegion": "나카메구로", "rating": 4.6, "reviews": 2900, "description": "취향에 맞는 원두를 추천받을 수 있는 카페" },
+    { "name": "푸글렌 도쿄", "subRegion": "토미가야", "rating": 4.5, "reviews": 4800, "description": "북유럽 감성의 스페셜티 커피 전문점" },
+    { "name": "리틀 냅 커피 스탠드", "subRegion": "요요기", "rating": 4.5, "reviews": 3200, "description": "요요기 공원 인근의 감성 카페" },
+    { "name": "카페 키츠네 아오야마점", "subRegion": "아오야마", "rating": 4.5, "reviews": 5900, "description": "일본 감성과 프렌치 감성이 어우러진 공간" },
+    { "name": "아라비카 도쿄", "subRegion": "히가시야마", "rating": 4.6, "reviews": 6100, "description": "라떼가 유명한 스페셜티 커피 브랜드" },
+    { "name": "스트리머 커피 컴퍼니", "subRegion": "시부야", "rating": 4.4, "reviews": 4700, "description": "대형 라떼아트로 유명한 카페" },
+    { "name": "사라베스 도쿄점", "subRegion": "신주쿠", "rating": 4.4, "reviews": 8200, "description": "브런치와 디저트가 인기인 카페" },
+    { "name": "오카페 도쿄", "subRegion": "마루노우치", "rating": 4.5, "reviews": 3900, "description": "조용한 분위기의 감성 카페" },
+    { "name": "램버스 커피", "subRegion": "에비스", "rating": 4.5, "reviews": 2500, "description": "핸드드립 커피가 유명한 소규모 카페" },
+    { "name": "블루보틀 아오야마 카페", "subRegion": "아오야마", "rating": 4.5, "reviews": 4300, "description": "세련된 공간과 스페셜티 커피를 즐길 수 있는 카페" },
+    { "name": "스타벅스 리저브 로스터리 도쿄", "subRegion": "나카메구로", "rating": 4.6, "reviews": 14900, "description": "대형 로스터리와 특별한 커피 경험을 제공하는 공간" }
+  ],
+  "야경": [
+    { "name": "롯폰기 힐즈 전망대", "subRegion": "롯폰기", "rating": 4.7, "reviews": 29400, "description": "도쿄 타워와 도심 야경을 동시에 감상 가능" },
+    { "name": "시부야 스카이", "subRegion": "시부야", "rating": 4.6, "reviews": 24300, "description": "360도 파노라마 야경 명소" },
+    { "name": "도쿄 시티뷰", "subRegion": "롯폰기", "rating": 4.6, "reviews": 14500, "description": "롯폰기의 대표 전망 공간" },
+    { "name": "레인보우 브리지 전망 구역", "subRegion": "오다이바", "rating": 4.5, "reviews": 13100, "description": "오다이바와 도심을 잇는 야경 명소" },
+    { "name": "도쿄 타워 메인덱", "subRegion": "미나토", "rating": 4.5, "reviews": 38600, "description": "도쿄의 상징적인 야경 포인트" },
+    { "name": "오다이바 해변공원", "subRegion": "오다이바", "rating": 4.5, "reviews": 21400, "description": "레인보우 브리지를 배경으로 한 해변 야경" },
+    { "name": "도쿄역 마루노우치 광장", "subRegion": "마루노우치", "rating": 4.5, "reviews": 16200, "description": "유럽풍 역사 건물과 조명이 아름다운 공간" },
+    { "name": "KITTE 가든", "subRegion": "마루노우치", "rating": 4.5, "reviews": 8700, "description": "도쿄역 야경을 내려다볼 수 있는 무료 전망대" },
+    { "name": "카레타 시오도메 전망대", "subRegion": "시오도메", "rating": 4.6, "reviews": 9100, "description": "무료로 즐길 수 있는 숨은 야경 명소" },
+    { "name": "도쿄 스카이트리 전망대", "subRegion": "오시아게", "rating": 4.7, "reviews": 95700, "description": "도쿄 전역을 감상할 수 있는 대표 전망대" }
+  ],
+  "휴식": [
+    { "name": "신주쿠 교엔", "subRegion": "신주쿠", "rating": 4.7, "reviews": 44300, "description": "계절마다 아름다운 풍경을 감상할 수 있는 정원" },
+    { "name": "요요기 공원", "subRegion": "요요기", "rating": 4.6, "reviews": 37800, "description": "산책과 피크닉을 즐기기 좋은 도심 공원" },
+    { "name": "하마리큐 정원", "subRegion": "츄오", "rating": 4.5, "reviews": 17800, "description": "전통 일본 정원의 정취를 느낄 수 있는 공간" },
+    { "name": "고쿄 히가시교엔", "subRegion": "치요다", "rating": 4.6, "reviews": 19300, "description": "황궁 주변의 조용한 산책 명소" },
+    { "name": "메이지 신궁 숲길", "subRegion": "시부야", "rating": 4.7, "reviews": 78600, "description": "도심 속 울창한 숲을 거닐 수 있는 장소" },
+    { "name": "이노카시라 공원", "subRegion": "키치조지", "rating": 4.6, "reviews": 22700, "description": "호수와 자연을 함께 즐길 수 있는 힐링 스팟" },
+    { "name": "리쿠기엔", "subRegion": "분쿄", "rating": 4.6, "reviews": 10200, "description": "고즈넉한 일본식 정원이 아름다운 명소" },
+    { "name": "고마자와 올림픽 공원", "subRegion": "세타가야", "rating": 4.5, "reviews": 11900, "description": "넓은 녹지와 산책로를 갖춘 공원" },
+    { "name": "시오카제 공원", "subRegion": "오다이바", "rating": 4.5, "reviews": 8400, "description": "오다이바 바다 풍경을 감상할 수 있는 공원" },
+    { "name": "히비야 공원", "subRegion": "치요다", "rating": 4.5, "reviews": 15300, "description": "도심 속에서 여유를 즐기기 좋은 휴식 공간" }
+  ],
+  "디저트": [
+    { "name": "긴자 웨스트 본점", "subRegion": "긴자", "rating": 4.5, "reviews": 3800, "description": "전통 있는 일본식 디저트를 맛볼 수 있는 카페" },
+    { "name": "하브스 오모테산도점", "subRegion": "오모테산도", "rating": 4.5, "reviews": 5600, "description": "과일이 가득한 밀크레이프 케이크 맛집" },
+    { "name": "빌즈 오모테산도", "subRegion": "오모테산도", "rating": 4.4, "reviews": 7900, "description": "리코타 팬케이크로 유명한 브런치 카페" },
+    { "name": "에그슬럿 신주쿠점", "subRegion": "신주쿠", "rating": 4.4, "reviews": 4500, "description": "부드러운 디저트 메뉴와 브런치를 즐길 수 있는 곳" },
+    { "name": "카페 론론 하라주쿠점", "subRegion": "하라주쿠", "rating": 4.4, "reviews": 6100, "description": "디저트 무제한 뷔페를 즐길 수 있는 카페" },
+    { "name": "겔라테리아 마르게라 에비스점", "subRegion": "에비스", "rating": 4.6, "reviews": 3200, "description": "정통 이탈리아 젤라토를 맛볼 수 있는 곳" },
+    { "name": "도쿄 밀크 치즈 팩토리 루미네점", "subRegion": "신주쿠", "rating": 4.5, "reviews": 4800, "description": "치즈 쿠키와 디저트가 인기인 매장" },
+    { "name": "스즈카케 도쿄 미드타운점", "subRegion": "롯폰기", "rating": 4.6, "reviews": 2900, "description": "고급 화과자를 즐길 수 있는 디저트 전문점" },
+    { "name": "피에르 에르메 파리 아오야마점", "subRegion": "아오야마", "rating": 4.6, "reviews": 4100, "description": "마카롱과 프렌치 디저트로 유명한 곳" },
+    { "name": "카페 드 랑브르", "subRegion": "긴자", "rating": 4.5, "reviews": 3500, "description": "커피와 클래식 디저트를 함께 즐길 수 있는 카페" }
+  ]
+}
