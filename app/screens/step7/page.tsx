@@ -65,14 +65,20 @@ export default function Step7Page() {
   const tabBtnRefs = useRef<Record<CourseId, HTMLButtonElement | null>>({ A: null, B: null, C: null });
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
 
-  // 자동 사이클: A → B → C → A → ... (사용자가 탭하면 중단)
+  // 자동 사이클: A → B → C → A 한 바퀴 돌고 정지 (사용자가 탭하면 즉시 중단)
   useEffect(() => {
     if (!autoPlaying) return;
+    const fullCycle = [...AUTOPLAY_SEQUENCE, AUTOPLAY_SEQUENCE[0]];
+    setActiveTab(fullCycle[0]);
     let idx = 0;
-    setActiveTab(AUTOPLAY_SEQUENCE[0]);
     const timer = setInterval(() => {
-      idx = (idx + 1) % AUTOPLAY_SEQUENCE.length;
-      setActiveTab(AUTOPLAY_SEQUENCE[idx]);
+      idx += 1;
+      if (idx >= fullCycle.length) {
+        setAutoPlaying(false);
+        clearInterval(timer);
+        return;
+      }
+      setActiveTab(fullCycle[idx]);
     }, AUTOPLAY_INTERVAL_MS);
     return () => clearInterval(timer);
   }, [autoPlaying]);
