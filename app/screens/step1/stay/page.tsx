@@ -2,29 +2,24 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { useKeyboard } from "@/components/KeyboardProvider";
 
-// Leaflet은 SSR 불가 → dynamic import
 const MiniMap = dynamic(() => import("@/components/MiniMap"), {
   ssr: false,
   loading: () => (
-    <div
-      className="mt-4 animate-pulse"
-      style={{ height: 200, background: "#DDE5E8", borderRadius: 16 }}
-    />
+    <div className="animate-pulse" style={{ width: 330, height: 218, background: "#B9B9C0", borderRadius: 12 }} />
   ),
 });
 
 const INPUT_ID = "stay-search";
 
 const PLACES = [
-  { id: 1, name: "도톤보리",   sub: "오사카 미나미",   coords: [34.6687, 135.5026] as [number, number] },
-  { id: 2, name: "고노하나구", sub: "오사카 고노하나", coords: [34.6845, 135.4438] as [number, number] },
-  { id: 3, name: "신주쿠",     sub: "도쿄 신주쿠구",   coords: [35.6896, 139.7006] as [number, number] },
-  { id: 4, name: "아사쿠사",   sub: "도쿄 다이토구",   coords: [35.7148, 139.7967] as [number, number] },
-  { id: 5, name: "시부야",     sub: "도쿄 시부야구",   coords: [35.6595, 139.7004] as [number, number] },
-  { id: 6, name: "교토역",     sub: "교토 시모교쿠",   coords: [34.9858, 135.7585] as [number, number] },
+  { id: 1, name: "도본토리",   sub: "오사카 미나미",   coords: [34.6687, 135.5026] as [number, number], image: "/images/where/osaka.png" },
+  { id: 2, name: "고노하나구", sub: "오사카 고노하나", coords: [34.6845, 135.4438] as [number, number], image: "/images/where/osaka.png" },
+  { id: 3, name: "우메다",     sub: "오사카 키타",     coords: [34.7024, 135.4959] as [number, number], image: "/images/where/osaka.png" },
 ];
 
 export default function StayPage() {
@@ -63,148 +58,220 @@ export default function StayPage() {
   }
 
   return (
-    <div className="flex flex-col h-full" style={{ background: "#fff" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
 
-      {/* 헤더 */}
-      <div className="flex items-center justify-between px-5 pt-12 pb-4">
-        <button onClick={handleBack} className="w-9 h-9 flex items-center justify-center">
-          <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+      {/* 헤더: 뒤로가기 + 건너뛰기 */}
+      <div className="shrink-0" style={{ padding: "44px 14px 0", position: "relative" }}>
+        <button onClick={handleBack} className="flex items-center justify-center" style={{ width: 36, height: 36 }}>
+          <ChevronLeft size={24} color="#373C3E" strokeWidth={2} />
         </button>
-        <button onClick={handleConfirm} style={{ fontSize: 14, color: "#7A858B", fontWeight: 500 }}>
+        <button
+          onClick={handleConfirm}
+          className="absolute"
+          style={{
+            right: 22,
+            top: 62,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 12,
+            fontWeight: 500,
+            lineHeight: "15px",
+            color: "#888888",
+          }}
+        >
           건너뛰기
         </button>
       </div>
 
       {/* 본문 */}
-      <div className="flex flex-col flex-1 overflow-y-auto px-5">
+      <div className="flex flex-col flex-1 overflow-y-auto" style={{ padding: "0 22px", paddingBottom: 110 }}>
 
-        {/* 선택사항 배지 */}
-        <div className="self-start px-3 py-1 rounded-full mb-4" style={{ background: "#E5FBFF" }}>
-          <span style={{ fontSize: 12, fontWeight: 600, color: "#00E1FF" }}>선택사항</span>
+        {/* 선택사항 칩 + 타이틀 블록 */}
+        <div className="flex flex-col" style={{ gap: 12, marginTop: 18 }}>
+          <div
+            className="inline-flex items-center justify-center self-start"
+            style={{
+              height: 29,
+              padding: "0 14px",
+              background: "#F2F2F6",
+              borderRadius: 32,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 14,
+                fontWeight: 500,
+                lineHeight: "18px",
+                color: "#6060A0",
+              }}
+            >
+              선택사항
+            </span>
+          </div>
+          <div className="flex flex-col" style={{ gap: 6 }}>
+            <h1
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 22,
+                fontWeight: 700,
+                lineHeight: "28px",
+                color: "#1A1A1A",
+              }}
+            >
+              어디서 머무시나요?
+            </h1>
+            <p
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 14,
+                fontWeight: 500,
+                lineHeight: "18px",
+                color: "#555555",
+              }}
+            >
+              숙소를 알려주시면 가까운 곳부터 코스를 짜드려요
+            </p>
+          </div>
         </div>
 
-        {/* 제목 */}
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "30px" }}>
-          어디서 머무시나요?
-        </h1>
-        <p style={{ fontSize: 14, color: "#7A858B", marginTop: 8, lineHeight: "20px" }}>
-          숙소를 알려주시면 가까운 곳부터 코스를 짜드려요
-        </p>
-
-        {/* 검색바 — WhereBottomSheet와 동일한 디자인 + 가상 키보드 */}
+        {/* 검색바 — 330x52 #F8F9FB radius 8 + lucide Search */}
         <div
           onClick={focusSearch}
-          className="flex items-center gap-2 px-4 py-3.5 mt-6 cursor-pointer"
-          style={{ background: "#F7F9FA", borderRadius: 16 }}
+          className="flex items-center cursor-pointer"
+          style={{
+            marginTop: 26,
+            height: 52,
+            padding: "0 15px",
+            gap: 10,
+            background: "#F8F9FB",
+            borderRadius: 8,
+          }}
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
-            <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          <Search size={20} color="#8995A2" strokeWidth={1.8} />
           <div className="flex-1 flex items-center min-w-0">
             {query ? (
-              <span className="truncate" style={{ fontSize: 14, color: "#090738" }}>
+              <span
+                className="truncate"
+                style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 500, color: "#1A1A1A" }}
+              >
                 {query}
               </span>
             ) : (
-              <span style={{ fontSize: 14, color: "#A1ADB3" }}>호텔 이름 또는 주소</span>
+              <span
+                style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 500, lineHeight: "24px", color: "#8995A2" }}
+              >
+                호텔 이름 또는 주소
+              </span>
             )}
             {isFocused && (
-              <span
-                className="ml-0.5 animate-pulse"
-                style={{ width: 2, height: 16, background: "#00E1FF" }}
-              />
+              <span className="ml-0.5 animate-pulse" style={{ width: 2, height: 18, background: "#2E2E70" }} />
             )}
           </div>
-          {query && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setQuery("");
-              }}
-              className="shrink-0 flex items-center justify-center"
-              style={{ width: 18, height: 18, borderRadius: "50%", background: "#A1ADB3" }}
-              aria-label="검색어 지우기"
-            >
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                <path d="M1 1l6 6M7 1L1 7" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
-            </button>
-          )}
         </div>
 
-        {/* 지도 (Leaflet + OpenStreetMap) */}
-        <div className="mt-4">
+        {/* 지도 — 330x218 radius 12 */}
+        <div className="overflow-hidden" style={{ marginTop: 13, width: "100%", height: 218, borderRadius: 12, background: "#B9B9C0" }}>
           <MiniMap
             center={[34.6687, 135.5026]}
-            zoom={11}
+            zoom={13}
             markers={PLACES.map((p) => ({ position: p.coords, label: `${p.name} — ${p.sub}` }))}
-            height={200}
+            height={218}
           />
         </div>
 
-        {/* 자주 머무는 지역 / 검색 결과 */}
-        <p style={{ fontSize: 13, fontWeight: 600, color: "#7A858B", marginTop: 24, marginBottom: 4 }}>
-          {trimmed ? "검색 결과" : "자주 머무는 지역"}
+        {/* 자주 머무는 지역 */}
+        <p
+          style={{
+            marginTop: 16,
+            marginBottom: 12,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: "21px",
+            color: "#333333",
+          }}
+        >
+          자주 머무는 지역
         </p>
 
-        {filtered.length > 0 ? (
-          <div className="flex flex-col">
-            {filtered.map((place, idx) => (
+        {/* 카드 리스트 — 334x63 white, shadow, radius 12, gap 12 */}
+        <div className="flex flex-col" style={{ gap: 12 }}>
+          {(trimmed ? filtered : PLACES).map((p) => {
+            const active = selected === p.id;
+            return (
               <button
-                key={place.id}
-                onClick={() => handleSelect(place.id)}
-                className="flex items-center gap-3 py-3 text-left transition-colors"
-                style={{ borderBottom: idx < filtered.length - 1 ? "1px solid #DDE5E8" : "none" }}
+                key={p.id}
+                onClick={() => handleSelect(p.id)}
+                className="relative flex items-center w-full text-left"
+                style={{
+                  height: 63,
+                  background: "#FFFFFF",
+                  borderRadius: 12,
+                  boxShadow: "0 0 6.8px rgba(0, 0, 0, 0.08)",
+                  border: active ? "1.5px solid #2E2E70" : "1.5px solid transparent",
+                  padding: "0 8px",
+                }}
               >
-                <div
-                  className="shrink-0 rounded-xl flex items-center justify-center"
-                  style={{
-                    width: 48, height: 48,
-                    background: selected === place.id ? "#E5FBFF" : "#DDE5E8",
-                    border: selected === place.id ? "1.5px solid #00E1FF" : "1.5px solid transparent",
-                  }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                    <path d="M9 1C6.24 1 4 3.24 4 6c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"
-                      stroke={selected === place.id ? "#00E1FF" : "#7A858B"} strokeWidth="1.4" />
-                    <circle cx="9" cy="6" r="1.5" stroke={selected === place.id ? "#00E1FF" : "#7A858B"} strokeWidth="1.4" />
-                  </svg>
+                <div className="flex items-center" style={{ gap: 8, flex: 1 }}>
+                  {/* 썸네일 50x50 */}
+                  <div
+                    className="shrink-0 relative overflow-hidden"
+                    style={{ width: 50, height: 50, background: "#B9B9C0", borderRadius: 8 }}
+                  >
+                    <Image src={p.image} alt={p.name} fill className="object-cover" sizes="50px" />
+                  </div>
+                  {/* 텍스트 */}
+                  <div className="flex flex-col" style={{ gap: 4 }}>
+                    <span
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 14,
+                        fontWeight: 500,
+                        lineHeight: "18px",
+                        color: "#1A1A1A",
+                      }}
+                    >
+                      {p.name}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 10,
+                        fontWeight: 500,
+                        lineHeight: "13px",
+                        color: "#555555",
+                      }}
+                    >
+                      {p.sub}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>{place.name}</p>
-                  <p style={{ fontSize: 12, color: "#7A858B" }}>{place.sub}</p>
+                {/* 우측 chevron */}
+                <div className="shrink-0 flex items-center justify-center" style={{ width: 27, height: 27 }}>
+                  <ChevronRight size={18} color="#A8A8A9" strokeWidth={1.8} />
                 </div>
-                <svg width="7" height="12" viewBox="0 0 7 12" fill="none" className="shrink-0">
-                  <path d="M1 1l5 5-5 5" stroke={selected === place.id ? "#00E1FF" : "#A1ADB3"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
               </button>
-            ))}
-          </div>
-        ) : (
-          <div className="py-8 text-center">
-            <p style={{ fontSize: 13, color: "#7A858B" }}>
-              &lsquo;{trimmed}&rsquo;에 대한 검색 결과가 없어요
-            </p>
-            <button
-              onClick={() => setQuery("")}
-              className="mt-3 px-4 py-2 rounded-full text-sm font-medium"
-              style={{ background: "#E5FBFF", color: "#00A8BF" }}
-            >
-              &lsquo;{trimmed}&rsquo;로 직접 추가하기
-            </button>
-          </div>
-        )}
+            );
+          })}
+        </div>
       </div>
 
-      {/* 하단 버튼 */}
-      <div className="px-5 pb-8 pt-4">
+      {/* 선택 완료 — 330x50 #090738 radius 12 */}
+      <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px" }}>
         <button
           onClick={handleConfirm}
-          className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-          style={{ background: "#090738" }}
+          className="w-full"
+          style={{
+            height: 50,
+            background: "#090738",
+            borderRadius: 12,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 16,
+            fontWeight: 500,
+            lineHeight: "20px",
+            letterSpacing: "-0.5px",
+            color: "#FFFFFF",
+          }}
         >
           선택 완료
         </button>
