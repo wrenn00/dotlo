@@ -338,22 +338,21 @@ function MyTripContent() {
 
       {/* FAB — 세그먼트별 다른 라벨 */}
       <button
-        className="absolute inline-flex items-center justify-center"
+        className="absolute inline-flex items-center justify-center whitespace-nowrap"
         style={{
           right: 17,
           bottom: 113,
-          width: segment === "mine" ? 109 : 129,
-          height: 44,
+          height: 48,
           background: "#090738",
-          borderRadius: 30,
-          gap: 4,
-          padding: "0 14px",
+          borderRadius: 999,
+          gap: 6,
+          padding: "0 18px",
           boxShadow: "0 4px 16px rgba(9, 7, 56, 0.25)",
           zIndex: 25,
         }}
       >
-        <Plus size={20} color="#FFFFFF" strokeWidth={2.2} />
-        <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "18px", color: "#FFFFFF" }}>
+        <Plus size={18} color="#FFFFFF" strokeWidth={2.4} />
+        <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 600, lineHeight: "18px", letterSpacing: "-0.3px", color: "#FFFFFF" }}>
           {segment === "mine" ? "새 여행" : "코스 조합하기"}
         </span>
       </button>
