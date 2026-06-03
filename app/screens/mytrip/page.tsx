@@ -2,6 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import {
+  Search, Bell,
+  MapPin, Map as MapIcon, Moon, ShoppingBag, Utensils, Leaf, Landmark,
+  Plus, ChevronDown,
+} from "lucide-react";
 import TripCard from "../home/components/TripCard";
 import BottomTabBar from "../home/components/BottomTabBar";
 
@@ -42,16 +47,10 @@ function Header() {
       <Image src="/images/logo.png" alt="Dotlo" width={38} height={33} priority style={{ width: 38, height: 33, objectFit: "contain" }} />
       <div className="flex items-center" style={{ width: 60, height: 24, gap: 12 }}>
         <button className="flex items-center justify-center" style={{ width: 24, height: 24 }}>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="9" cy="9" r="6.5" stroke="#555555" strokeWidth="1.8" />
-            <path d="M14 14L18.5 18.5" stroke="#555555" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
+          <Search size={20} color="#555555" strokeWidth={1.8} />
         </button>
         <button className="relative flex items-center justify-center" style={{ width: 24, height: 24 }}>
-          <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
-            <path d="M3 10a7 7 0 0114 0v6l1.5 2H1.5L3 16v-6z" stroke="#555555" strokeWidth="1.8" strokeLinejoin="round" />
-            <path d="M8 19a2 2 0 004 0" stroke="#555555" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
+          <Bell size={20} color="#555555" strokeWidth={1.8} />
           <div className="absolute" style={{ top: 2, right: 2, width: 5, height: 5, background: "#6060A0", borderRadius: "50%" }} />
         </button>
       </div>
@@ -196,21 +195,19 @@ function SavedCourseCard({ course }: { course: SavedCourse }) {
         </p>
         {/* 메타 행: 지역 / 장소 수 / 카테고리 */}
         <div className="flex items-center" style={{ gap: 7, marginTop: 4 }}>
-          <MetaItem icon="pin" label={course.region} />
-          <MetaItem icon="map" label={`${course.placeCount}곳`} />
-          <MetaItem icon={categoryIcon(course.category)} label={course.category} />
+          <MetaItem Icon={MapPin} label={course.region} />
+          <MetaItem Icon={MapIcon} label={`${course.placeCount}곳`} />
+          <MetaItem Icon={categoryIcon(course.category)} label={course.category} />
         </div>
       </div>
     </div>
   );
 }
 
-function MetaItem({ icon, label }: { icon: "pin" | "map" | "moon" | "bag" | "fork" | "leaf" | "book"; label: string }) {
+function MetaItem({ Icon, label }: { Icon: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>; label: string }) {
   return (
     <div className="flex items-center" style={{ gap: 2 }}>
-      <span style={{ width: 13, height: 13, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
-        <MetaIcon name={icon} />
-      </span>
+      <Icon size={11} color="#E0E0E0" strokeWidth={1.5} />
       <span
         style={{
           fontFamily: '"Spoqa Han Sans Neo"',
@@ -226,62 +223,12 @@ function MetaItem({ icon, label }: { icon: "pin" | "map" | "moon" | "bag" | "for
   );
 }
 
-function MetaIcon({ name }: { name: "pin" | "map" | "moon" | "bag" | "fork" | "leaf" | "book" }) {
-  const stroke = "#E0E0E0";
-  switch (name) {
-    case "pin":
-      return (
-        <svg width="11" height="11" viewBox="0 0 12 13" fill="none">
-          <path d="M6 1.5C4.07 1.5 2.5 3.07 2.5 5c0 2.625 3.5 6 3.5 6s3.5-3.375 3.5-6c0-1.93-1.57-3.5-3.5-3.5z" stroke={stroke} strokeWidth="1" />
-          <circle cx="6" cy="5" r="1.25" stroke={stroke} strokeWidth="1" />
-        </svg>
-      );
-    case "map":
-      return (
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-          <path d="M1.5 3v7l3-1.5 3 1.5 3-1.5V1.5l-3 1.5-3-1.5L1.5 3z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
-        </svg>
-      );
-    case "moon":
-      return (
-        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
-          <path d="M9 6a4 4 0 11-5-5 3.5 3.5 0 005 5z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
-        </svg>
-      );
-    case "bag":
-      return (
-        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
-          <path d="M2 3.5h6l-.5 5h-5l-.5-5z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
-          <path d="M3.5 3.5V2.5a1.5 1.5 0 013 0v1" stroke={stroke} strokeWidth="1" />
-        </svg>
-      );
-    case "fork":
-      return (
-        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
-          <path d="M3 1v4h-1V1M3 5v4M7 1c1 0 1 1.5 1 3s-1 1.5-1 1.5V9" stroke={stroke} strokeWidth="1" strokeLinecap="round" />
-        </svg>
-      );
-    case "leaf":
-      return (
-        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
-          <path d="M9 1C5 1 1 3 1 7c0 1 1 2 2 2 4 0 6-4 6-8z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
-        </svg>
-      );
-    case "book":
-      return (
-        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
-          <path d="M2 1.5h6v7H2.5l-.5.5v-7.5z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
-        </svg>
-      );
-  }
-}
-
-function categoryIcon(cat: string): "moon" | "bag" | "fork" | "leaf" | "book" {
-  if (cat.includes("야경")) return "moon";
-  if (cat.includes("쇼핑")) return "bag";
-  if (cat.includes("미식")) return "fork";
-  if (cat.includes("자연")) return "leaf";
-  return "book";
+function categoryIcon(cat: string) {
+  if (cat.includes("야경")) return Moon;
+  if (cat.includes("쇼핑")) return ShoppingBag;
+  if (cat.includes("미식")) return Utensils;
+  if (cat.includes("자연")) return Leaf;
+  return Landmark; // 역사
 }
 
 // ─── 국가 필터 칩 ────────────────────────────────────────────────────────────
@@ -368,9 +315,7 @@ export default function MyTripPage() {
                   <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: "#888888" }}>
                     최근 저장순
                   </span>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M4 6l3 3 3-3" stroke="#888888" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <ChevronDown size={14} color="#888888" strokeWidth={1.6} />
                 </button>
               </div>
 
@@ -404,9 +349,7 @@ export default function MyTripPage() {
           zIndex: 25,
         }}
       >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M10 4v12M4 10h12" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
-        </svg>
+        <Plus size={20} color="#FFFFFF" strokeWidth={2.2} />
         <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "18px", color: "#FFFFFF" }}>
           {segment === "mine" ? "새 여행" : "코스 조합하기"}
         </span>

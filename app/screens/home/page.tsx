@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Search, Bell, ChevronRight } from "lucide-react";
 import TripCard from "./components/TripCard";
 import SuggestCard from "./components/SuggestCard";
 import BottomTabBar from "./components/BottomTabBar";
@@ -70,16 +71,10 @@ function Header() {
       {/* 검색 + 알림 (60x24, gap 12) */}
       <div className="flex items-center" style={{ width: 60, height: 24, gap: 12 }}>
         <button className="flex items-center justify-center" style={{ width: 24, height: 24 }}>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="9" cy="9" r="6.5" stroke="#555555" strokeWidth="1.8" />
-            <path d="M14 14L18.5 18.5" stroke="#555555" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
+          <Search size={20} color="#555555" strokeWidth={1.8} />
         </button>
         <button className="relative flex items-center justify-center" style={{ width: 24, height: 24 }}>
-          <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
-            <path d="M3 10a7 7 0 0114 0v6l1.5 2H1.5L3 16v-6z" stroke="#555555" strokeWidth="1.8" strokeLinejoin="round" />
-            <path d="M8 19a2 2 0 004 0" stroke="#555555" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
+          <Bell size={20} color="#555555" strokeWidth={1.8} />
           {/* 알림 점 (#6060A0) */}
           <div
             className="absolute"
@@ -192,9 +187,7 @@ function HeroCard({ onStart }: { onStart: () => void }) {
         >
           코스 만들기
         </span>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M4.5 3l3 3-3 3" stroke="#888888" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <ChevronRight size={12} color="#888888" strokeWidth={1.8} />
       </button>
     </div>
   );

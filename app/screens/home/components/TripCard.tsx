@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ChevronRight } from "lucide-react";
 
 interface TripCardProps {
   title: string;
@@ -147,9 +148,7 @@ export default function TripCard({ title, date, dDay, participants, image }: Tri
 
       {/* 우측 chevron */}
       <div className="shrink-0 flex items-center justify-center" style={{ width: 27, height: 27 }}>
-        <svg width="7" height="13" viewBox="0 0 7 13" fill="none">
-          <path d="M1 1l5 5.5L1 12" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <ChevronRight size={16} color="#888888" strokeWidth={1.8} />
       </div>
     </button>
   );

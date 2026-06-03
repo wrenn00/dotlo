@@ -1,5 +1,7 @@
 "use client";
 
+import { ChevronRight } from "lucide-react";
+
 interface SuggestCardProps {
   image?: string;
   badge?: string;
@@ -129,9 +131,7 @@ export default function SuggestCard({
         >
           코스 {courseCount}개 확인하기
         </span>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M4.5 3l3 3-3 3" stroke="#A8A8A9" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <ChevronRight size={12} color="#A8A8A9" strokeWidth={1.8} />
       </button>
     </div>
   );
