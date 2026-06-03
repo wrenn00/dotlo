@@ -2,29 +2,23 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Icon from "@/components/Icon";
+import { ChevronLeft, Zap, SlidersHorizontal, Check } from "lucide-react";
 
 type Selected = "quick" | "custom" | null;
 
 const OPTIONS = [
   {
     key: "quick" as const,
-    icon: "bolt",
+    Icon: Zap,
     title: "빠른 생성",
-    lines: [
-      "기본 추천 기준으로 바로 코스를 짜드려요",
-      "마음에 들면 그대로, 아니면 수정할 수 있어요",
-    ],
+    description: "기본 추천 기준으로 바로 코스를 짜드려요\n마음에 들면 그대로, 아니면 수정할 수 있어요",
     badge: null,
   },
   {
     key: "custom" as const,
-    icon: "tune",
+    Icon: SlidersHorizontal,
     title: "직접 생성",
-    lines: [
-      "목적·취향·일정 밀도·",
-      "이동 스타일을 반영해서 더 정확한 코스를 만들어요",
-    ],
+    description: "목적·취향·일정 밀도·이동 스타일을 반영해서\n더 정확한 코스를 만들어요",
     badge: "추천",
   },
 ];
@@ -33,96 +27,157 @@ export default function Step3Page() {
   const router = useRouter();
   const [selected, setSelected] = useState<Selected>(null);
 
+  function handleNext() {
+    if (selected === "quick") router.push("/screens/step6");
+    else if (selected === "custom") router.push("/screens/step4");
+  }
+
   return (
-    <div className="flex flex-col h-full" style={{ background: "#fff" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
 
       {/* 헤더 */}
-      <div className="px-5 pt-12 pb-2">
-        <button
-          onClick={() => router.back()}
-          className="w-9 h-9 flex items-center justify-center"
-        >
-          <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+      <div className="shrink-0" style={{ padding: "44px 14px 0" }}>
+        <button onClick={() => router.back()} className="flex items-center justify-center" style={{ width: 36, height: 36 }}>
+          <ChevronLeft size={24} color="#373C3E" strokeWidth={2} />
         </button>
       </div>
 
       {/* 본문 */}
-      <div className="flex flex-col flex-1 px-5 pt-4 pb-6">
+      <div className="flex flex-col flex-1 overflow-y-auto" style={{ padding: "0 21px", paddingBottom: 110 }}>
 
         {/* 제목 */}
-        <h1 style={{ fontSize: 24, fontWeight: 700, color: "#090738", lineHeight: "34px" }}>
-          오사카 여행
-          <br />
-          어떻게 만들어드릴까요?
+        <h1
+          style={{
+            marginTop: 18,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 22,
+            fontWeight: 700,
+            lineHeight: "28px",
+            color: "#1A1A1A",
+            whiteSpace: "pre-line",
+          }}
+        >
+          오사카 여행{"\n"}어떻게 만들어드릴까요?
         </h1>
 
-        {/* 옵션 카드 */}
-        <div className="flex flex-col gap-4 mt-10">
-          {OPTIONS.map(({ key, icon, title, lines, badge }) => {
-            const active = selected === key;
+        {/* 옵션 카드 2개 */}
+        <div className="flex flex-col" style={{ gap: 14, marginTop: 30 }}>
+          {OPTIONS.map((opt) => {
+            const active = selected === opt.key;
+            const Icon = opt.Icon;
             return (
               <button
-                key={key}
-                onClick={() => setSelected(key)}
-                className="relative flex flex-col items-center text-center px-6 py-8 rounded-2xl transition-all"
+                key={opt.key}
+                onClick={() => setSelected(opt.key)}
+                className="relative w-full text-left"
                 style={{
-                  background: active ? "#E5FBFF" : "#F7F9FA",
-                  border: active ? "2px solid #00E1FF" : "2px solid transparent",
+                  height: 94,
+                  background: "#FAFAFA",
+                  border: active ? "2px solid #D8D8E9" : "2px solid transparent",
+                  borderRadius: 12,
                 }}
               >
-                {/* 추천 배지 */}
-                {badge && (
+                {/* 좌측: 컬러 원 + 텍스트 */}
+                <div className="absolute flex items-center" style={{ left: 13, top: 19, gap: 11, right: 56 }}>
                   <div
-                    className="absolute top-3 right-3 px-2.5 py-1 rounded-full"
-                    style={{ background: "#00E1FF" }}
+                    className="shrink-0 flex items-center justify-center"
+                    style={{ width: 35, height: 35, background: "#F2F2F6", borderRadius: "50%" }}
                   >
-                    <span style={{ fontSize: 11, fontWeight: 600, color: "#fff" }}>{badge}</span>
+                    <Icon size={20} color="#2E2E70" strokeWidth={2} />
                   </div>
-                )}
+                  <div className="flex flex-col" style={{ gap: 4, flex: 1 }}>
+                    <div className="flex items-center" style={{ gap: 6 }}>
+                      <span
+                        style={{
+                          fontFamily: '"Spoqa Han Sans Neo"',
+                          fontSize: 16,
+                          fontWeight: 500,
+                          lineHeight: "20px",
+                          color: "#1A1A1A",
+                        }}
+                      >
+                        {opt.title}
+                      </span>
+                      {opt.badge && (
+                        <span
+                          className="inline-flex items-center justify-center"
+                          style={{
+                            height: 17,
+                            padding: "0 7px",
+                            background: "#2E2E70",
+                            borderRadius: 8,
+                            fontFamily: '"Spoqa Han Sans Neo"',
+                            fontSize: 10,
+                            fontWeight: 500,
+                            lineHeight: "13px",
+                            color: "#FFFFFF",
+                          }}
+                        >
+                          {opt.badge}
+                        </span>
+                      )}
+                    </div>
+                    <span
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 12,
+                        fontWeight: 400,
+                        lineHeight: "16px",
+                        color: "#555555",
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {opt.description}
+                    </span>
+                  </div>
+                </div>
 
-                {/* 아이콘 */}
-                <Icon name={icon} size={36} className={active ? "text-sky-blue-500" : "text-night-navy-600"} />
-
-                {/* 제목 */}
-                <p
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 700,
-                    color: active ? "#00E1FF" : "#090738",
-                    marginTop: 14,
-                  }}
+                {/* 우측 선택 표시 */}
+                <div
+                  className="absolute flex items-center justify-center"
+                  style={{ right: 12, top: "calc(50% - 14px)", width: 28, height: 28 }}
                 >
-                  {title}
-                </p>
-
-                {/* 부제 */}
-                <div className="mt-2">
-                  {lines.map((line, i) => (
-                    <p key={i} style={{ fontSize: 13, color: "#7A858B", lineHeight: "20px" }}>
-                      {line}
-                    </p>
-                  ))}
+                  {active ? (
+                    <div
+                      className="flex items-center justify-center"
+                      style={{ width: 28, height: 28, background: "#2E2E70", borderRadius: "50%" }}
+                    >
+                      <Check size={16} color="#FFFFFF" strokeWidth={2.6} />
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        width: 22,
+                        height: 22,
+                        background: "#F2F2F6",
+                        border: "1px solid #D8D8E9",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  )}
                 </div>
               </button>
             );
           })}
         </div>
+      </div>
 
-        <div className="flex-1" />
-
-        {/* 다음 버튼 — 빠른 생성은 step4/5 건너뛰고 바로 step6으로 */}
+      {/* 다음 버튼 — 330x50 #090738 radius 12 */}
+      <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px" }}>
         <button
-          onClick={() => {
-            if (selected === "quick") router.push("/screens/step6");
-            else if (selected === "custom") router.push("/screens/step4");
-          }}
+          onClick={handleNext}
           disabled={!selected}
-          className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-all"
+          className="w-full transition-opacity disabled:opacity-40"
           style={{
-            background: selected ? "#090738" : "#DDE5E8",
-            color: selected ? "#fff" : "#7A858B",
+            height: 50,
+            background: "#090738",
+            borderRadius: 12,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 16,
+            fontWeight: 500,
+            lineHeight: "20px",
+            letterSpacing: "-0.5px",
+            color: "#FFFFFF",
           }}
         >
           다음
