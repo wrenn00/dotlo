@@ -5,25 +5,14 @@ import Image from "next/image";
 import TripCard from "../home/components/TripCard";
 import BottomTabBar from "../home/components/BottomTabBar";
 
-type SegmentKey = "final" | "saved";
+type SegmentKey = "mine" | "saved";
 
-// ─── 상태바 (Figma 그대로) ───────────────────────────────────────────────────
+// ─── 상태바 ──────────────────────────────────────────────────────────────────
 
 function StatusBar() {
   return (
     <div className="flex items-center justify-between shrink-0" style={{ height: 50, padding: "0 17px 0 24px" }}>
-      <span
-        style={{
-          fontFamily: '"Spoqa Han Sans Neo"',
-          fontSize: 15,
-          fontWeight: 700,
-          lineHeight: "20px",
-          letterSpacing: "-0.5px",
-          color: "#111111",
-        }}
-      >
-        9:41
-      </span>
+      <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 15, fontWeight: 700, lineHeight: "20px", letterSpacing: "-0.5px", color: "#111111" }}>9:41</span>
       <div className="flex items-center gap-1.5">
         <svg width="17" height="11" viewBox="0 0 17 11" fill="#111111">
           <rect x="0" y="8" width="2.5" height="3" rx="0.5" />
@@ -45,22 +34,12 @@ function StatusBar() {
   );
 }
 
-// ─── 헤더 (로고 + 검색·알림) ────────────────────────────────────────────────
+// ─── 헤더 ────────────────────────────────────────────────────────────────────
 
 function Header() {
   return (
-    <div
-      className="flex items-center justify-between shrink-0 mx-auto"
-      style={{ width: 318.5, height: 33, marginTop: 6 }}
-    >
-      <Image
-        src="/images/logo.png"
-        alt="Dotlo"
-        width={38}
-        height={33}
-        priority
-        style={{ width: 38, height: 33, objectFit: "contain" }}
-      />
+    <div className="flex items-center justify-between shrink-0 mx-auto" style={{ width: 318.5, height: 33, marginTop: 6 }}>
+      <Image src="/images/logo.png" alt="Dotlo" width={38} height={33} priority style={{ width: 38, height: 33, objectFit: "contain" }} />
       <div className="flex items-center" style={{ width: 60, height: 24, gap: 12 }}>
         <button className="flex items-center justify-center" style={{ width: 24, height: 24 }}>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -73,28 +52,22 @@ function Header() {
             <path d="M3 10a7 7 0 0114 0v6l1.5 2H1.5L3 16v-6z" stroke="#555555" strokeWidth="1.8" strokeLinejoin="round" />
             <path d="M8 19a2 2 0 004 0" stroke="#555555" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
-          <div
-            className="absolute"
-            style={{ top: 2, right: 2, width: 5, height: 5, background: "#6060A0", borderRadius: "50%" }}
-          />
+          <div className="absolute" style={{ top: 2, right: 2, width: 5, height: 5, background: "#6060A0", borderRadius: "50%" }} />
         </button>
       </div>
     </div>
   );
 }
 
-// ─── 세그먼트 탭 (Figma: 334x40, #F5F5F5, 활성 163x34 흰색 shadow) ──────────
+// ─── 세그먼트 탭 ─────────────────────────────────────────────────────────────
 
 function SegmentedTab({ value, onChange }: { value: SegmentKey; onChange: (v: SegmentKey) => void }) {
   const items: { key: SegmentKey; label: string }[] = [
-    { key: "final", label: "최종 코스 4" },
+    { key: "mine", label: "내 여행 4" },
     { key: "saved", label: "저장한 코스 7" },
   ];
   return (
-    <div
-      className="relative flex items-center mx-auto"
-      style={{ width: 334, height: 40, background: "#F5F5F5", borderRadius: 12, padding: 3 }}
-    >
+    <div className="relative flex items-center mx-auto" style={{ width: 334, height: 40, background: "#F5F5F5", borderRadius: 12, padding: 3 }}>
       {items.map((item) => {
         const active = value === item.key;
         return (
@@ -110,15 +83,7 @@ function SegmentedTab({ value, onChange }: { value: SegmentKey; onChange: (v: Se
               transition: "background 200ms",
             }}
           >
-            <span
-              style={{
-                fontFamily: '"Spoqa Han Sans Neo"',
-                fontSize: 12,
-                fontWeight: 500,
-                lineHeight: "15px",
-                color: active ? "#1A1A1A" : "#555555",
-              }}
-            >
+            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: active ? "#1A1A1A" : "#555555" }}>
               {item.label}
             </span>
           </button>
@@ -128,37 +93,257 @@ function SegmentedTab({ value, onChange }: { value: SegmentKey; onChange: (v: Se
   );
 }
 
-// ─── 데이터 ──────────────────────────────────────────────────────────────────
+// ─── 데이터: 내 여행 ──────────────────────────────────────────────────────────
 
-const FINAL_TRIPS = [
+const MINE_TRIPS = [
   { id: "osaka", title: "오사카 여행", date: "4.17 금 ~ 4.23 목 · 4박 5일", dDay: "D-7", participants: { type: "avatars" as const, count: 3, label: "3명 함께" }, image: "/images/trips/osaka_home.png" },
   { id: "tokyo", title: "도쿄 여행", date: "5.17 금 ~ 4.23 목 · 6박 7일", dDay: "D-30", participants: { type: "single" as const, label: "혼자 여행" }, image: "/images/trips/dokyo_home.png" },
   { id: "shanghai", title: "상하이 여행", date: "6.17 금 ~ 6.23 목 · 6박 7일", dDay: "D-50", participants: { type: "single" as const, label: "민지님이 초대했어요" }, image: "/images/trips/sang_home.png" },
   { id: "bangkok", title: "방콕 여행", date: "6.27 금 ~ 7.3 목 · 6박 7일", dDay: "D-60", participants: { type: "single" as const, label: "민지님이 초대했어요" }, image: "/images/where/bangkok.png" },
 ];
 
-const SAVED_TRIPS: typeof FINAL_TRIPS = []; // 저장한 코스 — 데이터 없음
+// ─── 데이터: 저장한 코스 ─────────────────────────────────────────────────────
+
+type DurationBadge = "단일 코스" | "3박 4일";
+
+interface SavedCourse {
+  id: number;
+  title: string;
+  country: string;
+  region: string;
+  placeCount: number;
+  category: string;
+  duration: DurationBadge;
+  image?: string;
+}
+
+const SAVED_COURSES: SavedCourse[] = [
+  { id: 1, title: "아름다운 도쿄의 밤", country: "일본", region: "도쿄", placeCount: 9, category: "야경", duration: "단일 코스", image: "/images/where/dokyo.png" },
+  { id: 2, title: "도쿄 Flex", country: "일본", region: "도쿄", placeCount: 21, category: "쇼핑", duration: "단일 코스", image: "/images/where/dokyo.png" },
+  { id: 3, title: "도쿄 먹방 원정대", country: "일본", region: "도쿄", placeCount: 25, category: "미식", duration: "단일 코스", image: "/images/where/dokyo.png" },
+  { id: 4, title: "홋카이도 자연 투어", country: "일본", region: "훗카이도", placeCount: 3, category: "자연", duration: "3박 4일", image: "/images/where/fukuoka.png" },
+  { id: 5, title: "푸켓 힐링 바캉스", country: "태국", region: "태국", placeCount: 16, category: "자연", duration: "단일 코스", image: "/images/where/bangkok.png" },
+  { id: 6, title: "로마의 휴일", country: "이탈리아", region: "이탈리아", placeCount: 8, category: "역사", duration: "단일 코스", image: "/images/where/paris.png" },
+  { id: 7, title: "상하이의 야경", country: "이탈리아", region: "이탈리아", placeCount: 8, category: "야경", duration: "단일 코스", image: "/images/where/shanghai.png" },
+];
+
+const COUNTRY_FILTERS = ["전체", "일본", "태국", "이탈리아"];
+
+// ─── 저장한 코스 카드 (159x144 grid item) ────────────────────────────────────
+
+function SavedCourseCard({ course }: { course: SavedCourse }) {
+  const isShortDuration = course.duration !== "단일 코스";
+  return (
+    <div
+      className="relative overflow-hidden"
+      style={{
+        width: 159,
+        height: 144,
+        borderRadius: 8,
+        background: course.image ? `url(${course.image}) center / cover` : "#CBCBCB",
+      }}
+    >
+      {/* 하단 어두운 그라데이션 (제목 가독성) */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: 159,
+          height: 96,
+          top: 48,
+          left: 0,
+          background:
+            "linear-gradient(180deg, rgba(62, 62, 62, 0) 0%, rgba(39, 39, 39, 0.365) 19.71%, rgba(0, 0, 0, 0.85) 100%)",
+        }}
+      />
+
+      {/* 우측 상단 기간 배지 */}
+      <div
+        className="absolute inline-flex items-center justify-center"
+        style={{
+          top: 6,
+          right: 6,
+          height: 20,
+          padding: "0 10px",
+          background: isShortDuration ? "#EFEFFF" : "#E0FBFF",
+          borderRadius: 19,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 10,
+            fontWeight: 500,
+            lineHeight: "13px",
+            color: isShortDuration ? "#6B6BCC" : "#00A8BF",
+          }}
+        >
+          {course.duration}
+        </span>
+      </div>
+
+      {/* 좌하단 콘텐츠 */}
+      <div className="absolute" style={{ left: 10, top: 98, width: 139 }}>
+        <p
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: "18px",
+            color: "#FAFAFA",
+          }}
+        >
+          {course.title}
+        </p>
+        {/* 메타 행: 지역 / 장소 수 / 카테고리 */}
+        <div className="flex items-center" style={{ gap: 7, marginTop: 4 }}>
+          <MetaItem icon="pin" label={course.region} />
+          <MetaItem icon="map" label={`${course.placeCount}곳`} />
+          <MetaItem icon={categoryIcon(course.category)} label={course.category} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MetaItem({ icon, label }: { icon: "pin" | "map" | "moon" | "bag" | "fork" | "leaf" | "book"; label: string }) {
+  return (
+    <div className="flex items-center" style={{ gap: 2 }}>
+      <span style={{ width: 13, height: 13, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+        <MetaIcon name={icon} />
+      </span>
+      <span
+        style={{
+          fontFamily: '"Spoqa Han Sans Neo"',
+          fontSize: 10,
+          fontWeight: 500,
+          lineHeight: "13px",
+          color: "#E0E0E0",
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function MetaIcon({ name }: { name: "pin" | "map" | "moon" | "bag" | "fork" | "leaf" | "book" }) {
+  const stroke = "#E0E0E0";
+  switch (name) {
+    case "pin":
+      return (
+        <svg width="11" height="11" viewBox="0 0 12 13" fill="none">
+          <path d="M6 1.5C4.07 1.5 2.5 3.07 2.5 5c0 2.625 3.5 6 3.5 6s3.5-3.375 3.5-6c0-1.93-1.57-3.5-3.5-3.5z" stroke={stroke} strokeWidth="1" />
+          <circle cx="6" cy="5" r="1.25" stroke={stroke} strokeWidth="1" />
+        </svg>
+      );
+    case "map":
+      return (
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+          <path d="M1.5 3v7l3-1.5 3 1.5 3-1.5V1.5l-3 1.5-3-1.5L1.5 3z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
+        </svg>
+      );
+    case "moon":
+      return (
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+          <path d="M9 6a4 4 0 11-5-5 3.5 3.5 0 005 5z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
+        </svg>
+      );
+    case "bag":
+      return (
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+          <path d="M2 3.5h6l-.5 5h-5l-.5-5z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
+          <path d="M3.5 3.5V2.5a1.5 1.5 0 013 0v1" stroke={stroke} strokeWidth="1" />
+        </svg>
+      );
+    case "fork":
+      return (
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+          <path d="M3 1v4h-1V1M3 5v4M7 1c1 0 1 1.5 1 3s-1 1.5-1 1.5V9" stroke={stroke} strokeWidth="1" strokeLinecap="round" />
+        </svg>
+      );
+    case "leaf":
+      return (
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+          <path d="M9 1C5 1 1 3 1 7c0 1 1 2 2 2 4 0 6-4 6-8z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
+        </svg>
+      );
+    case "book":
+      return (
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+          <path d="M2 1.5h6v7H2.5l-.5.5v-7.5z" stroke={stroke} strokeWidth="1" strokeLinejoin="round" />
+        </svg>
+      );
+  }
+}
+
+function categoryIcon(cat: string): "moon" | "bag" | "fork" | "leaf" | "book" {
+  if (cat.includes("야경")) return "moon";
+  if (cat.includes("쇼핑")) return "bag";
+  if (cat.includes("미식")) return "fork";
+  if (cat.includes("자연")) return "leaf";
+  return "book";
+}
+
+// ─── 국가 필터 칩 ────────────────────────────────────────────────────────────
+
+function CountryFilter({ value, onChange, total }: { value: string; onChange: (v: string) => void; total: number }) {
+  return (
+    <div className="flex items-center overflow-x-auto scrollbar-hide" style={{ gap: 10 }}>
+      {COUNTRY_FILTERS.map((c) => {
+        const active = value === c;
+        const label = c === "전체" ? `전체 ${total}` : c;
+        return (
+          <button
+            key={c}
+            onClick={() => onChange(c)}
+            className="shrink-0 inline-flex items-center justify-center"
+            style={{
+              height: 32,
+              padding: "0 18px",
+              background: active ? "#090738" : "#F2F2F6",
+              borderRadius: 20,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 14,
+                fontWeight: 500,
+                lineHeight: "18px",
+                color: active ? "#FFFFFF" : "#2E2E70",
+              }}
+            >
+              {label}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 // ─── 메인 ────────────────────────────────────────────────────────────────────
 
 export default function MyTripPage() {
-  const [segment, setSegment] = useState<SegmentKey>("final");
-  const trips = segment === "final" ? FINAL_TRIPS : SAVED_TRIPS;
+  const [segment, setSegment] = useState<SegmentKey>("mine");
+  const [country, setCountry] = useState("전체");
+
+  const filteredCourses =
+    country === "전체" ? SAVED_COURSES : SAVED_COURSES.filter((c) => c.country === country);
 
   return (
     <div className="relative flex flex-col h-full" style={{ background: "#FEFEFF" }}>
       <StatusBar />
       <Header />
 
-      {/* 본문 */}
       <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 120 }}>
         <div className="flex flex-col" style={{ padding: "12px 20px 0", gap: 16 }}>
           <SegmentedTab value={segment} onChange={setSegment} />
 
-          {/* 카드 리스트 */}
-          <div className="flex flex-col" style={{ gap: 13 }}>
-            {trips.length > 0 ? (
-              trips.map((t) => (
+          {segment === "mine" ? (
+            // ── 내 여행 ──
+            <div className="flex flex-col" style={{ gap: 13 }}>
+              {MINE_TRIPS.map((t) => (
                 <TripCard
                   key={t.id}
                   title={t.title}
@@ -167,25 +352,49 @@ export default function MyTripPage() {
                   participants={t.participants}
                   image={t.image}
                 />
-              ))
-            ) : (
-              <div className="flex items-center justify-center" style={{ height: 200 }}>
-                <p style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 13, color: "#888888" }}>
-                  저장한 코스가 없어요
-                </p>
+              ))}
+            </div>
+          ) : (
+            // ── 저장한 코스 ──
+            <>
+              <CountryFilter value={country} onChange={setCountry} total={SAVED_COURSES.length} />
+
+              {/* 헤더 행 */}
+              <div className="flex items-center justify-between">
+                <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "21px", color: "#333333" }}>
+                  {filteredCourses.length}개의 코스
+                </span>
+                <button className="flex items-center" style={{ gap: 2 }}>
+                  <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: "#888888" }}>
+                    최근 저장순
+                  </span>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M4 6l3 3 3-3" stroke="#888888" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
               </div>
-            )}
-          </div>
+
+              {/* 2-column grid */}
+              <div
+                className="grid"
+                style={{ gridTemplateColumns: "repeat(2, 159px)", gap: 9, justifyContent: "center" }}
+              >
+                {filteredCourses.map((c) => (
+                  <SavedCourseCard key={c.id} course={c} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
-      {/* 새 여행 FAB (Figma: 109×44, #090738, radius 30, position 우측 하단) */}
+      {/* FAB — 세그먼트별 다른 라벨 */}
       <button
         className="absolute inline-flex items-center justify-center"
         style={{
           right: 17,
-          bottom: 113, // 탭바(89) + 24px 여백
-          width: 109,
+          bottom: 113,
+          width: segment === "mine" ? 109 : 129,
           height: 44,
           background: "#090738",
           borderRadius: 30,
@@ -198,16 +407,8 @@ export default function MyTripPage() {
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path d="M10 4v12M4 10h12" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
         </svg>
-        <span
-          style={{
-            fontFamily: '"Spoqa Han Sans Neo"',
-            fontSize: 14,
-            fontWeight: 700,
-            lineHeight: "18px",
-            color: "#FFFFFF",
-          }}
-        >
-          새 여행
+        <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "18px", color: "#FFFFFF" }}>
+          {segment === "mine" ? "새 여행" : "코스 조합하기"}
         </span>
       </button>
 
