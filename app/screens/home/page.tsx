@@ -237,7 +237,7 @@ export default function HomePage() {
 
       {/* 스크롤 영역 — Figma: 16px 좌우 패딩, 콘텐츠 사이 18px gap */}
       <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 100 }}>
-        <div className="flex flex-col" style={{ padding: "22px 16px 0", gap: 18 }}>
+        <div className="flex flex-col" style={{ padding: "32px 16px 0", gap: 18 }}>
 
           {/* 히어로 카드 */}
           <HeroCard onStart={() => router.push("/screens/step1")} />
@@ -288,21 +288,6 @@ export default function HomePage() {
             />
           </div>
 
-          {/* 회원가입 하기 — 중앙 정렬 텍스트 (Figma: 흰 버튼 frame은 display:none, 텍스트만) */}
-          <div className="flex justify-center" style={{ marginTop: 10, marginBottom: 4 }}>
-            <button
-              style={{
-                fontFamily: '"Spoqa Han Sans Neo"',
-                fontSize: 15,
-                fontWeight: 700,
-                lineHeight: "20px",
-                letterSpacing: "-0.5px",
-                color: "#3C3C3C",
-              }}
-            >
-              회원가입 하기
-            </button>
-          </div>
         </div>
       </div>
 
