@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ChevronLeft, ChevronRight, MapPin, Calendar, User, Plane, Car, BedDouble } from "lucide-react";
 import WhereBottomSheet from "./components/WhereBottomSheet";
 import WhenBottomSheet from "./components/WhenBottomSheet";
 import WhoBottomSheet, { type WhoSelection } from "./components/WhoBottomSheet";
-
-// ─── 타입 ──────────────────────────────────────────────────────────────────────
 
 type Sheet = "where" | "when" | "who" | null;
 
@@ -21,8 +20,6 @@ interface Selections {
   who: WhoSelection | null;
 }
 
-// ─── 헬퍼 ──────────────────────────────────────────────────────────────────────
-
 function fmtWhen(when: WhenSel): string {
   if (!when.start) return "";
   const s = `${when.start.month + 1}/${when.start.day}`;
@@ -30,7 +27,7 @@ function fmtWhen(when: WhenSel): string {
   return s + e;
 }
 
-// ─── 칩 컴포넌트 ───────────────────────────────────────────────────────────────
+// ─── 칩 (Figma: 47h, #FAFAFA, shadow, radius 8) ──────────────────────────────
 
 interface ChipProps {
   icon: React.ReactNode;
@@ -40,131 +37,120 @@ interface ChipProps {
 }
 
 function SelectChip({ icon, label, value, onClick }: ChipProps) {
-  const hasValue = !!value;
   return (
     <button
       onClick={onClick}
-      className="inline-flex items-center gap-2 self-start transition-all"
+      className="inline-flex items-center self-start"
       style={{
-        background: hasValue ? "#E5FBFF" : "#F7F9FA",
-        borderRadius: 16,
-        padding: "12px 20px",
-        border: hasValue ? "1.5px solid #00E1FF" : "1.5px solid transparent",
+        height: 47,
+        padding: "0 16px",
+        gap: 10,
+        background: "#FAFAFA",
+        borderRadius: 8,
+        boxShadow: "0 0 6.8px rgba(0, 0, 0, 0.08)",
       }}
     >
-      <span className="shrink-0">{icon}</span>
+      {icon}
       <span
         style={{
-          fontSize: 16,
+          fontFamily: '"Spoqa Han Sans Neo"',
+          fontSize: 18,
           fontWeight: 500,
-          color: hasValue ? "#090738" : "#7A858B",
+          lineHeight: "23px",
+          color: "#555555",
         }}
       >
-        {hasValue ? value : label}
+        {value || label}
       </span>
     </button>
   );
 }
 
-// ─── 옵션 카드 ─────────────────────────────────────────────────────────────────
+// ─── 옵션 카드 (Figma: 343x70, #FAFAFA, 컬러 원 35x35) ────────────────────────
 
-interface CardProps {
+interface OptionCardProps {
   icon: React.ReactNode;
+  iconBg: string;
   title: string;
   subtitle: string;
-  selected: boolean;
-  onToggle: () => void;
+  onClick: () => void;
 }
 
-function OptionCard({ icon, title, subtitle, selected, onToggle }: CardProps) {
+function OptionCard({ icon, iconBg, title, subtitle, onClick }: OptionCardProps) {
   return (
     <button
-      onClick={onToggle}
-      className="flex items-center gap-3 w-full text-left transition-all"
-      style={{
-        minHeight: 70,
-        background: "#F7F9FA",
-        borderRadius: 16,
-        padding: "0 16px",
-        border: selected ? "1.5px solid #00E1FF" : "1.5px solid transparent",
-      }}
+      onClick={onClick}
+      className="relative w-full"
+      style={{ height: 70, background: "#FAFAFA", borderRadius: 12 }}
     >
+      {/* 컬러 원 아이콘 */}
       <div
-        className="flex items-center justify-center shrink-0"
-        style={{ width: 35, height: 35, background: "#DDE5E8", borderRadius: 10 }}
+        className="absolute flex items-center justify-center"
+        style={{ left: 13, top: 18, width: 35, height: 35, background: iconBg, borderRadius: "50%" }}
       >
         {icon}
       </div>
-      <div className="flex flex-col flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <span style={{ fontSize: 16, fontWeight: 500, color: "#090738", lineHeight: "20px" }}>
-            {title}
-          </span>
-          {/* 선택사항 배지 — 항상 표시 */}
-          <div
-            className="flex items-center justify-center shrink-0"
-            style={{ padding: "2px 8px", background: "#C2F5FF", borderRadius: 999 }}
-          >
-            <span style={{ fontSize: 10, fontWeight: 500, color: "#00A8BF" }}>선택</span>
-          </div>
-        </div>
-        <span style={{ fontSize: 12, color: "#555E63", lineHeight: "15px", marginTop: 3 }}>
-          {subtitle}
+
+      {/* 제목 + 선택 배지 */}
+      <div className="absolute flex items-center" style={{ left: 58, top: 17, gap: 8 }}>
+        <span
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 16,
+            fontWeight: 500,
+            lineHeight: "20px",
+            color: "#1A1A1A",
+          }}
+        >
+          {title}
+        </span>
+        <span
+          className="inline-flex items-center justify-center"
+          style={{
+            height: 17,
+            padding: "0 7px",
+            background: "#F2F2F6",
+            borderRadius: 8,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 10,
+            fontWeight: 500,
+            lineHeight: "13px",
+            color: "#2E2E70",
+          }}
+        >
+          선택
         </span>
       </div>
-      {/* 우측 화살표 (선택 상태와 무관) */}
-      <svg width="7" height="13" viewBox="0 0 7 13" fill="none" className="shrink-0">
-        <path d="M1 1l5 5.5L1 12" stroke="#A1ADB3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
+
+      {/* 부제 */}
+      <span
+        className="absolute"
+        style={{
+          left: 58,
+          top: 41,
+          fontFamily: '"Spoqa Han Sans Neo"',
+          fontSize: 12,
+          fontWeight: 500,
+          lineHeight: "15px",
+          color: "#555555",
+        }}
+      >
+        {subtitle}
+      </span>
+
+      {/* 우측 chevron */}
+      <div className="absolute flex items-center justify-center" style={{ right: 11, top: 21, width: 27, height: 27 }}>
+        <ChevronRight size={18} color="#A8A8A9" strokeWidth={1.8} />
+      </div>
     </button>
   );
 }
 
-// ─── 아이콘 ────────────────────────────────────────────────────────────────────
-
-const PinIcon = () => (
-  <svg width="14" height="18" viewBox="0 0 14 18" fill="none">
-    <path d="M7 1C4.24 1 2 3.24 2 6c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z" stroke="#7A858B" strokeWidth="1.4" />
-    <circle cx="7" cy="6" r="1.5" stroke="#7A858B" strokeWidth="1.4" />
-  </svg>
-);
-
-const CalIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <rect x="1" y="3" width="14" height="12" rx="2" stroke="#7A858B" strokeWidth="1.4" />
-    <path d="M1 7h14M5 1v4M11 1v4" stroke="#7A858B" strokeWidth="1.4" strokeLinecap="round" />
-  </svg>
-);
-
-const PeopleIcon = () => (
-  <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
-    <circle cx="6" cy="4" r="3" stroke="#7A858B" strokeWidth="1.4" />
-    <path d="M1 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#7A858B" strokeWidth="1.4" strokeLinecap="round" />
-    <circle cx="13" cy="4" r="2.5" stroke="#7A858B" strokeWidth="1.4" />
-    <path d="M13 9c1.93 0 3.5 1.57 3.5 3.5" stroke="#7A858B" strokeWidth="1.4" strokeLinecap="round" />
-  </svg>
-);
-
-const HotelIcon = () => (
-  <svg width="22" height="15" viewBox="0 0 22 15" fill="none">
-    <path d="M2 13V4a1 1 0 011-1h16a1 1 0 011 1v9M0 14h22M8 14V9h3v5M11 14V9h3v5" stroke="#090738" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const CarIcon = () => (
-  <svg width="18" height="16" viewBox="0 0 18 16" fill="none">
-    <path d="M3 6.5l2-4h8l2 4M1 6.5h16v6a1 1 0 01-1 1H2a1 1 0 01-1-1v-6z" stroke="#7A858B" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="4.5" cy="10" r="1" fill="#7A858B" />
-    <circle cx="13.5" cy="10" r="1" fill="#7A858B" />
-  </svg>
-);
-
-// ─── 메인 ──────────────────────────────────────────────────────────────────────
+// ─── 메인 ────────────────────────────────────────────────────────────────────
 
 export default function ScreenStep1() {
   const router = useRouter();
   const [openSheet, setOpenSheet] = useState<Sheet>(null);
-  const [cards, setCards] = useState({ hotel: false, car: false });
   const [sel, setSel] = useState<Selections>({
     where: "",
     when: { start: null, end: null },
@@ -172,91 +158,128 @@ export default function ScreenStep1() {
   });
 
   return (
-    // 모바일 프레임 내부이므로 absolute로 바텀시트 배치 가능
     <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
 
-      {/* ── 뒤로가기 헤더 ── */}
-      <div className="px-5 pt-12 pb-2 shrink-0">
-        <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
-          <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+      {/* 헤더: 뒤로가기 */}
+      <div className="shrink-0" style={{ padding: "44px 14px 0" }}>
+        <button onClick={() => router.back()} className="flex items-center justify-center" style={{ width: 36, height: 36 }}>
+          <ChevronLeft size={24} color="#373C3E" strokeWidth={2} />
         </button>
       </div>
 
-      {/* ── 콘텐츠 ── */}
-      <div className="flex flex-col flex-1 overflow-y-auto px-5 pt-8 pb-2">
+      {/* 본문 */}
+      <div className="flex flex-col flex-1 px-5 pt-3">
 
-        {/* "이번 여행은" */}
-        <p style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "30px" }}>
+        {/* "이번 여행은" 제목 */}
+        <h1
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 20,
+            fontWeight: 700,
+            lineHeight: "25px",
+            color: "#1A1A1A",
+          }}
+        >
           이번 여행은
-        </p>
+        </h1>
 
-        {/* 칩 — 어디로 / 언제부터는 각자 한 줄, 누구와는 "떠날거에요"와 같은 줄 */}
-        <div className="flex flex-col gap-3 mt-5">
+        {/* 칩 컬럼 + "떠날거에요" */}
+        <div className="flex flex-col mt-5" style={{ gap: 15 }}>
           <SelectChip
-            icon={<PinIcon />}
+            icon={<MapPin size={20} color="#555555" strokeWidth={1.8} />}
             label="어디로"
             value={sel.where || undefined}
             onClick={() => setOpenSheet("where")}
           />
           <SelectChip
-            icon={<CalIcon />}
+            icon={<Calendar size={20} color="#555555" strokeWidth={1.8} />}
             label="언제부터"
             value={fmtWhen(sel.when) || undefined}
             onClick={() => setOpenSheet("when")}
           />
-
-          {/* 누구와 + "떠날거에요" 같은 줄 */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center" style={{ gap: 14 }}>
             <SelectChip
-              icon={<PeopleIcon />}
+              icon={<User size={20} color="#555555" strokeWidth={1.8} />}
               label="누구와"
               value={sel.who ? `${sel.who.type} · ${sel.who.count}명` : undefined}
               onClick={() => setOpenSheet("who")}
             />
-            <span style={{ fontSize: 20, fontWeight: 700, color: "#090738" }}>
+            <span
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 20,
+                fontWeight: 700,
+                lineHeight: "25px",
+                color: "#1A1A1A",
+              }}
+            >
               떠날거에요
             </span>
           </div>
         </div>
 
         {/* 부제 */}
-        <p style={{ fontSize: 13, fontWeight: 500, color: "#7A858B", lineHeight: "16px", marginTop: 16 }}>
+        <p
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 13,
+            fontWeight: 500,
+            lineHeight: "16px",
+            color: "#888888",
+            marginTop: 16,
+          }}
+        >
           몇 가지 질문에 답하면 맞춤 코스를 추천해드려요
         </p>
 
-        {/* 옵션 카드 — 하단 정렬 (큰 공백 위에 배치) */}
-        <div className="flex flex-col gap-3 mt-auto">
+        {/* 옵션 카드 3개 — 하단 정렬 */}
+        <div className="flex flex-col mt-auto" style={{ gap: 10, paddingBottom: 16 }}>
           <OptionCard
-            icon={<CarIcon />}
-            title="렌터카 이용 여부"
-            subtitle="렌트 여부에 따라 동선이 달라져요"
-            selected={cards.car}
-            onToggle={() => router.push("/screens/step1/rentcar")}
+            icon={<Plane size={20} color="#00E1FF" strokeWidth={2} fill="#00E1FF" />}
+            iconBg="#E0FBFF"
+            title="항공권 정보"
+            subtitle="도착 출발 시간에 맞춰 일정을 짜드려요"
+            onClick={() => router.push("/screens/step1/flight")}
           />
           <OptionCard
-            icon={<HotelIcon />}
+            icon={<Car size={20} color="#FFE400" strokeWidth={2} fill="#FFE400" />}
+            iconBg="#FFF9C2"
+            title="렌터카 이용 여부"
+            subtitle="렌트 여부에 따라 동선이 달라져요"
+            onClick={() => router.push("/screens/step1/rentcar")}
+          />
+          <OptionCard
+            icon={<BedDouble size={20} color="#A5A5FF" strokeWidth={2} />}
+            iconBg="#EFEFFF"
             title="숙소 위치 추가하기"
             subtitle="동선이 더 정확해져요"
-            selected={cards.hotel}
-            onToggle={() => router.push("/screens/step1/stay")}
+            onClick={() => router.push("/screens/step1/stay")}
           />
         </div>
       </div>
 
-      {/* ── 하단 "다음" 버튼 ── */}
-      <div className="px-5 pb-8 pt-3 shrink-0">
+      {/* 다음 버튼 (Figma: 330x50, #090738, radius 12) */}
+      <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px" }}>
         <button
           onClick={() => router.push("/screens/step2")}
-          className="w-full h-[52px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-          style={{ background: "#090738" }}
+          className="w-full"
+          style={{
+            height: 50,
+            background: "#090738",
+            borderRadius: 12,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 16,
+            fontWeight: 500,
+            lineHeight: "20px",
+            letterSpacing: "-0.5px",
+            color: "#FFFFFF",
+          }}
         >
           다음
         </button>
       </div>
 
-      {/* ── 바텀시트 3종 ── */}
+      {/* 바텀시트 3종 */}
       <WhereBottomSheet
         open={openSheet === "where"}
         onClose={() => setOpenSheet(null)}
