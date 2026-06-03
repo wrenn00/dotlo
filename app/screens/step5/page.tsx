@@ -99,13 +99,13 @@ function CardView({ item, rank, dragging }: { item: Item; rank: number; dragging
         transition: "box-shadow 150ms, transform 150ms",
       }}
     >
-      {/* 순위 32x32 radius 8 */}
+      {/* 순위 32x32 원형 */}
       <div
         className="flex items-center justify-center shrink-0"
         style={{
           width: 32,
           height: 32,
-          borderRadius: 8,
+          borderRadius: "50%",
           background: isTop ? "#2E2E70" : "#EFEFFF",
         }}
       >
