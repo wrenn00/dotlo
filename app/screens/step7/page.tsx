@@ -793,7 +793,7 @@ export default function Step7Page() {
                   <button
                     onClick={() => {
                       setSavedModalOpen(false);
-                      router.push("/screens/mytrip");
+                      router.push("/screens/mytrip?segment=saved");
                     }}
                     className="transition-opacity active:opacity-80"
                     style={{

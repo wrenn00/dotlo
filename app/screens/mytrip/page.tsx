@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import {
   Search, Bell,
@@ -271,8 +272,10 @@ function CountryFilter({ value, onChange, total }: { value: string; onChange: (v
 
 // ─── 메인 ────────────────────────────────────────────────────────────────────
 
-export default function MyTripPage() {
-  const [segment, setSegment] = useState<SegmentKey>("mine");
+function MyTripContent() {
+  const searchParams = useSearchParams();
+  const initialSegment: SegmentKey = searchParams.get("segment") === "saved" ? "saved" : "mine";
+  const [segment, setSegment] = useState<SegmentKey>(initialSegment);
   const [country, setCountry] = useState("전체");
 
   const filteredCourses =
@@ -357,5 +360,13 @@ export default function MyTripPage() {
 
       <BottomTabBar />
     </div>
+  );
+}
+
+export default function MyTripPage() {
+  return (
+    <Suspense fallback={<div className="h-full" style={{ background: "#FEFEFF" }} />}>
+      <MyTripContent />
+    </Suspense>
   );
 }
