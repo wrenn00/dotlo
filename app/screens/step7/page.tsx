@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Sparkles, Map as MapIcon, RotateCcw, ChevronDown, Star, Footprints } from "lucide-react";
+import { ChevronLeft, Sparkles, Map as MapIcon, RotateCcw, ChevronDown, Star, Footprints, Bookmark } from "lucide-react";
 import PlaceThumbnail from "@/components/PlaceThumbnail";
 import { buildCourses, getCourse, type Course, type CourseId } from "./courses";
 
@@ -90,6 +90,7 @@ export default function Step7Page() {
   const [activeTab, setActiveTab] = useState<CourseId>("A");
   const [autoPlaying, setAutoPlaying] = useState(true);
   const [expanded, setExpanded] = useState(false);
+  const [savedModalOpen, setSavedModalOpen] = useState(false);
   const tabsRef = useRef<HTMLDivElement>(null);
   const tabBtnRefs = useRef<Record<CourseId, HTMLButtonElement | null>>({ A: null, B: null, C: null });
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
@@ -684,7 +685,7 @@ export default function Step7Page() {
       {/* 이 코스 저장하기 — 330x50 #090738 radius 12 */}
       <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px", background: "#FFFFFF" }}>
         <button
-          onClick={() => router.push("/screens/step9")}
+          onClick={() => setSavedModalOpen(true)}
           className="w-full transition-opacity active:opacity-80"
           style={{
             height: 50,
@@ -701,6 +702,121 @@ export default function Step7Page() {
           이 코스 저장하기
         </button>
       </div>
+
+      {/* 저장 완료 모달 */}
+      <AnimatePresence>
+        {savedModalOpen && (
+          <>
+            <motion.div
+              key="overlay"
+              className="absolute inset-0 z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{ background: "rgba(0,0,0,0.5)" }}
+              onClick={() => setSavedModalOpen(false)}
+            />
+            <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
+              <motion.div
+                key="modal"
+                className="pointer-events-auto relative"
+                initial={{ opacity: 0, scale: 0.92, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: 8 }}
+                transition={{ type: "spring", stiffness: 320, damping: 26 }}
+                style={{
+                  width: 339,
+                  background: "#FFFFFF",
+                  borderRadius: 26,
+                  padding: "30px 17px 18px",
+                }}
+              >
+                {/* 아이콘 + 텍스트 */}
+                <div className="flex flex-col items-center" style={{ gap: 26 }}>
+                  <div
+                    className="flex items-center justify-center"
+                    style={{ width: 71, height: 71, background: "#F2F2F6", borderRadius: 92 }}
+                  >
+                    <Bookmark size={36} color="#6060A0" fill="#6060A0" strokeWidth={0} />
+                  </div>
+                  <div className="flex flex-col items-center" style={{ gap: 10 }}>
+                    <p
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 22,
+                        fontWeight: 700,
+                        lineHeight: "28px",
+                        color: "#373C3E",
+                        textAlign: "center",
+                      }}
+                    >
+                      보관함에 저장했어요
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 16,
+                        fontWeight: 500,
+                        lineHeight: "20px",
+                        letterSpacing: "-0.5px",
+                        color: "#888E9C",
+                        textAlign: "center",
+                      }}
+                    >
+                      보관함에서 언제든 다시 볼 수 있어요
+                    </p>
+                  </div>
+                </div>
+
+                {/* 버튼 2개 */}
+                <div className="flex" style={{ marginTop: 26, gap: 11 }}>
+                  <button
+                    onClick={() => setSavedModalOpen(false)}
+                    className="transition-opacity active:opacity-80"
+                    style={{
+                      flex: 1,
+                      height: 57,
+                      background: "#FFFFFF",
+                      border: "1px solid #F2F2F6",
+                      borderRadius: 16,
+                      fontFamily: '"Spoqa Han Sans Neo"',
+                      fontSize: 16,
+                      fontWeight: 500,
+                      lineHeight: "20px",
+                      letterSpacing: "-0.5px",
+                      color: "#1A1A1A",
+                    }}
+                  >
+                    계속 둘러보기
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSavedModalOpen(false);
+                      router.push("/screens/mytrip");
+                    }}
+                    className="transition-opacity active:opacity-80"
+                    style={{
+                      flex: 1,
+                      height: 57,
+                      background: "#090738",
+                      borderRadius: 16,
+                      fontFamily: '"Spoqa Han Sans Neo"',
+                      fontSize: 16,
+                      fontWeight: 500,
+                      lineHeight: "20px",
+                      letterSpacing: "-0.5px",
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    보관함 보기
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
