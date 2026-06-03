@@ -173,13 +173,13 @@ export default function StayPage() {
           </div>
         </div>
 
-        {/* 지도 — 330x218 radius 12 */}
-        <div className="overflow-hidden" style={{ marginTop: 13, width: "100%", height: 218, borderRadius: 12, background: "#B9B9C0" }}>
+        {/* 지도 — 세로 늘림 (260px) */}
+        <div className="overflow-hidden" style={{ marginTop: 13, width: "100%", height: 260, borderRadius: 12, background: "#B9B9C0" }}>
           <MiniMap
             center={TOKYO_CENTER}
             zoom={13}
             markers={PLACES.map((p) => ({ position: p.coords, label: `${p.name} — ${p.sub}` }))}
-            height={218}
+            height={260}
           />
         </div>
 
@@ -213,16 +213,16 @@ export default function StayPage() {
                   borderRadius: 12,
                   boxShadow: "0 0 6.8px rgba(0, 0, 0, 0.08)",
                   border: active ? "1.5px solid #2E2E70" : "1.5px solid transparent",
-                  padding: "0 8px 0 12px",
+                  padding: "0 8px",
                 }}
               >
-                <div className="flex items-center" style={{ gap: 11, flex: 1 }}>
-                  {/* 썸네일 39x39 */}
+                <div className="flex items-center" style={{ gap: 8, flex: 1 }}>
+                  {/* 썸네일 50x50 */}
                   <div
                     className="shrink-0 relative overflow-hidden"
-                    style={{ width: 39, height: 39, background: "#B9B9C0", borderRadius: 8 }}
+                    style={{ width: 50, height: 50, background: "#B9B9C0", borderRadius: 8 }}
                   >
-                    <Image src={p.image} alt={p.name} fill className="object-cover" sizes="39px" />
+                    <Image src={p.image} alt={p.name} fill className="object-cover" sizes="50px" />
                   </div>
                   {/* 텍스트 */}
                   <div className="flex flex-col" style={{ gap: 4 }}>
