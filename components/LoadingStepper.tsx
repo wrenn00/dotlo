@@ -12,12 +12,16 @@ interface Props {
   subtitle?: string;
   icon: "create" | "regenerate";
   steps: string[];
+  /** 각 단계별 액티브/완료 색상. 길이가 steps와 다르면 인덱스 % length로 순환. */
+  stepColors?: string[];
   stepDurationMs?: number;
   onComplete: () => void;
   completeMessage?: string;
   completeSubMessage?: string;
   completeDelayMs?: number;
 }
+
+const DEFAULT_STEP_COLORS = ["#66D9FF", "#FFC83D", "#A5A5FF", "#A0A0C0"];
 
 // ─── 중앙 아이콘 ──────────────────────────────────────────────────────────────
 
@@ -46,12 +50,14 @@ export default function LoadingStepper({
   subtitle = "잠시만 기다려주세요\n최대 30초 정도 걸려요",
   icon,
   steps,
+  stepColors = DEFAULT_STEP_COLORS,
   stepDurationMs = 1500,
   onComplete,
   completeMessage = "코스를 만들었어요!",
   completeSubMessage = "잠시 후 결과를 보여드릴게요",
   completeDelayMs = 1800,
 }: Props) {
+  const colorAt = (i: number) => stepColors[i % stepColors.length];
   const [currentStep, setCurrentStep] = useState(0);
   const [stage, setStage] = useState<"loading" | "complete">("loading");
 
@@ -77,7 +83,7 @@ export default function LoadingStepper({
     return () => clearTimeout(t);
   }, [stage, completeDelayMs, onComplete]);
 
-  const bgStyle = { background: "linear-gradient(180deg, #E5FBFF 0%, #F4F4FF 60%, #ffffff 100%)" };
+  const bgStyle = { background: "linear-gradient(180deg, #EFEFFF 0%, #F4F4FF 60%, #ffffff 100%)" };
 
   // 완료 단계 — 체크 Lottie
   if (stage === "complete") {
@@ -113,11 +119,11 @@ export default function LoadingStepper({
             width="96" height="96" viewBox="0 0 96 96"
             style={{ animation: "spin 1s linear infinite" }}
           >
-            <circle cx="48" cy="48" r="43" fill="none" stroke="#C2F5FF" strokeWidth="4" />
+            <circle cx="48" cy="48" r="43" fill="none" stroke="#EFEFFF" strokeWidth="4" />
             <circle
               cx="48" cy="48" r="43"
               fill="none"
-              stroke="#00E1FF"
+              stroke="#6060A0"
               strokeWidth="4"
               strokeDasharray="70 200"
               strokeLinecap="round"
@@ -129,7 +135,7 @@ export default function LoadingStepper({
               width: 72, height: 72,
               background: "#fff",
               borderRadius: "50%",
-              boxShadow: "0 4px 18px rgba(34,211,204,0.18)",
+              boxShadow: "0 4px 18px rgba(96, 96, 160, 0.18)",
             }}
           >
             <CenterIcon kind={icon} />
@@ -152,12 +158,14 @@ export default function LoadingStepper({
           {subtitle}
         </p>
 
-        {/* 단계 리스트 */}
+        {/* 단계 리스트 — 각 단계별 고유 색상 */}
         <div className="flex flex-col mt-10 w-full max-w-[260px]">
           {steps.map((label, idx) => {
             const isDone   = currentStep > idx;
             const isActive = currentStep === idx;
             const isLast   = idx === steps.length - 1;
+            const stepColor = colorAt(idx);
+            const nextColor = colorAt(idx + 1);
 
             return (
               <div key={label} className="flex items-start gap-3 relative">
@@ -167,7 +175,7 @@ export default function LoadingStepper({
                     style={{
                       width: 28, height: 28,
                       borderRadius: "50%",
-                      background: isDone || isActive ? "#00E1FF" : "#DDE5E8",
+                      background: isDone || isActive ? stepColor : "#E6E8EB",
                     }}
                   >
                     {isDone && (
@@ -196,7 +204,7 @@ export default function LoadingStepper({
                       style={{
                         width: 2,
                         height: 32,
-                        background: isDone ? "#00E1FF" : isActive ? "#5CE7FF" : "#DDE5E8",
+                        background: isDone ? nextColor : "#E6E8EB",
                       }}
                     />
                   )}
@@ -208,7 +216,7 @@ export default function LoadingStepper({
                     style={{
                       fontSize: 14,
                       fontWeight: isDone || isActive ? 700 : 500,
-                      color: isDone || isActive ? "#090738" : "#A1ADB3",
+                      color: isDone || isActive ? "#1A1A1A" : "#A0A0C0",
                     }}
                   >
                     {label}
