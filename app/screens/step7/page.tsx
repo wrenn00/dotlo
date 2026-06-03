@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Sparkles, Map as MapIcon, RotateCcw, ChevronDown, Star, Footprints } from "lucide-react";
 import PlaceThumbnail from "@/components/PlaceThumbnail";
 import { courses, getCourse, type CourseId } from "./courses";
+
+const AUTOPLAY_SEQUENCE: CourseId[] = ["A", "B", "C"];
+const AUTOPLAY_INTERVAL_MS = 1600;
 
 const CourseMap = dynamic(() => import("@/components/CourseMap"), {
   ssr: false,
@@ -54,8 +58,44 @@ const mapCourse = (c: (typeof courses)[number]) => ({
 
 export default function Step7Page() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<CourseId>("B");
+  const [activeTab, setActiveTab] = useState<CourseId>("A");
+  const [autoPlaying, setAutoPlaying] = useState(true);
   const [expanded, setExpanded] = useState(false);
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const tabBtnRefs = useRef<Record<CourseId, HTMLButtonElement | null>>({ A: null, B: null, C: null });
+  const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
+
+  // 자동 사이클: A → B → C
+  useEffect(() => {
+    if (!autoPlaying) return;
+    let idx = 0;
+    setActiveTab(AUTOPLAY_SEQUENCE[0]);
+    const timer = setInterval(() => {
+      idx += 1;
+      if (idx >= AUTOPLAY_SEQUENCE.length) {
+        setAutoPlaying(false);
+        clearInterval(timer);
+        return;
+      }
+      setActiveTab(AUTOPLAY_SEQUENCE[idx]);
+    }, AUTOPLAY_INTERVAL_MS);
+    return () => clearInterval(timer);
+  }, [autoPlaying]);
+
+  // 액티브 탭 위치 추적 → 인디케이터 부드럽게 이동
+  useEffect(() => {
+    const btn = tabBtnRefs.current[activeTab];
+    const wrap = tabsRef.current;
+    if (!btn || !wrap) return;
+    const wrapRect = wrap.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    setIndicator({ left: btnRect.left - wrapRect.left, width: btnRect.width });
+  }, [activeTab]);
+
+  function handleTabClick(id: CourseId) {
+    setAutoPlaying(false);
+    setActiveTab(id);
+  }
 
   const course = getCourse(activeTab);
   const items = TIMELINE[activeTab];
@@ -125,8 +165,9 @@ export default function Step7Page() {
           </div>
         </div>
 
-        {/* 탭 셀렉터 — 340x40 #F8F9FB radius 12 */}
+        {/* 탭 셀렉터 — 340x40 #F8F9FB radius 12, 액티브 표시는 슬라이드 인디케이터 */}
         <div
+          ref={tabsRef}
           className="relative flex items-center"
           style={{
             marginTop: 16,
@@ -136,31 +177,56 @@ export default function Step7Page() {
             borderRadius: 12,
           }}
         >
-          {courses.map((c) => {
-            const active = activeTab === c.id;
-            return (
-              <button
-                key={c.id}
-                onClick={() => setActiveTab(c.id)}
-                className="flex-1 flex items-center justify-center transition-all"
-                style={{
-                  height: 34,
-                  background: active ? "#FFFFFF" : "transparent",
-                  boxShadow: active ? "0 0 4px rgba(0,0,0,0.09)" : "none",
-                  borderRadius: 8,
-                  fontFamily: '"Spoqa Han Sans Neo"',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  lineHeight: "15px",
-                  color: "#666C78",
-                }}
-              >
-                {c.id} {c.label.replace(" 코스", "")}
-              </button>
-            );
-          })}
+          {/* 슬라이드 인디케이터 */}
+          {indicator && (
+            <motion.div
+              layout
+              animate={{ left: indicator.left, width: indicator.width }}
+              transition={{ type: "spring", stiffness: 320, damping: 28 }}
+              style={{
+                position: "absolute",
+                top: 3,
+                height: 34,
+                background: "#FFFFFF",
+                boxShadow: "0 0 4px rgba(0,0,0,0.09)",
+                borderRadius: 8,
+                pointerEvents: "none",
+              }}
+            />
+          )}
+          {courses.map((c) => (
+            <button
+              key={c.id}
+              ref={(el) => {
+                tabBtnRefs.current[c.id] = el;
+              }}
+              onClick={() => handleTabClick(c.id)}
+              className="relative flex-1 flex items-center justify-center"
+              style={{
+                height: 34,
+                background: "transparent",
+                borderRadius: 8,
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 12,
+                fontWeight: 500,
+                lineHeight: "15px",
+                color: "#666C78",
+              }}
+            >
+              {c.id} {c.label.replace(" 코스", "")}
+            </button>
+          ))}
         </div>
 
+        {/* 자동/수동 탭 전환에 따라 코스 콘텐츠가 부드럽게 페이드 */}
+        <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+        >
         {/* 히어로 카드 — 344x271 + 하단 정보 영역 */}
         <div className="flex flex-col" style={{ marginTop: 14, gap: 11 }}>
           {/* 지도 영역 */}
@@ -490,6 +556,9 @@ export default function Step7Page() {
             style={{ transform: expanded ? "rotate(180deg)" : "none", transition: "transform 200ms" }}
           />
         </button>
+
+        </motion.div>
+        </AnimatePresence>
 
         {/* 마음에 드는 게 없으신가요? 카드 */}
         <div
