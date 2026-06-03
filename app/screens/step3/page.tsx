@@ -1,17 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, Zap, MapPin, Heart } from "lucide-react";
 
+type Selected = "quick" | "custom" | null;
+
 export default function Step3Page() {
   const router = useRouter();
+  const [selected, setSelected] = useState<Selected>(null);
 
-  function goQuick() {
-    router.push("/screens/step6");
-  }
-
-  function goCustom() {
-    router.push("/screens/step4");
+  function handleNext() {
+    if (selected === "quick") router.push("/screens/step6");
+    else if (selected === "custom") router.push("/screens/step4");
   }
 
   return (
@@ -47,9 +48,14 @@ export default function Step3Page() {
 
           {/* 카드 1: 바로 추천받기 */}
           <button
-            onClick={goQuick}
-            className="relative w-full"
-            style={{ height: 145, background: "#FAFAFA", borderRadius: 12 }}
+            onClick={() => setSelected("quick")}
+            className="relative w-full transition-colors"
+            style={{
+              height: 145,
+              background: selected === "quick" ? "#F4F4FB" : "#FAFAFA",
+              border: selected === "quick" ? "1.5px solid #D8D8E9" : "1.5px solid transparent",
+              borderRadius: 12,
+            }}
           >
             {/* 번개 아이콘 35x35 중앙 상단 */}
             <div
@@ -97,9 +103,14 @@ export default function Step3Page() {
 
           {/* 카드 2: 맞춤 코스 생성하기 (추천 배지) */}
           <button
-            onClick={goCustom}
-            className="relative w-full"
-            style={{ height: 145, background: "#FAFAFA", borderRadius: 12 }}
+            onClick={() => setSelected("custom")}
+            className="relative w-full transition-colors"
+            style={{
+              height: 145,
+              background: selected === "custom" ? "#F4F4FB" : "#FAFAFA",
+              border: selected === "custom" ? "1.5px solid #D8D8E9" : "1.5px solid transparent",
+              borderRadius: 12,
+            }}
           >
             {/* 추천 배지 — 43x23 #2E2E70 radius 20, top 8 right 8 */}
             <div
@@ -183,8 +194,9 @@ export default function Step3Page() {
       {/* 다음 버튼 — 330x50 #090738 radius 12 */}
       <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px" }}>
         <button
-          onClick={goCustom}
-          className="w-full"
+          onClick={handleNext}
+          disabled={!selected}
+          className="w-full transition-opacity disabled:opacity-40"
           style={{
             height: 50,
             background: "#090738",
