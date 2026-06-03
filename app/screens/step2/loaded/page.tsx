@@ -23,14 +23,14 @@ export default function Step2LoadedPage() {
       {/* 본문 */}
       <div className="flex flex-col flex-1 overflow-y-auto" style={{ padding: "0 21px", paddingBottom: 24 }}>
 
-        {/* 연동완료 칩 — 92x30 */}
+        {/* 연동완료 칩 — 항공권 선택사항 칩과 같은 사이즈 (h29, padding 0/14) */}
         <div
           className="inline-flex items-center justify-center self-start"
           style={{
             marginTop: 11,
-            width: 92,
-            height: 30,
-            gap: 3,
+            height: 29,
+            padding: "0 14px",
+            gap: 4,
             background: "#F2F2F6",
             borderRadius: 32,
           }}
