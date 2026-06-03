@@ -23,25 +23,25 @@ export default function Step2LoadedPage() {
       {/* 본문 */}
       <div className="flex flex-col flex-1 overflow-y-auto" style={{ padding: "0 21px", paddingBottom: 24 }}>
 
-        {/* 연동완료 칩 */}
+        {/* 연동완료 칩 — 92x30 */}
         <div
           className="inline-flex items-center justify-center self-start"
           style={{
             marginTop: 11,
-            height: 46,
-            padding: "0 20px 0 16px",
-            gap: 6,
+            width: 92,
+            height: 30,
+            gap: 3,
             background: "#F2F2F6",
             borderRadius: 32,
           }}
         >
-          <Check size={20} color="#2E2E70" strokeWidth={2.4} />
+          <Check size={16} color="#2E2E70" strokeWidth={2.4} />
           <span
             style={{
               fontFamily: '"Spoqa Han Sans Neo"',
-              fontSize: 15,
-              fontWeight: 600,
-              lineHeight: "20px",
+              fontSize: 14,
+              fontWeight: 500,
+              lineHeight: "18px",
               color: "#2E2E70",
             }}
           >
