@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Icon from "@/components/Icon";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -114,33 +114,53 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
       <div
         className="absolute bottom-0 left-0 right-0 flex flex-col"
         style={{
-          background: "#fff",
-          borderRadius: "24px 24px 0 0",
+          background: "#FFFFFF",
+          borderRadius: "20px 20px 0 0",
+          border: "1px solid #F1F1F1",
+          boxShadow: "0 0 15px rgba(0,0,0,0.1)",
           zIndex: 50,
           transform: open ? "translateY(0)" : "translateY(100%)",
           transition: "transform 300ms cubic-bezier(0.32,0.72,0,1)",
         }}
       >
-        {/* 핸들 */}
-        <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full" style={{ background: "#DDE5E8" }} />
+        {/* 핸들 — Figma 40x4 #A7A7A7 */}
+        <div className="flex justify-center" style={{ paddingTop: 8, paddingBottom: 8 }}>
+          <div style={{ width: 40, height: 4, background: "#A7A7A7", borderRadius: 40 }} />
         </div>
 
-        {/* 헤더 */}
-        <div className="flex items-center justify-between px-5 pt-2 pb-1">
-          <div>
-            <p style={{ fontSize: 18, fontWeight: 700, color: "#090738" }}>언제 떠나시나요?</p>
-            <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>출발일과 도착일을 선택해주세요</p>
+        {/* 헤더 — 제목 20/700 + 부제 13/500 + X */}
+        <div className="flex items-start justify-between" style={{ padding: "13px 17px 0" }}>
+          <div className="flex flex-col" style={{ gap: 4 }}>
+            <p
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 20,
+                fontWeight: 700,
+                lineHeight: "30px",
+                color: "#1A1A1A",
+              }}
+            >
+              언제 떠나시나요?
+            </p>
+            <p
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 13,
+                fontWeight: 500,
+                lineHeight: "16px",
+                color: "#888888",
+              }}
+            >
+              출발일과 도착일을 선택해주세요
+            </p>
           </div>
-          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 2l12 12M14 2L2 14" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+          <button onClick={onClose} className="flex items-center justify-center" style={{ width: 32, height: 32, marginTop: -4 }}>
+            <X size={20} color="#555555" strokeWidth={2} />
           </button>
         </div>
 
-        {/* 날짜 박스 2개 */}
-        <div className="flex gap-3 px-5 py-3">
+        {/* 날짜 박스 2개 — Figma: 162x67, #FAFAFA, border 1.5px #D8D8E9, radius 10 */}
+        <div className="flex" style={{ padding: "27px 21px 0", gap: 9 }}>
           {(["start", "end"] as const).map((type) => {
             const val = type === "start" ? sel.start : sel.end;
             const label = type === "start" ? "출발일" : "도착일";
@@ -149,47 +169,79 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
               <button
                 key={type}
                 onClick={() => setPicking(type)}
-                className="flex-1 flex flex-col items-center py-2.5 rounded-2xl"
+                className="relative flex-1 text-left"
                 style={{
-                  border: active ? "1.5px solid #00E1FF" : "1.5px solid #DDE5E8",
-                  background: active ? "#E5FBFF" : "#fff",
+                  height: 67,
+                  background: "#FAFAFA",
+                  border: active ? "1.5px solid #2E2E70" : "1.5px solid #D8D8E9",
+                  borderRadius: 10,
                 }}
               >
-                <span style={{ fontSize: 11, color: "#7A858B", fontWeight: 500 }}>{label}</span>
-                <span style={{ fontSize: 13, fontWeight: 600, color: val ? "#090738" : "#A1ADB3", marginTop: 2 }}>
-                  {val ? `${val.month + 1}월 ${val.day}일` : "선택"}
+                <span
+                  className="absolute"
+                  style={{
+                    left: 13,
+                    top: 11,
+                    fontFamily: '"Spoqa Han Sans Neo"',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    lineHeight: "15px",
+                    color: "#555555",
+                  }}
+                >
+                  {label}
+                </span>
+                <span
+                  className="absolute"
+                  style={{
+                    left: 13,
+                    top: 34,
+                    fontFamily: '"Spoqa Han Sans Neo"',
+                    fontSize: 15,
+                    fontWeight: 500,
+                    lineHeight: "19px",
+                    color: val ? "#1A1A1A" : "#A8A8A9",
+                  }}
+                >
+                  {val ? fmt(val.year, val.month, val.day) : "선택해주세요"}
                 </span>
               </button>
             );
           })}
         </div>
 
-        {/* 캘린더 헤더 */}
-        <div className="flex items-center justify-between px-5 py-2">
-          <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
-              <path d="M7 1L1 7l6 6" stroke="#090738" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+        {/* 캘린더 헤더 (Figma: chevron 좌우 + "2026년 5월" 16/700 #0A1E38) */}
+        <div className="flex items-center justify-between" style={{ padding: "32px 24px 0" }}>
+          <button onClick={prevMonth} className="flex items-center justify-center" style={{ width: 24, height: 24 }}>
+            <ChevronLeft size={20} color="#1A1A1A" strokeWidth={2} />
           </button>
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>
+          <span
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 16,
+              fontWeight: 700,
+              lineHeight: "20px",
+              color: "#0A1E38",
+            }}
+          >
             {viewYear}년 {viewMonth + 1}월
           </span>
-          <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
-              <path d="M1 1l6 6-6 6" stroke="#090738" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          <button onClick={nextMonth} className="flex items-center justify-center" style={{ width: 24, height: 24 }}>
+            <ChevronRight size={20} color="#1A1A1A" strokeWidth={2} />
           </button>
         </div>
 
-        {/* 요일 헤더 */}
-        <div className="grid grid-cols-7 px-3">
+        {/* 요일 헤더 — Figma: 일 #FF4C7A / 월~금 #888E9C / 토 #0070AE */}
+        <div className="grid grid-cols-7" style={{ padding: "26px 24px 0" }}>
           {DAYS.map((d, i) => (
-            <div key={d} className="flex items-center justify-center py-1">
+            <div key={d} className="flex items-center justify-center">
               <span
                 style={{
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: i === 0 ? "#EF4444" : i === 6 ? "#00E1FF" : "#7A858B",
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 13,
+                  fontWeight: 500,
+                  lineHeight: "16px",
+                  color: i === 0 ? "#FF4C7A" : i === 6 ? "#0070AE" : "#888E9C",
                 }}
               >
                 {d}
@@ -198,64 +250,50 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
           ))}
         </div>
 
-        {/* 날짜 그리드 */}
-        <div className="grid grid-cols-7 px-3 pb-2">
+        {/* 날짜 그리드 — Figma: 선택 32x32 #2E2E70 원 + 범위 lavender bar #D8D8E9 */}
+        <div className="grid grid-cols-7" style={{ padding: "12px 24px 0" }}>
           {cells.map((day, idx) => {
-            if (!day) return <div key={`empty-${idx}`} />;
+            if (!day) return <div key={`empty-${idx}`} style={{ height: 43 }} />;
             const start = isStart(day);
             const end = isEnd(day);
             const range = inRange(day);
-            const col = idx % 7;
             const isRangeStart = start && sel.end;
-            const isRangeEnd = end;
+            const isRangeEnd = end && sel.start;
 
             return (
               <div
                 key={day}
                 className="relative flex items-center justify-center"
-                style={{ height: 40 }}
+                style={{ height: 43 }}
               >
-                {/* 범위 배경 (좌우 절반) */}
-                {range && (
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: "#E5FBFF" }}
-                  />
-                )}
+                {/* 범위 라벤더 바 */}
+                {range && <div className="absolute" style={{ left: 0, right: 0, top: 5, height: 32, background: "#D8D8E9" }} />}
                 {isRangeStart && (
-                  <div
-                    className="absolute top-0 bottom-0 right-0"
-                    style={{ left: "50%", background: "#E5FBFF" }}
-                  />
+                  <div className="absolute" style={{ left: "50%", right: 0, top: 5, height: 32, background: "#D8D8E9" }} />
                 )}
                 {isRangeEnd && (
-                  <div
-                    className="absolute top-0 bottom-0 left-0"
-                    style={{ right: "50%", background: "#E5FBFF" }}
-                  />
+                  <div className="absolute" style={{ left: 0, right: "50%", top: 5, height: 32, background: "#D8D8E9" }} />
                 )}
 
-                {/* 날짜 원형 */}
+                {/* 날짜 셀 */}
                 <button
                   onClick={() => handleDay(day)}
-                  className="relative w-9 h-9 flex items-center justify-center rounded-full transition-colors"
+                  className="relative flex items-center justify-center"
                   style={{
-                    background: start || end ? "#00E1FF" : "transparent",
+                    width: 32,
+                    height: 32,
+                    borderRadius: "50%",
+                    background: start || end ? "#2E2E70" : "transparent",
                     zIndex: 1,
                   }}
                 >
                   <span
                     style={{
-                      fontSize: 14,
-                      fontWeight: start || end ? 700 : 400,
-                      color:
-                        start || end
-                          ? "#fff"
-                          : col === 0
-                          ? "#EF4444"
-                          : col === 6
-                          ? "#00E1FF"
-                          : "#090738",
+                      fontFamily: '"Spoqa Han Sans Neo"',
+                      fontSize: 13,
+                      fontWeight: 500,
+                      lineHeight: "16px",
+                      color: start || end ? "#FFFFFF" : "#0A1E38",
                     }}
                   >
                     {day}
@@ -266,32 +304,23 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
           })}
         </div>
 
-        {/* 날짜 텍스트 표시 */}
-        {(sel.start || sel.end) && (
-          <div className="px-5 py-2 flex gap-2 justify-center">
-            {sel.start && (
-              <span style={{ fontSize: 12, color: "#00E1FF", fontWeight: 600 }}>
-                {fmt(sel.start.year, sel.start.month, sel.start.day)}
-              </span>
-            )}
-            {sel.start && sel.end && (
-              <Icon name="arrow_forward" size={14} className="text-cloudy-gray-500" />
-            )}
-            {sel.end && (
-              <span style={{ fontSize: 12, color: "#00E1FF", fontWeight: 600 }}>
-                {fmt(sel.end.year, sel.end.month, sel.end.day)}
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* 완료 버튼 */}
-        <div className="px-5 pb-8 pt-2">
+        {/* 완료 버튼 — Figma: 330x50 #090738 radius 12 */}
+        <div className="flex justify-center" style={{ padding: "32px 22px 31px" }}>
           <button
             onClick={handleConfirm}
             disabled={!sel.start || !sel.end}
-            className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity disabled:opacity-40"
-            style={{ background: "#090738" }}
+            className="w-full transition-opacity disabled:opacity-40"
+            style={{
+              height: 50,
+              background: "#090738",
+              borderRadius: 12,
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 16,
+              fontWeight: 500,
+              lineHeight: "20px",
+              letterSpacing: "-0.5px",
+              color: "#FFFFFF",
+            }}
           >
             선택 완료
           </button>
