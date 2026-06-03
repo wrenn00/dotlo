@@ -24,6 +24,11 @@ export default function RootLayout({
           crossOrigin="anonymous"
           href="https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@01ff0283e4f36e159ebfe2b6e575d1d16cf42d4f/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo.css"
         />
+        {/* Pretendard — 히어로 카드 제목 등 (jsDelivr CDN) */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        />
         {/* Material Symbols Rounded — 가변 폰트 (opsz/wght/FILL/GRAD) */}
         <link
           rel="stylesheet"

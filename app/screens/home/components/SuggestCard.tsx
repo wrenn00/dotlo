@@ -1,13 +1,12 @@
 "use client";
 
 interface SuggestCardProps {
-  image: string;
-  badge: string;
+  image?: string;
+  badge?: string;
   title: string;
   subtitle: string;
   courseCount: number;
-  /** rgb 트리플 (예: "0, 225, 255") — 카드 상단 그라데이션 색상 */
-  gradientRgb?: string;
+  bgColor?: string;
 }
 
 export default function SuggestCard({
@@ -16,71 +15,122 @@ export default function SuggestCard({
   title,
   subtitle,
   courseCount,
-  gradientRgb = "0, 225, 255",
+  bgColor = "#5ED6C3",
 }: SuggestCardProps) {
   return (
     <div
-      className="relative shrink-0 rounded-3xl overflow-hidden"
+      className="relative shrink-0 overflow-hidden"
       style={{
         width: 264,
         height: 142,
-        backgroundImage: `url(${image})`,
+        background: bgColor,
+        borderRadius: 12,
+        backgroundImage: image ? `url(${image})` : undefined,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* 상단 그라데이션 오버레이 — 작은 카드에 맞춰 더 길게 덮음 */}
+      {/* 상단 어두운 그라데이션 (가독성 — Figma 사양 그대로) */}
       <div
-        className="absolute inset-0"
+        className="absolute pointer-events-none"
         style={{
-          background: `linear-gradient(180deg, rgba(${gradientRgb}, 0.7) 0%, rgba(${gradientRgb}, 0.2) 60%, transparent 100%)`,
+          width: 270,
+          height: 91,
+          left: -3,
+          top: 0,
+          background:
+            "linear-gradient(180deg, rgba(43, 43, 43, 0.62) 0%, rgba(91, 87, 87, 0.4464) 71.15%, rgba(135, 135, 135, 0) 100%)",
         }}
       />
 
-      {/* 배지 — 우측 상단 */}
-      <div
-        className="absolute z-10 px-2.5 py-1 rounded-full"
-        style={{ top: 12, right: 12, background: "rgba(255,255,255,0.95)", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}
+      {/* 제목 */}
+      <p
+        className="absolute"
+        style={{
+          left: 13,
+          top: 9,
+          width: 107,
+          fontFamily: '"Spoqa Han Sans Neo"',
+          fontSize: 16,
+          fontWeight: 700,
+          lineHeight: "20px",
+          color: "#FFFFFF",
+          whiteSpace: "pre-line",
+        }}
       >
-        <span style={{ fontSize: 10, fontWeight: 700, color: "#090738" }}>{badge}</span>
-      </div>
+        {title}
+      </p>
 
-      {/* 제목 + 부제 — 좌측 상단 */}
-      <div className="absolute z-10" style={{ top: 12, left: 12, right: 80 }}>
-        <h3
+      {/* 부제 */}
+      <p
+        className="absolute"
+        style={{
+          left: 13,
+          top: 53,
+          fontFamily: '"Spoqa Han Sans Neo"',
+          fontSize: 10,
+          fontWeight: 400,
+          lineHeight: "13px",
+          color: "#FFFFFF",
+        }}
+      >
+        {subtitle}
+      </p>
+
+      {/* 우측 상단 배지 (호캉스 등) */}
+      {badge && (
+        <div
+          className="absolute inline-flex items-center justify-center"
           style={{
-            fontSize: 16,
-            fontWeight: 700,
-            color: "#fff",
-            lineHeight: "20px",
-            whiteSpace: "pre-line",
-            textShadow: "0 1px 2px rgba(0,0,0,0.3)",
+            top: 9,
+            right: 9,
+            height: 19,
+            padding: "0 10px",
+            background: "#E0FBFF",
+            borderRadius: 10,
           }}
         >
-          {title}
-        </h3>
-        <p
-          style={{
-            fontSize: 11,
-            color: "rgba(255,255,255,0.95)",
-            marginTop: 4,
-            textShadow: "0 1px 2px rgba(0,0,0,0.25)",
-          }}
-        >
-          {subtitle}
-        </p>
-      </div>
+          <span
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 10,
+              fontWeight: 500,
+              lineHeight: "13px",
+              color: "#007A8A",
+            }}
+          >
+            {badge}
+          </span>
+        </div>
+      )}
 
-      {/* 코스 N개 확인하기 — 우측 하단 */}
+      {/* "코스 N개 확인하기" 버튼 — 우측 하단 */}
       <button
-        className="absolute z-10 inline-flex items-center gap-0.5 px-3 py-1.5 rounded-full"
-        style={{ bottom: 12, right: 12, background: "#fff", boxShadow: "0 2px 6px rgba(0,0,0,0.14)" }}
+        className="absolute inline-flex items-center"
+        style={{
+          left: 148,
+          top: 110,
+          width: 107,
+          height: 23,
+          padding: "0 10px",
+          background: "#FFFFFF",
+          borderRadius: 8,
+          gap: 7,
+        }}
       >
-        <span style={{ fontSize: 11, fontWeight: 700, color: "#090738" }}>
+        <span
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 10,
+            fontWeight: 500,
+            lineHeight: "13px",
+            color: "#5B5F67",
+          }}
+        >
           코스 {courseCount}개 확인하기
         </span>
-        <svg width="5" height="9" viewBox="0 0 5 9" fill="none">
-          <path d="M1 1l3 3.5L1 8" stroke="#090738" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M4.5 3l3 3-3 3" stroke="#A8A8A9" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
     </div>

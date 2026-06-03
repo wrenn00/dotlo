@@ -8,73 +8,82 @@ import SuggestCard from "./components/SuggestCard";
 import BottomTabBar from "./components/BottomTabBar";
 import { initPlacesData } from "@/lib/places-data";
 
-// ─── Figma 색상 (figma-home-slim.json 기반) ───────────────────────────────────
-// mintMain    rgb(28,204,176)  #00E1FF  — 메인 배너
-// mintAlt     rgb(94,213,194)  #5CE7FF  — 로고, 활성 탭, 풀빌라 카드
-// mintBadge   rgb(227,250,243) #E5FBFF  — D-day 배지 배경
-// mintText    rgb(41,204,178)  #00E1FF  — D-day 텍스트
-// gray        rgb(136,143,156) #7A858B  — 보조 텍스트
-// avatar      rgb(184,189,194) #A1ADB3  — 회색 placeholder
-// blue        rgb(77,163,252)  #29E3FF  — 미식 카드
-// blueBadgeBg rgb(237,247,255) #E5FBFF
-// pageBg      rgb(252,252,252) #F7F9FA
-// btnTextDark rgb(35,59,54)    #090738  — "코스 만들기" 글씨
-
-// ─── 상단 상태바 ──────────────────────────────────────────────────────────────
+// ─── 상태바 (Figma: 375x50) ───────────────────────────────────────────────────
 
 function StatusBar() {
   return (
-    <div className="flex items-center justify-between px-6 pt-3 pb-2 shrink-0" style={{ background: "#fff" }}>
-      <span style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}>9:41</span>
+    <div className="flex items-center justify-between shrink-0" style={{ height: 50, padding: "0 17px 0 24px" }}>
+      <span
+        style={{
+          fontFamily: '"Spoqa Han Sans Neo"',
+          fontSize: 15,
+          fontWeight: 700,
+          lineHeight: "20px",
+          letterSpacing: "-0.5px",
+          color: "#111111",
+        }}
+      >
+        9:41
+      </span>
       <div className="flex items-center gap-1.5">
-        <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
-          <path d="M7.5 2C9.8 2 11.8 3 13.2 4.6L14.5 3.2C12.7 1.2 10.2 0 7.5 0S2.3 1.2.5 3.2L1.8 4.6C3.2 3 5.2 2 7.5 2zm0 4c1.1 0 2.1.4 2.8 1.1L11.7 5.7C10.6 4.6 9.1 4 7.5 4S4.4 4.6 3.3 5.7l1.4 1.4C5.4 6.4 6.4 6 7.5 6zm0 4c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#090738" />
+        {/* Signal */}
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="#111111">
+          <rect x="0" y="8" width="2.5" height="3" rx="0.5" />
+          <rect x="3.5" y="6" width="2.5" height="5" rx="0.5" />
+          <rect x="7" y="3.5" width="2.5" height="7.5" rx="0.5" />
+          <rect x="10.5" y="1" width="2.5" height="10" rx="0.5" />
+          <rect x="14" y="-1.5" width="2.5" height="12.5" rx="0.5" />
         </svg>
-        <div className="w-6 h-3 rounded-sm border border-[#090738] flex items-center px-0.5">
-          <div className="h-2 w-4 rounded-sm" style={{ background: "#090738" }} />
+        {/* Wifi */}
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="#111111">
+          <path d="M7.5 2C9.8 2 11.9 3 13.4 4.5l1.3-1.3C12.9 1.2 10.4 0 7.5 0S2.1 1.2.3 3.2L1.6 4.5C3.1 3 5.2 2 7.5 2zm0 4c1.1 0 2 .4 2.8 1.1l1.4-1.4C10.6 4.6 9.1 4 7.5 4S4.4 4.6 3.3 5.7L4.7 7.1C5.5 6.4 6.4 6 7.5 6zm0 4a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
+        </svg>
+        {/* Battery */}
+        <div className="relative" style={{ width: 24, height: 11 }}>
+          <div className="absolute inset-0" style={{ border: "1px solid rgba(17,17,17,0.35)", borderRadius: 2.67 }} />
+          <div className="absolute" style={{ left: 1, top: 1, bottom: 1, width: 18, background: "#111111", borderRadius: 1.1 }} />
+          <div className="absolute" style={{ right: -2, top: 3.5, width: 1.33, height: 4, background: "rgba(17,17,17,0.4)" }} />
         </div>
       </div>
     </div>
   );
 }
 
-// ─── dotlo 로고 + 검색·알림 ───────────────────────────────────────────────────
+// ─── 헤더 (Figma: 318.5x33, 로고 + 검색/알림) ────────────────────────────────
 
 function Header() {
   return (
-    <div className="flex items-center justify-between px-5 py-3 shrink-0">
-      {/* dotlo 로고 (이미지만) */}
+    <div
+      className="flex items-center justify-between shrink-0 mx-auto"
+      style={{ width: 318.5, height: 33, marginTop: 6 }}
+    >
+      {/* 로고 (38x33) */}
       <Image
         src="/images/logo.png"
         alt="Dotlo"
-        width={32}
-        height={28}
+        width={38}
+        height={33}
         priority
-        style={{ width: 32, height: "auto" }}
+        style={{ width: 38, height: 33, objectFit: "contain" }}
       />
 
-      {/* 검색 + 알림 */}
-      <div className="flex items-center gap-3">
-        <button className="flex items-center justify-center">
+      {/* 검색 + 알림 (60x24, gap 12) */}
+      <div className="flex items-center" style={{ width: 60, height: 24, gap: 12 }}>
+        <button className="flex items-center justify-center" style={{ width: 24, height: 24 }}>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="9" cy="9" r="6.5" stroke="#555E63" strokeWidth="1.8" />
-            <path d="M14 14L18.5 18.5" stroke="#555E63" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="9" cy="9" r="6.5" stroke="#555555" strokeWidth="1.8" />
+            <path d="M14 14L18.5 18.5" stroke="#555555" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
         </button>
-        <button className="relative flex items-center justify-center">
-          <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
-            <path
-              d="M3 9a6 6 0 0112 0v5l1.5 2H1.5L3 14V9z"
-              stroke="#555E63"
-              strokeWidth="1.8"
-              strokeLinejoin="round"
-              fill="none"
-            />
-            <path d="M7 18a2 2 0 004 0" stroke="#555E63" strokeWidth="1.8" strokeLinecap="round" />
+        <button className="relative flex items-center justify-center" style={{ width: 24, height: 24 }}>
+          <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
+            <path d="M3 10a7 7 0 0114 0v6l1.5 2H1.5L3 16v-6z" stroke="#555555" strokeWidth="1.8" strokeLinejoin="round" />
+            <path d="M8 19a2 2 0 004 0" stroke="#555555" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
+          {/* 알림 점 (#6060A0) */}
           <div
             className="absolute"
-            style={{ top: 1, right: 0, width: 6, height: 6, background: "#00E1FF", borderRadius: "50%", border: "1.5px solid #fff" }}
+            style={{ top: 2, right: 2, width: 5, height: 5, background: "#6060A0", borderRadius: "50%" }}
           />
         </button>
       </div>
@@ -82,47 +91,111 @@ function Header() {
   );
 }
 
-// ─── 메인 배너 ────────────────────────────────────────────────────────────────
+// ─── 섹션 헤더 (Figma: Spoqa 500/16) ─────────────────────────────────────────
 
-function MainBanner({ onStart }: { onStart: () => void }) {
+function SectionHeader({ title, right }: { title: string; right?: string }) {
   return (
-    <div className="mx-5">
-      <div
-        className="relative overflow-hidden rounded-3xl bg-sky-blue-500 text-white p-5"
+    <div className="flex items-center justify-between" style={{ height: 20 }}>
+      <span
         style={{
-          aspectRatio: "2 / 1",
-          backgroundImage: "url(/images/background.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          fontFamily: '"Spoqa Han Sans Neo"',
+          fontSize: 16,
+          fontWeight: 500,
+          lineHeight: "20px",
+          color: "#000000",
         }}
       >
-        <h2 className="text-xl font-bold leading-tight">
-          저장한 장소로<br />
-          코스 자동 생성하기
-        </h2>
-        <p className="text-sm mt-2 opacity-90">
-          저장한 장소를 취향에 맞게 일정으로 짜드려요
-        </p>
+        {title}
+      </span>
+      {right && (
         <button
-          onClick={onStart}
-          className="mt-5 inline-flex items-center gap-1 px-4 py-2 bg-white text-night-navy-600 text-sm font-bold rounded-full"
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 12,
+            fontWeight: 500,
+            lineHeight: "15px",
+            color: "#888888",
+          }}
         >
-          코스 만들기 <span>›</span>
+          {right}
         </button>
-      </div>
+      )}
     </div>
   );
 }
 
-// ─── 섹션 헤더 ────────────────────────────────────────────────────────────────
+// ─── 히어로 카드 (Figma: 343x169, #80F0FF) ───────────────────────────────────
 
-function SectionHeader({ title, right }: { title: string; right?: string }) {
+function HeroCard({ onStart }: { onStart: () => void }) {
   return (
-    <div className="flex items-center justify-between px-5 mt-7 mb-3">
-      <span style={{ fontSize: 16, fontWeight: 700, color: "#090738" }}>{title}</span>
-      {right && (
-        <button style={{ fontSize: 13, color: "#7A858B", fontWeight: 500 }}>{right}</button>
-      )}
+    <div
+      className="relative overflow-hidden"
+      style={{ width: 343, height: 169, background: "#80F0FF", borderRadius: 12 }}
+    >
+      {/* 캐릭터 일러스트 자리 (Figma: 108x112 우측 중앙) — public/images/hero-character.png 추가 필요 */}
+
+      {/* 텍스트 영역 (좌측) */}
+      <h2
+        className="absolute"
+        style={{
+          left: 17,
+          top: 16,
+          width: 200,
+          fontFamily: '"Pretendard", "Spoqa Han Sans Neo"',
+          fontSize: 16,
+          fontWeight: 700,
+          lineHeight: "20px",
+          color: "#1A1A1A",
+        }}
+      >
+        저장한 장소로
+        <br />
+        코스 자동 생성하기
+      </h2>
+      <p
+        className="absolute"
+        style={{
+          left: 17,
+          top: 63,
+          fontFamily: '"Spoqa Han Sans Neo"',
+          fontSize: 12,
+          fontWeight: 400,
+          lineHeight: "15px",
+          color: "#555555",
+        }}
+      >
+        저장한 장소를 취향에 맞게 일정으로 짜드려요
+      </p>
+
+      {/* 코스 만들기 버튼 (76x26, white, radius 8) */}
+      <button
+        onClick={onStart}
+        className="absolute inline-flex items-center justify-center"
+        style={{
+          left: 17,
+          top: 129,
+          height: 26,
+          padding: "0 10px",
+          background: "#FFFFFF",
+          borderRadius: 8,
+          gap: 4,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 10,
+            fontWeight: 500,
+            lineHeight: "13px",
+            color: "#000000",
+          }}
+        >
+          코스 만들기
+        </span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M4.5 3l3 3-3 3" stroke="#888888" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
     </div>
   );
 }
@@ -131,31 +204,26 @@ function SectionHeader({ title, right }: { title: string; right?: string }) {
 
 const recommendations = [
   {
-    id: "foodie",
-    badge: "미식 여행",
-    title: "현지인 맛집만\n골라가는 도시",
-    subtitle: "오사카, 대만, 호치민",
-    courseCount: 8,
-    image: "/images/trips/osaka.png",
-    gradientRgb: "22, 15, 82",
-  },
-  {
     id: "hokangs",
+    image: "/images/trips/danang.png",
     badge: "호캉스",
     title: "가까운 해외에서\n즐기는 풀빌라",
     subtitle: "다낭, 푸켓, 발리",
     courseCount: 4,
-    image: "/images/trips/danang.png",
-    gradientRgb: "0, 225, 255",
   },
   {
     id: "alps",
-    badge: "유럽 여행",
-    title: "유럽의 알프스\n자연 속으로",
-    subtitle: "스위스, 오스트리아, 프랑스",
-    courseCount: 6,
     image: "/images/trips/switzerland.png",
-    gradientRgb: "45, 95, 63",
+    title: "유럽의 알프스를\n만나다",
+    subtitle: "스위스, 오스트리아, 슬로베니아",
+    courseCount: 4,
+  },
+  {
+    id: "foodie",
+    image: "/images/trips/osaka.png",
+    title: "현지인 맛집만\n골라가는 도시",
+    subtitle: "오사카, 대만, 호치민",
+    courseCount: 8,
   },
 ];
 
@@ -164,88 +232,88 @@ const recommendations = [
 export default function HomePage() {
   const router = useRouter();
 
-  // 백그라운드에서 장소 데이터 미리 로드 (앱 첫 진입 시 1회)
   useEffect(() => {
     initPlacesData();
   }, []);
 
   return (
-    <div className="relative flex flex-col h-full" style={{ background: "#F7F9FA" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#FEFEFF" }}>
 
       <StatusBar />
       <Header />
 
-      {/* 스크롤 영역 */}
-      <div className="flex-1 overflow-y-auto pb-20">
+      {/* 스크롤 영역 — Figma: 16px 좌우 패딩, 콘텐츠 사이 18px gap */}
+      <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 100 }}>
+        <div className="flex flex-col" style={{ padding: "22px 16px 0", gap: 18 }}>
 
-        {/* 메인 배너 */}
-        <MainBanner onStart={() => router.push("/screens/step1")} />
+          {/* 히어로 카드 */}
+          <HeroCard onStart={() => router.push("/screens/step1")} />
 
-        {/* 다가오는 여행 */}
-        <SectionHeader title="다가오는 여행" right="전체보기" />
-        <div className="flex flex-col gap-2.5 px-5">
-          <TripCard
-            title="오사카 여행"
-            date="4.17 금 ~ 4.23 목 · 4박 5일"
-            dDay="D-7"
-            participants={{ type: "avatars", count: 3, label: "3명 함께" }}
-            image="/images/trips/osaka_home.png"
-          />
-          <TripCard
-            title="도쿄 여행"
-            date="5.17 금 ~ 4.23 목 · 6박 7일"
-            dDay="D-30"
-            participants={{ type: "single", icon: "person", label: "혼자 여행" }}
-            image="/images/trips/dokyo_home.png"
-          />
-        </div>
+          {/* 다가오는 여행 */}
+          <div className="flex flex-col" style={{ gap: 12 }}>
+            <SectionHeader title="다가오는 여행" right="전체보기" />
+            <div className="flex flex-col" style={{ gap: 10 }}>
+              <TripCard
+                title="오사카 여행"
+                date="4.17 금 ~ 4.23 목 · 4박 5일"
+                dDay="D-7"
+                participants={{ type: "avatars", count: 3, label: "3명 함께" }}
+                image="/images/trips/osaka_home.png"
+              />
+              <TripCard
+                title="도쿄 여행"
+                date="5.17 금 ~ 4.23 목 · 6박 7일"
+                dDay="D-30"
+                participants={{ type: "single", label: "혼자 여행" }}
+                image="/images/trips/dokyo_home.png"
+              />
+            </div>
+          </div>
 
-        {/* 이런 여행 어때요 (가로 스크롤) */}
-        <SectionHeader title="이런 여행 어때요?" right="더보기" />
-        <div className="flex gap-3 overflow-x-auto scrollbar-hide scroll-smooth px-5 pb-1">
-          {recommendations.map((r) => (
-            <SuggestCard
-              key={r.id}
-              image={r.image}
-              badge={r.badge}
-              title={r.title}
-              subtitle={r.subtitle}
-              courseCount={r.courseCount}
-              gradientRgb={r.gradientRgb}
+          {/* 이런 여행 어때요 — 가로 스크롤 */}
+          <div className="flex flex-col" style={{ gap: 12 }}>
+            <SectionHeader title="이런 여행 어때요?" right="더보기" />
+            <div
+              className="flex overflow-x-auto scrollbar-hide scroll-smooth"
+              style={{ gap: 17, marginRight: -16, paddingRight: 16 }}
+            >
+              {recommendations.map((r) => (
+                <SuggestCard key={r.id} {...r} />
+              ))}
+            </div>
+          </div>
+
+          {/* 친구가 공유한 여행 */}
+          <div className="flex flex-col" style={{ gap: 12 }}>
+            <SectionHeader title="친구가 공유한 여행" />
+            <TripCard
+              title="상하이 여행"
+              date="6.17 금 ~ 6.23 목 · 6박 7일"
+              dDay="D-50"
+              participants={{ type: "single", label: "민지님이 초대했어요" }}
+              image="/images/trips/sang_home.png"
             />
-          ))}
-        </div>
+          </div>
 
-        {/* 친구가 공유한 여행 */}
-        <SectionHeader title="친구가 공유한 여행" />
-        <div className="px-5">
-          <TripCard
-            title="상하이 여행"
-            date="6.17 금 ~ 6.23 목 · 6박 7일"
-            dDay="D-50"
-            participants={{ type: "single", icon: "person_add", label: "민지님이 초대했어요" }}
-            image="/images/trips/sang_home.png"
-          />
-        </div>
-
-        {/* 회원가입 하기 — 페이지 맨 아래 중앙 정렬 (Figma v2) */}
-        <div className="flex justify-center mt-8 mb-2">
-          <button
-            style={{
-              fontSize: 15,
-              fontWeight: 700,
-              color: "#3C3C3C",
-              letterSpacing: "-0.5px",
-              textDecoration: "underline",
-              textUnderlineOffset: 4,
-            }}
-          >
-            회원가입 하기
-          </button>
+          {/* 회원가입 하기 — 중앙 정렬 텍스트 (Figma: 흰 버튼 frame은 display:none, 텍스트만) */}
+          <div className="flex justify-center" style={{ marginTop: 10, marginBottom: 4 }}>
+            <button
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 15,
+                fontWeight: 700,
+                lineHeight: "20px",
+                letterSpacing: "-0.5px",
+                color: "#3C3C3C",
+              }}
+            >
+              회원가입 하기
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* 하단 탭바 (고정) */}
+      {/* 하단 탭바 (고정 89px) */}
       <BottomTabBar />
     </div>
   );

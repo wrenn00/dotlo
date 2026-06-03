@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Icon from "@/components/Icon";
 
 interface TripCardProps {
   title: string;
@@ -9,101 +8,149 @@ interface TripCardProps {
   dDay: string;
   participants:
     | { type: "avatars"; count: number; label: string }
-    | { type: "single"; icon: string; label: string };
-  /** 썸네일 이미지 경로 — 없으면 회색 placeholder */
+    | { type: "single"; icon?: string; label: string };
   image?: string;
 }
+
+// 컬러 아바타 (3색 — Figma 디자인)
+const AVATAR_COLORS = ["#FFF9C2", "#EFEFFF", "#B9F7FF"];
 
 export default function TripCard({ title, date, dDay, participants, image }: TripCardProps) {
   return (
     <button
-      className="flex items-center gap-3 w-full p-3 text-left rounded-2xl transition-colors active:bg-cloudy-gray-50 shadow-card"
-      style={{ background: "#fff" }}
+      className="flex items-center w-full text-left"
+      style={{
+        width: "100%",
+        height: 80,
+        background: "#FFFFFF",
+        borderRadius: 12,
+        boxShadow: "0 0 6.8px rgba(0, 0, 0, 0.08)",
+        padding: "0 11px",
+      }}
     >
-      {/* 썸네일 56x56 */}
-      <div
-        className="shrink-0 rounded-xl relative overflow-hidden"
-        style={{ width: 56, height: 56, background: "#DDE5E8" }}
-      >
-        {image && (
-          <Image
-            src={image}
-            alt={title}
-            fill
-            sizes="56px"
-            className="object-cover"
-          />
-        )}
-      </div>
-
-      {/* 본문 */}
-      <div className="flex flex-col flex-1 min-w-0 gap-0.5">
-        {/* 도시명 + D-day */}
-        <div className="flex items-center gap-1.5">
-          <span
-            className="truncate"
-            style={{ fontSize: 15, fontWeight: 700, color: "#090738" }}
-          >
-            {title}
-          </span>
-          <span
-            className="shrink-0 inline-flex items-center justify-center px-3 py-1 rounded-full leading-none"
-            style={{ background: "#E5FBFF", fontSize: 13, fontWeight: 700, color: "#006B7A" }}
-          >
-            {dDay}
-          </span>
+      {/* 좌측: 썸네일 + 텍스트 (gap 10) */}
+      <div className="flex items-center" style={{ gap: 10, flex: 1, minWidth: 0 }}>
+        {/* 썸네일 59×59 #B8BCC3 radius 8 */}
+        <div
+          className="shrink-0 relative overflow-hidden"
+          style={{ width: 59, height: 59, background: "#B8BCC3", borderRadius: 8 }}
+        >
+          {image && <Image src={image} alt={title} fill className="object-cover" sizes="59px" />}
         </div>
 
-        {/* 날짜 */}
-        <span style={{ fontSize: 12, color: "#7A858B" }}>{date}</span>
+        {/* 텍스트 블록 */}
+        <div className="flex flex-col min-w-0" style={{ width: 119, height: 55 }}>
+          {/* 상단 35px (gap 4): 제목+D-day 행 + 날짜 행 */}
+          <div className="flex flex-col" style={{ gap: 4, height: 35 }}>
+            {/* 제목 + D-day 배지 (gap 4) */}
+            <div className="flex items-center" style={{ gap: 4, height: 18 }}>
+              <span
+                className="truncate"
+                style={{
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  lineHeight: "18px",
+                  color: "#1A1A1A",
+                }}
+              >
+                {title}
+              </span>
+              <span
+                className="shrink-0 inline-flex items-center justify-center"
+                style={{
+                  padding: "0 6px",
+                  height: 16,
+                  background: "#EFEFFF",
+                  borderRadius: 8,
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 10,
+                  fontWeight: 500,
+                  lineHeight: "13px",
+                  color: "#6B6BCC",
+                }}
+              >
+                {dDay}
+              </span>
+            </div>
+            {/* 날짜 */}
+            <span
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 10,
+                fontWeight: 500,
+                lineHeight: "13px",
+                color: "#888888",
+              }}
+            >
+              {date}
+            </span>
+          </div>
 
-        {/* 동행자 */}
-        <div className="flex items-center gap-1.5 mt-0.5">
-          {participants.type === "avatars" ? (
-            <>
-              <div className="flex -space-x-1.5">
+          {/* 하단 20px: 동행자 */}
+          <div className="flex items-center" style={{ gap: 4, height: 20, marginTop: 0 }}>
+            {participants.type === "avatars" ? (
+              <div className="flex items-center">
                 {Array.from({ length: 3 }).map((_, i) => (
                   <div
                     key={i}
-                    className="rounded-full shrink-0"
                     style={{
-                      width: 14,
-                      height: 14,
-                      background: i === 0 ? "#A5A5FF" : i === 1 ? "#5CE7FF" : "#A1ADB3",
-                      border: "1.5px solid #fff",
+                      width: 20,
+                      height: 20,
+                      background: AVATAR_COLORS[i],
+                      border: "1px solid #FFFFFF",
+                      borderRadius: 116,
+                      marginLeft: i === 0 ? 0 : -4,
                     }}
                   />
                 ))}
+                <span
+                  style={{
+                    marginLeft: 4,
+                    fontFamily: '"Spoqa Han Sans Neo"',
+                    fontSize: 10,
+                    fontWeight: 500,
+                    lineHeight: "13px",
+                    color: "#555555",
+                  }}
+                >
+                  {participants.label}
+                </span>
               </div>
-              <span style={{ fontSize: 11, color: "#7A858B", marginLeft: 4 }}>
-                {participants.label}
-              </span>
-            </>
-          ) : (
-            <>
-              <Icon name={participants.icon} size={14} className="text-cloudy-gray-500" />
-              <span style={{ fontSize: 11, color: "#7A858B" }}>{participants.label}</span>
-            </>
-          )}
+            ) : (
+              <>
+                <div
+                  style={{
+                    width: 20,
+                    height: 20,
+                    background: "#F2F2F6",
+                    border: "1px solid #FFFFFF",
+                    borderRadius: 116,
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: '"Spoqa Han Sans Neo"',
+                    fontSize: 10,
+                    fontWeight: 500,
+                    lineHeight: "13px",
+                    color: "#555555",
+                  }}
+                >
+                  {participants.label}
+                </span>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* 우측 화살표 */}
-      <svg
-        width="6"
-        height="11"
-        viewBox="0 0 6 11"
-        fill="none"
-        className="shrink-0"
-      >
-        <path
-          d="M1 1l4 4.5L1 10"
-          stroke="#A1ADB3"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      {/* 우측 chevron */}
+      <div className="shrink-0 flex items-center justify-center" style={{ width: 27, height: 27 }}>
+        <svg width="7" height="13" viewBox="0 0 7 13" fill="none">
+          <path d="M1 1l5 5.5L1 12" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
     </button>
   );
 }
