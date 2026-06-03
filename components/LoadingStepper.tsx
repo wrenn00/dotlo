@@ -21,7 +21,7 @@ interface Props {
   completeDelayMs?: number;
 }
 
-const DEFAULT_STEP_COLORS = ["#66D9FF", "#FFC83D", "#A5A5FF", "#A0A0C0"];
+const DEFAULT_STEP_COLORS = ["#00E1FF", "#FFE400", "#A5A5FF", "#A0A0C0"];
 
 // ─── 중앙 아이콘 ──────────────────────────────────────────────────────────────
 
