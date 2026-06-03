@@ -64,19 +64,42 @@ interface TimelineEntry {
   next?: string;
 }
 
+// 미리 정의된 4-슬롯 뒤로는 1.5시간 간격으로 시간을 자동 생성
+function makeSlots(label: string, count: number): { time: string; next?: string }[] {
+  const base = SLOTS[label] ?? SLOTS["관광"];
+  if (count <= base.length) return base.slice(0, count);
+
+  const slots: { time: string; next?: string }[] = base.map((s, i) =>
+    // 마지막 base 슬롯은 next가 없으니 채워줘서 연결선이 끊기지 않게
+    i === base.length - 1 && !s.next ? { ...s, next: "도보 8분 · 600m" } : s,
+  );
+
+  const [h0, m0] = base[base.length - 1].time.split(":").map(Number);
+  let totalMin = h0 * 60 + m0;
+  for (let i = base.length; i < count; i++) {
+    totalMin += 90; // 1시간 30분 간격
+    const h = Math.min(23, Math.floor(totalMin / 60));
+    const m = totalMin % 60;
+    const time = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+    const isLast = i === count - 1;
+    const transit = i % 2 === 0 ? "도보 12분 · 1km" : "지하철 10분 · 3km";
+    slots.push({ time, next: isLast ? undefined : transit });
+  }
+  return slots;
+}
+
 function timelineFor(label: string): TimelineEntry[] {
   const places = THEMES[label];
   if (!places || places.length === 0) {
-    // 알 수 없는 라벨(직접 추가한 키워드 등)에 대한 fallback
     return [
       { time: "10:00", title: `${label} 추천 장소 1`, region: "도쿄", category: label, rating: 4.5, reviews: 1200, description: `${label} 우선 동선의 첫 스팟`, image: "/images/places/default.jpg", tag: label, next: "도보 10분 · 800m" },
       { time: "13:00", title: `${label} 추천 장소 2`, region: "도쿄", category: label, rating: 4.4, reviews: 900,  description: `${label} 흐름을 이어가는 곳`,  image: "/images/places/default.jpg", tag: label, next: "지하철 12분 · 3km" },
       { time: "16:00", title: `${label} 추천 장소 3`, region: "도쿄", category: label, rating: 4.6, reviews: 1500, description: `${label}의 핵심 스팟`,         image: "/images/places/default.jpg", tag: label },
     ];
   }
-  const slots = SLOTS[label] ?? SLOTS["관광"];
+  const slots = makeSlots(label, places.length);
   const display = DISPLAY_CATEGORY[label] ?? label;
-  return places.slice(0, slots.length).map((p, i) => ({
+  return places.map((p, i) => ({
     time: slots[i].time,
     title: p.name,
     region: `도쿄·${p.subRegion}`,
