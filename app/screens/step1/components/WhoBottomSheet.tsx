@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Icon from "@/components/Icon";
+import { X, User, Users, HeartHandshake, Minus, Plus } from "lucide-react";
 
 const TYPES = [
-  { key: "혼자", icon: "person" },
-  { key: "친구", icon: "group" },
-  { key: "연인", icon: "favorite" },
-  { key: "가족", icon: "family_restroom" },
+  { key: "혼자", Icon: User },
+  { key: "친구", Icon: Users },
+  { key: "연인", Icon: HeartHandshake },
+  { key: "가족", Icon: Users },
 ] as const;
 
 type TravelType = (typeof TYPES)[number]["key"];
@@ -26,12 +26,14 @@ interface Props {
 
 export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Props) {
   const [type, setType] = useState<TravelType>(initial?.type ?? "친구");
-  const [count, setCount] = useState(initial?.count ?? 2);
+  const [count, setCount] = useState(initial?.count ?? 4);
 
   function handleConfirm() {
     onSelect({ type, count });
     onClose();
   }
+
+  const canDecrease = count > 1;
 
   return (
     <>
@@ -51,52 +53,90 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
       <div
         className="absolute bottom-0 left-0 right-0 flex flex-col"
         style={{
-          background: "#fff",
-          borderRadius: "24px 24px 0 0",
+          background: "#FFFFFF",
+          borderRadius: "20px 20px 0 0",
+          border: "1px solid #F1F1F1",
+          boxShadow: "0 0 15px rgba(0,0,0,0.1)",
           zIndex: 50,
           transform: open ? "translateY(0)" : "translateY(100%)",
           transition: "transform 300ms cubic-bezier(0.32,0.72,0,1)",
         }}
       >
         {/* 핸들 */}
-        <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full" style={{ background: "#DDE5E8" }} />
+        <div className="flex justify-center" style={{ paddingTop: 8, paddingBottom: 8 }}>
+          <div style={{ width: 40, height: 4, background: "#A7A7A7", borderRadius: 40 }} />
         </div>
 
         {/* 헤더 */}
-        <div className="flex items-center justify-between px-5 pt-2 pb-1">
-          <div>
-            <p style={{ fontSize: 18, fontWeight: 700, color: "#090738" }}>누구와 떠나시나요?</p>
-            <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>동행자에 맞춰 코스가 달라져요</p>
+        <div className="flex items-start justify-between" style={{ padding: "13px 17px 0" }}>
+          <div className="flex flex-col" style={{ gap: 4 }}>
+            <p
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 20,
+                fontWeight: 700,
+                lineHeight: "30px",
+                color: "#1A1A1A",
+              }}
+            >
+              누구와 떠나시나요?
+            </p>
+            <p
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 14,
+                fontWeight: 500,
+                lineHeight: "18px",
+                color: "#888888",
+              }}
+            >
+              동행자에 맞춰 코스가 달라져요
+            </p>
           </div>
-          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 2l12 12M14 2L2 14" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+          <button onClick={onClose} className="flex items-center justify-center" style={{ width: 32, height: 32, marginTop: -4 }}>
+            <X size={20} color="#555555" strokeWidth={2} />
           </button>
         </div>
 
-        {/* 2×2 그리드 */}
-        <div className="grid grid-cols-2 gap-3 px-5 py-4">
-          {TYPES.map(({ key, icon }) => {
+        {/* 2×2 카드 그리드 — Figma: 162x106, gap 9 가로 6 세로 */}
+        <div
+          className="grid"
+          style={{ padding: "27px 21px 0", gridTemplateColumns: "162px 162px", columnGap: 9, rowGap: 6 }}
+        >
+          {TYPES.map(({ key, Icon }) => {
             const selected = type === key;
             return (
               <button
                 key={key}
                 onClick={() => setType(key)}
-                className="flex flex-col items-center justify-center gap-2 rounded-2xl transition-all"
+                className="relative"
                 style={{
-                  height: 90,
-                  background: selected ? "#E5FBFF" : "#F7F9FA",
-                  border: selected ? "2px solid #00E1FF" : "2px solid transparent",
+                  height: 106,
+                  background: selected ? "#F9FAFB" : "#FAFAFA",
+                  border: selected ? "1.5px solid #D8D8E9" : "1.5px solid transparent",
+                  borderRadius: 10,
                 }}
               >
-                <Icon name={icon} size={28} fill={selected} className={selected ? "text-sky-blue-500" : "text-night-navy-600"} />
+                {/* 아이콘 */}
+                <div
+                  className="absolute flex items-center justify-center"
+                  style={{ left: 0, right: 0, top: 22, height: 43 }}
+                >
+                  <Icon size={36} color={selected ? "#6B6BCC" : "#A0A0C0"} strokeWidth={selected ? 2.4 : 2} />
+                </div>
+                {/* 라벨 */}
                 <span
+                  className="absolute"
                   style={{
-                    fontSize: 14,
-                    fontWeight: selected ? 700 : 500,
-                    color: selected ? "#00E1FF" : "#090738",
+                    left: 0,
+                    right: 0,
+                    top: 76,
+                    fontFamily: '"Spoqa Han Sans Neo"',
+                    fontSize: 15,
+                    fontWeight: 500,
+                    lineHeight: "19px",
+                    color: "#333333",
+                    textAlign: "center",
                   }}
                 >
                   {key}
@@ -106,50 +146,95 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
           })}
         </div>
 
-        {/* 인원 조절 */}
-        <div className="px-5 pb-4">
-          <p style={{ fontSize: 14, fontWeight: 600, color: "#090738", marginBottom: 16 }}>
-            총 인원
-          </p>
-          <div className="flex items-center justify-center gap-8">
-            {/* 감소 */}
+        {/* "총 인원" 라벨 */}
+        <p
+          style={{
+            padding: "33px 21px 12px",
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: "21px",
+            color: "#333333",
+          }}
+        >
+          총 인원
+        </p>
+
+        {/* 카운터 바 — Figma: 332x58, #FAFAFA, radius 10, - 4명 + */}
+        <div style={{ padding: "0 21px" }}>
+          <div
+            className="relative flex items-center"
+            style={{ height: 58, background: "#FAFAFA", borderRadius: 10, padding: "0 17px" }}
+          >
+            {/* 감소 버튼 */}
             <button
               onClick={() => setCount((c) => Math.max(1, c - 1))}
-              className="w-11 h-11 rounded-full flex items-center justify-center transition-opacity active:opacity-60"
-              style={{ background: "#F7F9FA" }}
+              disabled={!canDecrease}
+              className="flex items-center justify-center"
+              style={{
+                width: 25,
+                height: 25,
+                background: "#D8D8E9",
+                borderRadius: "50%",
+                opacity: canDecrease ? 1 : 0.6,
+              }}
             >
-              <svg width="14" height="2" viewBox="0 0 14 2" fill="none">
-                <path d="M1 1h12" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <Minus size={14} color="#FFFFFF" strokeWidth={2.6} />
             </button>
 
-            {/* 숫자 */}
-            <div className="flex items-baseline gap-1.5">
-              <span style={{ fontSize: 40, fontWeight: 700, color: "#090738", lineHeight: 1 }}>
+            {/* 숫자 + 명 (가운데 정렬) */}
+            <div className="flex-1 flex items-baseline justify-center" style={{ gap: 4 }}>
+              <span
+                style={{
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 26,
+                  fontWeight: 700,
+                  lineHeight: "33px",
+                  color: "#1A1A1A",
+                }}
+              >
                 {count}
               </span>
-              <span style={{ fontSize: 16, fontWeight: 500, color: "#7A858B" }}>명</span>
+              <span
+                style={{
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 16,
+                  fontWeight: 500,
+                  lineHeight: "20px",
+                  color: "#555555",
+                }}
+              >
+                명
+              </span>
             </div>
 
-            {/* 증가 */}
+            {/* 증가 버튼 */}
             <button
               onClick={() => setCount((c) => Math.min(20, c + 1))}
-              className="w-11 h-11 rounded-full flex items-center justify-center transition-opacity active:opacity-60"
-              style={{ background: "#F7F9FA" }}
+              className="flex items-center justify-center"
+              style={{ width: 24, height: 24, background: "#090738", borderRadius: "50%" }}
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1v12M1 7h12" stroke="#090738" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <Plus size={14} color="#FFFFFF" strokeWidth={2.6} />
             </button>
           </div>
         </div>
 
-        {/* 완료 버튼 */}
-        <div className="px-5 pb-8 pt-2">
+        {/* 선택 완료 — Figma: 330x50 #090738 radius 12 */}
+        <div className="flex justify-center" style={{ padding: "82px 22px 31px" }}>
           <button
             onClick={handleConfirm}
-            className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-            style={{ background: "#090738" }}
+            className="w-full transition-opacity active:opacity-80"
+            style={{
+              height: 50,
+              background: "#090738",
+              borderRadius: 12,
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 16,
+              fontWeight: 500,
+              lineHeight: "20px",
+              letterSpacing: "-0.5px",
+              color: "#FFFFFF",
+            }}
           >
             선택 완료
           </button>
