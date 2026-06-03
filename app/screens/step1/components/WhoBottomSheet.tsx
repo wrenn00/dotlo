@@ -28,6 +28,15 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
   const [type, setType] = useState<TravelType>(initial?.type ?? "친구");
   const [count, setCount] = useState(initial?.count ?? 4);
 
+  // 혼자=1, 연인=2 고정. 친구/가족은 카운터 노출
+  const showCounter = type === "친구" || type === "가족";
+
+  function handleSelectType(next: TravelType) {
+    setType(next);
+    if (next === "혼자") setCount(1);
+    else if (next === "연인") setCount(2);
+  }
+
   function handleConfirm() {
     onSelect({ type, count });
     onClose();
@@ -108,7 +117,7 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
             return (
               <button
                 key={key}
-                onClick={() => setType(key)}
+                onClick={() => handleSelectType(key)}
                 className="relative"
                 style={{
                   height: 106,
@@ -146,81 +155,81 @@ export default function WhoBottomSheet({ open, onClose, onSelect, initial }: Pro
           })}
         </div>
 
-        {/* "총 인원" 라벨 */}
-        <p
-          style={{
-            padding: "33px 21px 12px",
-            fontFamily: '"Spoqa Han Sans Neo"',
-            fontSize: 14,
-            fontWeight: 700,
-            lineHeight: "21px",
-            color: "#333333",
-          }}
-        >
-          총 인원
-        </p>
-
-        {/* 카운터 바 — Figma: 332x58, #FAFAFA, radius 10, - 4명 + */}
-        <div style={{ padding: "0 21px" }}>
-          <div
-            className="relative flex items-center"
-            style={{ height: 58, background: "#FAFAFA", borderRadius: 10, padding: "0 17px" }}
-          >
-            {/* 감소 버튼 */}
-            <button
-              onClick={() => setCount((c) => Math.max(1, c - 1))}
-              disabled={!canDecrease}
-              className="flex items-center justify-center"
+        {/* "총 인원" + 카운터 — 친구/가족 선택 시에만 노출 */}
+        {showCounter && (
+          <>
+            <p
               style={{
-                width: 25,
-                height: 25,
-                background: "#D8D8E9",
-                borderRadius: "50%",
-                opacity: canDecrease ? 1 : 0.6,
+                padding: "33px 21px 12px",
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 14,
+                fontWeight: 700,
+                lineHeight: "21px",
+                color: "#333333",
               }}
             >
-              <Minus size={14} color="#FFFFFF" strokeWidth={2.6} />
-            </button>
+              총 인원
+            </p>
 
-            {/* 숫자 + 명 (가운데 정렬) */}
-            <div className="flex-1 flex items-baseline justify-center" style={{ gap: 4 }}>
-              <span
-                style={{
-                  fontFamily: '"Spoqa Han Sans Neo"',
-                  fontSize: 26,
-                  fontWeight: 700,
-                  lineHeight: "33px",
-                  color: "#1A1A1A",
-                }}
+            <div style={{ padding: "0 21px" }}>
+              <div
+                className="relative flex items-center"
+                style={{ height: 58, background: "#FAFAFA", borderRadius: 10, padding: "0 17px" }}
               >
-                {count}
-              </span>
-              <span
-                style={{
-                  fontFamily: '"Spoqa Han Sans Neo"',
-                  fontSize: 16,
-                  fontWeight: 500,
-                  lineHeight: "20px",
-                  color: "#555555",
-                }}
-              >
-                명
-              </span>
+                <button
+                  onClick={() => setCount((c) => Math.max(1, c - 1))}
+                  disabled={!canDecrease}
+                  className="flex items-center justify-center"
+                  style={{
+                    width: 25,
+                    height: 25,
+                    background: "#D8D8E9",
+                    borderRadius: "50%",
+                    opacity: canDecrease ? 1 : 0.6,
+                  }}
+                >
+                  <Minus size={14} color="#FFFFFF" strokeWidth={2.6} />
+                </button>
+
+                <div className="flex-1 flex items-baseline justify-center" style={{ gap: 4 }}>
+                  <span
+                    style={{
+                      fontFamily: '"Spoqa Han Sans Neo"',
+                      fontSize: 26,
+                      fontWeight: 700,
+                      lineHeight: "33px",
+                      color: "#1A1A1A",
+                    }}
+                  >
+                    {count}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: '"Spoqa Han Sans Neo"',
+                      fontSize: 16,
+                      fontWeight: 500,
+                      lineHeight: "20px",
+                      color: "#555555",
+                    }}
+                  >
+                    명
+                  </span>
+                </div>
+
+                <button
+                  onClick={() => setCount((c) => Math.min(20, c + 1))}
+                  className="flex items-center justify-center"
+                  style={{ width: 24, height: 24, background: "#090738", borderRadius: "50%" }}
+                >
+                  <Plus size={14} color="#FFFFFF" strokeWidth={2.6} />
+                </button>
+              </div>
             </div>
-
-            {/* 증가 버튼 */}
-            <button
-              onClick={() => setCount((c) => Math.min(20, c + 1))}
-              className="flex items-center justify-center"
-              style={{ width: 24, height: 24, background: "#090738", borderRadius: "50%" }}
-            >
-              <Plus size={14} color="#FFFFFF" strokeWidth={2.6} />
-            </button>
-          </div>
-        </div>
+          </>
+        )}
 
         {/* 선택 완료 — Figma: 330x50 #090738 radius 12 */}
-        <div className="flex justify-center" style={{ padding: "82px 22px 31px" }}>
+        <div className="flex justify-center" style={{ padding: showCounter ? "82px 22px 31px" : "47px 22px 31px" }}>
           <button
             onClick={handleConfirm}
             className="w-full transition-opacity active:opacity-80"
