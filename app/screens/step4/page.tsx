@@ -145,7 +145,12 @@ export default function Step4Page() {
       {/* 다음 버튼 — 330x50 #090738 radius 12 */}
       <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px" }}>
         <button
-          onClick={() => router.push("/screens/step5")}
+          onClick={() => {
+            const orderedCategories = CATEGORIES.filter((c) => selected.has(c.key)).map((c) => c.key);
+            const merged = [...orderedCategories, ...customKeywords];
+            sessionStorage.setItem("dotlo:step4-keywords", JSON.stringify(merged));
+            router.push("/screens/step5");
+          }}
           disabled={totalSelected === 0}
           className="w-full transition-opacity disabled:opacity-40"
           style={{
