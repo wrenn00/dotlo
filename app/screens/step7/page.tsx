@@ -743,32 +743,29 @@ export default function Step7Page() {
       {/* 저장 완료 모달 */}
       <AnimatePresence>
         {savedModalOpen && (
-          <>
+          <motion.div
+            key="saved-modal-root"
+            className="absolute inset-0 z-50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            style={{ background: "rgba(0,0,0,0.5)" }}
+            onClick={() => setSavedModalOpen(false)}
+          >
             <motion.div
-              key="overlay"
-              className="absolute inset-0 z-40"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              style={{ background: "rgba(0,0,0,0.5)" }}
-              onClick={() => setSavedModalOpen(false)}
-            />
-            <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
-              <motion.div
-                key="modal"
-                className="pointer-events-auto relative"
-                initial={{ opacity: 0, scale: 0.92, y: 12 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.94, y: 8 }}
-                transition={{ type: "spring", stiffness: 320, damping: 26 }}
-                style={{
-                  width: 339,
-                  background: "#FFFFFF",
-                  borderRadius: 26,
-                  padding: "26px 16px 18px",
-                }}
-              >
+              initial={{ scale: 0.92, y: 12 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.94, y: 8 }}
+              transition={{ type: "spring", stiffness: 320, damping: 26 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: 339,
+                background: "#FFFFFF",
+                borderRadius: 26,
+                padding: "26px 16px 18px",
+              }}
+            >
                 {/* 아이콘 + 텍스트 */}
                 <div className="flex flex-col items-center" style={{ gap: 18 }}>
                   <div
@@ -849,9 +846,8 @@ export default function Step7Page() {
                     보관함 보기
                   </button>
                 </div>
-              </motion.div>
-            </div>
-          </>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
