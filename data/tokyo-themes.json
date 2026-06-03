@@ -83,5 +83,65 @@
     { "name": "스즈카케 도쿄 미드타운점", "subRegion": "롯폰기", "rating": 4.6, "reviews": 2900, "description": "고급 화과자를 즐길 수 있는 디저트 전문점" },
     { "name": "피에르 에르메 파리 아오야마점", "subRegion": "아오야마", "rating": 4.6, "reviews": 4100, "description": "마카롱과 프렌치 디저트로 유명한 곳" },
     { "name": "카페 드 랑브르", "subRegion": "긴자", "rating": 4.5, "reviews": 3500, "description": "커피와 클래식 디저트를 함께 즐길 수 있는 카페" }
+  ],
+  "박물관": [
+    { "name": "도쿄국립박물관", "subRegion": "우에노", "rating": 4.6, "reviews": 28500, "description": "일본 문화재와 역사 유물을 감상할 수 있는 박물관" },
+    { "name": "국립서양미술관", "subRegion": "우에노", "rating": 4.5, "reviews": 15300, "description": "르누아르와 모네 작품을 소장한 미술관" },
+    { "name": "에도도쿄박물관", "subRegion": "료고쿠", "rating": 4.5, "reviews": 21400, "description": "에도 시대부터 현대까지의 도쿄 역사를 소개하는 박물관" },
+    { "name": "모리 미술관", "subRegion": "롯폰기", "rating": 4.5, "reviews": 17200, "description": "현대미술 전시가 열리는 롯폰기의 대표 미술관" },
+    { "name": "스미다 호쿠사이 미술관", "subRegion": "료고쿠", "rating": 4.5, "reviews": 9800, "description": "우키요에 거장 호쿠사이의 작품을 만날 수 있는 공간" },
+    { "name": "도쿄도 현대미술관", "subRegion": "기요스미", "rating": 4.4, "reviews": 11200, "description": "일본 현대미술 작품을 감상할 수 있는 미술관" },
+    { "name": "미쓰비시 이치고칸 미술관", "subRegion": "마루노우치", "rating": 4.4, "reviews": 8900, "description": "유럽풍 건축이 인상적인 미술관" },
+    { "name": "국립과학박물관", "subRegion": "우에노", "rating": 4.6, "reviews": 25600, "description": "공룡과 우주 전시가 인기인 과학 박물관" },
+    { "name": "네즈 미술관", "subRegion": "아오야마", "rating": 4.6, "reviews": 12700, "description": "동양 미술품과 아름다운 정원을 함께 즐길 수 있는 공간" },
+    { "name": "팀랩 보더리스", "subRegion": "아자부다이", "rating": 4.7, "reviews": 52300, "description": "몰입형 디지털 아트를 체험할 수 있는 전시관" }
+  ],
+  "역사": [
+    { "name": "센소지", "subRegion": "아사쿠사", "rating": 4.5, "reviews": 112000, "description": "아사쿠사의 전통과 역사를 느낄 수 있는 사찰" },
+    { "name": "메이지 신궁", "subRegion": "시부야", "rating": 4.7, "reviews": 78600, "description": "일본 근대 역사를 상징하는 대표 신사" },
+    { "name": "고쿄 히가시교엔", "subRegion": "치요다", "rating": 4.6, "reviews": 19300, "description": "옛 에도성 터를 산책할 수 있는 정원" },
+    { "name": "조조지", "subRegion": "미나토", "rating": 4.5, "reviews": 12100, "description": "도쿠가와 가문과 관련된 유서 깊은 사찰" },
+    { "name": "네즈 신사", "subRegion": "분쿄", "rating": 4.6, "reviews": 11600, "description": "붉은 도리이 길이 아름다운 전통 신사" },
+    { "name": "야스쿠니 신사", "subRegion": "치요다", "rating": 4.4, "reviews": 14500, "description": "일본 근현대사를 엿볼 수 있는 신사" },
+    { "name": "간다 묘진", "subRegion": "간다", "rating": 4.5, "reviews": 10200, "description": "1300년 이상의 역사를 가진 유명 신사" },
+    { "name": "에도성 유적지", "subRegion": "치요다", "rating": 4.5, "reviews": 10800, "description": "에도 막부의 중심지였던 역사 유적" },
+    { "name": "하마리큐 정원", "subRegion": "츄오", "rating": 4.5, "reviews": 17800, "description": "에도 시대 정원의 모습을 간직한 명소" },
+    { "name": "야나카 긴자", "subRegion": "야나카", "rating": 4.4, "reviews": 13400, "description": "옛 도쿄의 분위기를 느낄 수 있는 거리" }
+  ],
+  "바다": [
+    { "name": "오다이바 해변공원", "subRegion": "오다이바", "rating": 4.5, "reviews": 21400, "description": "도쿄만과 레인보우 브리지를 함께 즐길 수 있는 해변" },
+    { "name": "카사이 임해공원", "subRegion": "카사이", "rating": 4.5, "reviews": 19700, "description": "넓은 잔디밭과 바다 풍경이 펼쳐진 공원" },
+    { "name": "오다이바 해상공원", "subRegion": "오다이바", "rating": 4.4, "reviews": 8900, "description": "산책과 피크닉을 즐기기 좋은 해안 공간" },
+    { "name": "시나가와 해변공원", "subRegion": "시나가와", "rating": 4.4, "reviews": 6800, "description": "조용한 분위기의 해변 산책 명소" },
+    { "name": "도쿄 게이트 브리지 전망대", "subRegion": "와카스", "rating": 4.5, "reviews": 7200, "description": "도쿄만을 한눈에 내려다볼 수 있는 전망 공간" },
+    { "name": "와카스 해변공원", "subRegion": "와카스", "rating": 4.4, "reviews": 5400, "description": "캠핑과 바다 전망을 함께 즐길 수 있는 장소" },
+    { "name": "도요스 구루리 공원", "subRegion": "도요스", "rating": 4.6, "reviews": 9300, "description": "도쿄만 야경과 바다 산책로가 아름다운 공원" },
+    { "name": "아리아케 해변 산책로", "subRegion": "아리아케", "rating": 4.4, "reviews": 4700, "description": "도심과 바다가 어우러진 해안 산책 코스" },
+    { "name": "오이 부두 중앙해변공원", "subRegion": "오이", "rating": 4.4, "reviews": 3900, "description": "조용한 바닷가 분위기를 느낄 수 있는 공간" },
+    { "name": "다이바 공원", "subRegion": "오다이바", "rating": 4.5, "reviews": 8100, "description": "레인보우 브리지 전망이 뛰어난 해안 공원" }
+  ],
+  "강변": [
+    { "name": "스미다강 테라스", "subRegion": "스미다", "rating": 4.6, "reviews": 12800, "description": "강을 따라 산책하기 좋은 대표 강변 코스" },
+    { "name": "스미다 공원", "subRegion": "아사쿠사", "rating": 4.5, "reviews": 15200, "description": "벚꽃과 강변 풍경이 아름다운 공원" },
+    { "name": "아즈마바시 주변 산책로", "subRegion": "아사쿠사", "rating": 4.4, "reviews": 6100, "description": "스카이트리를 바라보며 걷기 좋은 산책길" },
+    { "name": "덴노즈 아일 강변 산책로", "subRegion": "시나가와", "rating": 4.5, "reviews": 7400, "description": "감성 카페와 수변 공간이 조성된 지역" },
+    { "name": "메구로강 산책길", "subRegion": "메구로", "rating": 4.7, "reviews": 31200, "description": "벚꽃 시즌 명소로 유명한 강변 거리" },
+    { "name": "나카메구로 강변거리", "subRegion": "나카메구로", "rating": 4.6, "reviews": 18600, "description": "카페와 편집숍이 늘어선 감성 산책 코스" },
+    { "name": "스미다강 유람선 선착장", "subRegion": "아사쿠사", "rating": 4.4, "reviews": 5300, "description": "유람선을 타고 도쿄 풍경을 즐길 수 있는 장소" },
+    { "name": "신오하시 강변공원", "subRegion": "츄오", "rating": 4.4, "reviews": 4900, "description": "한적한 분위기의 수변 공원" },
+    { "name": "에이타이바시 강변 산책로", "subRegion": "코토", "rating": 4.5, "reviews": 4700, "description": "야경과 함께 걷기 좋은 강변 코스" },
+    { "name": "하루미 운하 산책길", "subRegion": "하루미", "rating": 4.5, "reviews": 5600, "description": "고층 빌딩과 운하가 어우러진 산책 명소" }
+  ],
+  "공연·전시": [
+    { "name": "팀랩 플래닛 도쿄", "subRegion": "도요스", "rating": 4.7, "reviews": 67400, "description": "몰입형 디지털 아트를 체험할 수 있는 공간" },
+    { "name": "팀랩 보더리스", "subRegion": "아자부다이", "rating": 4.7, "reviews": 52300, "description": "경계 없는 디지털 예술 전시관" },
+    { "name": "도쿄 오페라시티 아트갤러리", "subRegion": "신주쿠", "rating": 4.4, "reviews": 7800, "description": "현대미술 전시가 열리는 문화 공간" },
+    { "name": "국립신미술관", "subRegion": "롯폰기", "rating": 4.5, "reviews": 18400, "description": "대규모 기획전이 자주 열리는 미술관" },
+    { "name": "21_21 디자인 사이트", "subRegion": "롯폰기", "rating": 4.5, "reviews": 8600, "description": "디자인 중심 전시를 선보이는 공간" },
+    { "name": "도쿄예술극장", "subRegion": "이케부쿠로", "rating": 4.5, "reviews": 14700, "description": "연극과 클래식 공연이 열리는 문화시설" },
+    { "name": "신국립극장", "subRegion": "하츠다이", "rating": 4.6, "reviews": 13200, "description": "오페라와 발레 공연을 감상할 수 있는 극장" },
+    { "name": "도쿄 국제포럼", "subRegion": "마루노우치", "rating": 4.5, "reviews": 22900, "description": "콘서트와 전시가 열리는 복합 문화 공간" },
+    { "name": "선샤인 극장", "subRegion": "이케부쿠로", "rating": 4.4, "reviews": 6700, "description": "뮤지컬과 연극 공연으로 유명한 극장" },
+    { "name": "모리 아트 센터 갤러리", "subRegion": "롯폰기", "rating": 4.5, "reviews": 9500, "description": "다양한 특별 전시가 열리는 갤러리 공간" }
   ]
 }

@@ -13,13 +13,18 @@ const AUTOPLAY_INTERVAL_MS = 1600;
 
 // 카테고리별 시간 슬롯 + 이동 안내 — 첫 4개 장소에 차례로 매핑
 const SLOTS: Record<string, { time: string; next?: string }[]> = {
-  미식:   [{ time: "11:00", next: "도보 10분 · 800m" }, { time: "13:30", next: "지하철 15분 · 4km" }, { time: "16:00", next: "도보 6분 · 500m" }, { time: "19:00" }],
-  관광:   [{ time: "10:00", next: "지하철 12분 · 3km" }, { time: "13:00", next: "도보 18분 · 1.4km" }, { time: "15:30", next: "지하철 10분 · 3km" }, { time: "17:00" }],
-  쇼핑:   [{ time: "10:00", next: "지하철 8분 · 2km" }, { time: "13:00", next: "도보 12분 · 1km" }, { time: "15:30", next: "지하철 10분 · 3km" }, { time: "18:00" }],
-  카페:   [{ time: "10:00", next: "도보 15분 · 1km" }, { time: "13:00", next: "지하철 12분 · 4km" }, { time: "16:00", next: "지하철 10분 · 3km" }, { time: "18:00" }],
-  야경:   [{ time: "18:00", next: "도보 10분 · 800m" }, { time: "19:30", next: "지하철 15분 · 4km" }, { time: "21:00", next: "도보 6분 · 500m" }, { time: "22:30" }],
-  휴식:   [{ time: "10:30", next: "도보 20분 · 1.6km" }, { time: "13:30", next: "지하철 25분 · 8km" }, { time: "15:30", next: "도보 14분 · 1km" }, { time: "17:30" }],
-  디저트: [{ time: "11:00", next: "도보 10분 · 800m" }, { time: "14:00", next: "지하철 12분 · 4km" }, { time: "16:30", next: "도보 9분 · 700m" }, { time: "19:00" }],
+  미식:      [{ time: "11:00", next: "도보 10분 · 800m" }, { time: "13:30", next: "지하철 15분 · 4km" }, { time: "16:00", next: "도보 6분 · 500m" }, { time: "19:00" }],
+  관광:      [{ time: "10:00", next: "지하철 12분 · 3km" }, { time: "13:00", next: "도보 18분 · 1.4km" }, { time: "15:30", next: "지하철 10분 · 3km" }, { time: "17:00" }],
+  쇼핑:      [{ time: "10:00", next: "지하철 8분 · 2km" }, { time: "13:00", next: "도보 12분 · 1km" }, { time: "15:30", next: "지하철 10분 · 3km" }, { time: "18:00" }],
+  카페:      [{ time: "10:00", next: "도보 15분 · 1km" }, { time: "13:00", next: "지하철 12분 · 4km" }, { time: "16:00", next: "지하철 10분 · 3km" }, { time: "18:00" }],
+  야경:      [{ time: "18:00", next: "도보 10분 · 800m" }, { time: "19:30", next: "지하철 15분 · 4km" }, { time: "21:00", next: "도보 6분 · 500m" }, { time: "22:30" }],
+  휴식:      [{ time: "10:30", next: "도보 20분 · 1.6km" }, { time: "13:30", next: "지하철 25분 · 8km" }, { time: "15:30", next: "도보 14분 · 1km" }, { time: "17:30" }],
+  디저트:    [{ time: "11:00", next: "도보 10분 · 800m" }, { time: "14:00", next: "지하철 12분 · 4km" }, { time: "16:30", next: "도보 9분 · 700m" }, { time: "19:00" }],
+  박물관:    [{ time: "10:00", next: "도보 8분 · 600m" }, { time: "12:30", next: "지하철 12분 · 4km" }, { time: "14:30", next: "도보 10분 · 800m" }, { time: "16:30" }],
+  역사:      [{ time: "10:00", next: "지하철 10분 · 3km" }, { time: "12:00", next: "도보 15분 · 1.2km" }, { time: "14:30", next: "지하철 12분 · 4km" }, { time: "16:30" }],
+  바다:      [{ time: "10:30", next: "도보 15분 · 1.2km" }, { time: "13:00", next: "버스 18분 · 5km" }, { time: "15:30", next: "도보 12분 · 1km" }, { time: "17:30" }],
+  강변:      [{ time: "10:30", next: "도보 20분 · 1.6km" }, { time: "14:00", next: "지하철 10분 · 3km" }, { time: "16:30", next: "도보 18분 · 1.4km" }, { time: "18:30" }],
+  "공연·전시": [{ time: "11:00", next: "지하철 12분 · 4km" }, { time: "14:00", next: "도보 10분 · 800m" }, { time: "16:00", next: "지하철 8분 · 2km" }, { time: "18:00" }],
 };
 
 // 표시용 카테고리 라벨 (미식 → 맛집)
@@ -31,6 +36,11 @@ const DISPLAY_CATEGORY: Record<string, string> = {
   야경: "야경",
   휴식: "휴식",
   디저트: "디저트",
+  박물관: "박물관",
+  역사: "역사",
+  바다: "바다",
+  강변: "강변",
+  "공연·전시": "전시",
 };
 
 type ThemePlace = { name: string; subRegion: string; rating: number; reviews: number; description: string };
