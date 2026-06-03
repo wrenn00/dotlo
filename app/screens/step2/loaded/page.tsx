@@ -28,9 +28,9 @@ export default function Step2LoadedPage() {
           className="inline-flex items-center justify-center self-start"
           style={{
             marginTop: 11,
-            height: 30,
-            padding: "0 10px 0 7px",
-            gap: 3,
+            height: 38,
+            padding: "0 16px 0 13px",
+            gap: 5,
             background: "#F2F2F6",
             borderRadius: 32,
           }}
@@ -80,7 +80,7 @@ export default function Step2LoadedPage() {
         </p>
 
         {/* 섹션 헤더 */}
-        <div className="flex items-center justify-between" style={{ marginTop: 28, marginBottom: 14 }}>
+        <div style={{ marginTop: 28, marginBottom: 14 }}>
           <span
             style={{
               fontFamily: '"Spoqa Han Sans Neo"',
@@ -92,17 +92,6 @@ export default function Step2LoadedPage() {
           >
             추가된 장소
           </span>
-          <button
-            style={{
-              fontFamily: '"Spoqa Han Sans Neo"',
-              fontSize: 12,
-              fontWeight: 500,
-              lineHeight: "15px",
-              color: "#555555",
-            }}
-          >
-            전체보기
-          </button>
         </div>
 
         {/* 장소 리스트 — 330x64 white shadow radius 12 */}
