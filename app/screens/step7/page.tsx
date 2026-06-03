@@ -315,13 +315,13 @@ export default function Step7Page() {
             }}
           >
             <div className="flex items-start" style={{ gap: 8 }}>
-              {/* 코스 칩 — 58x24 #EFEFFF radius 18 */}
+              {/* 코스 칩 — 58x24 코스별 chipBg radius 18 */}
               <div
                 className="inline-flex items-center justify-center"
                 style={{
                   height: 24,
                   padding: "0 10px",
-                  background: "#EFEFFF",
+                  background: course.chipBgHex,
                   borderRadius: 18,
                 }}
               >
@@ -450,7 +450,7 @@ export default function Step7Page() {
                     marginTop: 3,
                     width: 25,
                     height: 25,
-                    background: "#EFEFFF",
+                    background: course.chipBgHex,
                     borderRadius: 8,
                   }}
                 >
@@ -544,7 +544,7 @@ export default function Step7Page() {
                       right: 6,
                       height: 14,
                       padding: "0 6px",
-                      background: "#EFEFFF",
+                      background: course.chipBgHex,
                       borderRadius: 4,
                     }}
                   >

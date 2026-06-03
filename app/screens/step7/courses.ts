@@ -18,6 +18,7 @@ export interface Course {
   colorHex: string;
   bgHex: string;
   accentHex: string;
+  chipBgHex: string; // 타임라인 우상단 태그 칩 + 시간 마커 박스 배경
   backgroundImage: string;
   aiNote: string;
   markers: CourseMarker[];
@@ -128,10 +129,10 @@ export const CATEGORY_TEMPLATES: Record<string, CategoryTemplate> = {
 };
 
 // 탭 위치별 컬러 팔레트 — sky → purple → yellow
-const TAB_PALETTES: { colorHex: string; bgHex: string; accentHex: string }[] = [
-  { colorHex: "#00E1FF", bgHex: "#C2F5FF", accentHex: "#0099B8" }, // A sky
-  { colorHex: "#A5A5FF", bgHex: "#D6D6FF", accentHex: "#4F4FAA" }, // B purple
-  { colorHex: "#FFE400", bgHex: "#FFF080", accentHex: "#8F7F00" }, // C yellow
+const TAB_PALETTES: { colorHex: string; bgHex: string; accentHex: string; chipBgHex: string }[] = [
+  { colorHex: "#00E1FF", bgHex: "#C2F5FF", accentHex: "#0099B8", chipBgHex: "#F2FDFF" }, // A sky
+  { colorHex: "#A5A5FF", bgHex: "#D6D6FF", accentHex: "#4F4FAA", chipBgHex: "#EFEFFF" }, // B purple
+  { colorHex: "#FFE400", bgHex: "#FFF080", accentHex: "#8F7F00", chipBgHex: "#FFFCE2" }, // C yellow
 ];
 
 const COURSE_IDS: CourseId[] = ["A", "B", "C"];
@@ -171,6 +172,7 @@ export function buildCourses(labels: string[]): Course[] {
       colorHex: palette.colorHex,
       bgHex: palette.bgHex,
       accentHex: palette.accentHex,
+      chipBgHex: palette.chipBgHex,
       backgroundImage: tmpl.backgroundImage,
       aiNote: tmpl.aiNote,
       markers: tmpl.markers,
