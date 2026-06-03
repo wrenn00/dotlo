@@ -3,11 +3,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const IN  = path.join(__dirname, "figma-home.json");
-const OUT = path.join(__dirname, "figma-home-slim.json");
+const IN  = path.join(__dirname, "figma-home-v2.json");
+const OUT = path.join(__dirname, "figma-home-v2-slim.json");
 
 if (!fs.existsSync(IN)) {
-  console.error("❌  figma-home.json이 없습니다. 먼저 fetch-figma.mjs를 실행하세요.");
+  console.error("❌  figma-home-v2.json이 없습니다. 먼저 fetch-figma.mjs를 실행하세요.");
   process.exit(1);
 }
 

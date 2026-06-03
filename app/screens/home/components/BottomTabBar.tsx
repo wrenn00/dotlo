@@ -34,19 +34,6 @@ const HomeIcon = () => (
   </svg>
 );
 
-const PlaceIcon = () => (
-  <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
-    <path
-      d="M10 1C5.58 1 2 4.58 2 9c0 6 8 12 8 12s8-6 8-12c0-4.42-3.58-8-8-8z"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinejoin="round"
-      fill="none"
-    />
-    <circle cx="10" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.8" fill="none" />
-  </svg>
-);
-
 const MyTripIcon = () => (
   <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
     <path
@@ -83,7 +70,6 @@ export default function BottomTabBar() {
       }}
     >
       <Tab active label="홈" icon={<HomeIcon />} />
-      <Tab active={false} label="장소" icon={<PlaceIcon />} />
       <Tab active={false} label="마이트립" icon={<MyTripIcon />} />
       <Tab active={false} label="마이" icon={<UserIcon />} />
     </div>

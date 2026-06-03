@@ -127,6 +127,38 @@ function SectionHeader({ title, right }: { title: string; right?: string }) {
   );
 }
 
+// ─── 추천 카드 데이터 ────────────────────────────────────────────────────────
+
+const recommendations = [
+  {
+    id: "foodie",
+    badge: "미식 여행",
+    title: "현지인 맛집만\n골라가는 도시",
+    subtitle: "오사카, 대만, 호치민",
+    courseCount: 8,
+    image: "/images/trips/osaka.png",
+    gradientRgb: "22, 15, 82",
+  },
+  {
+    id: "hokangs",
+    badge: "호캉스",
+    title: "가까운 해외에서\n즐기는 풀빌라",
+    subtitle: "다낭, 푸켓, 발리",
+    courseCount: 4,
+    image: "/images/trips/danang.png",
+    gradientRgb: "0, 225, 255",
+  },
+  {
+    id: "alps",
+    badge: "유럽 여행",
+    title: "유럽의 알프스\n자연 속으로",
+    subtitle: "스위스, 오스트리아, 프랑스",
+    courseCount: 6,
+    image: "/images/trips/switzerland.png",
+    gradientRgb: "45, 95, 63",
+  },
+];
+
 // ─── 메인 페이지 ──────────────────────────────────────────────────────────────
 
 export default function HomePage() {
@@ -171,21 +203,17 @@ export default function HomePage() {
         {/* 이런 여행 어때요 (가로 스크롤) */}
         <SectionHeader title="이런 여행 어때요?" right="더보기" />
         <div className="flex gap-3 overflow-x-auto scrollbar-hide scroll-smooth px-5 pb-1">
-          <SuggestCard
-            image="/images/trips/osaka.png"
-            badge="미식 여행"
-            title={"현지인 맛집만\n골라가는 도시"}
-            subtitle="오사카, 대만, 호치민"
-            courseCount={8}
-            gradientRgb="22, 15, 82"
-          />
-          <SuggestCard
-            image="/images/trips/danang.png"
-            badge="호캉스"
-            title={"가까운 해외에서\n즐기는 풀빌라"}
-            subtitle="다낭, 푸켓, 발리"
-            courseCount={4}
-          />
+          {recommendations.map((r) => (
+            <SuggestCard
+              key={r.id}
+              image={r.image}
+              badge={r.badge}
+              title={r.title}
+              subtitle={r.subtitle}
+              courseCount={r.courseCount}
+              gradientRgb={r.gradientRgb}
+            />
+          ))}
         </div>
 
         {/* 친구가 공유한 여행 */}
@@ -198,6 +226,22 @@ export default function HomePage() {
             participants={{ type: "single", icon: "person_add", label: "민지님이 초대했어요" }}
             image="/images/trips/sang_home.png"
           />
+        </div>
+
+        {/* 회원가입 하기 — 페이지 맨 아래 중앙 정렬 (Figma v2) */}
+        <div className="flex justify-center mt-8 mb-2">
+          <button
+            style={{
+              fontSize: 15,
+              fontWeight: 700,
+              color: "#3C3C3C",
+              letterSpacing: "-0.5px",
+              textDecoration: "underline",
+              textUnderlineOffset: 4,
+            }}
+          >
+            회원가입 하기
+          </button>
         </div>
       </div>
 
