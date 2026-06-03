@@ -28,20 +28,23 @@ interface PlaceRowProps {
 }
 
 function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
+  // 지역에서 세부지역만 추출 ("도쿄·아사쿠사" → "아사쿠사"). 없으면 그대로
+  const subArea = place.region.split("·").slice(-1)[0];
+
   return (
     <button
       onClick={onToggle}
-      className="flex items-start justify-between w-full text-left"
-      style={{ height: 51, gap: 110 }}
+      className="flex items-center justify-between w-full text-left"
+      style={{ height: 51, gap: 12 }}
     >
-      <div className="flex items-start" style={{ gap: 8 }}>
+      <div className="flex items-center min-w-0" style={{ gap: 8, flex: 1 }}>
         {/* 썸네일 51x51 #A5A5A5 radius 8 */}
         <div className="shrink-0">
           <PlaceThumbnail src={place.image} alt={place.name} category={place.category} size={51} />
         </div>
 
-        {/* 텍스트 블록 136x50 */}
-        <div className="flex flex-col" style={{ width: 136, gap: 4 }}>
+        {/* 텍스트 블록 — title(18h) + gap4 + 메타블록 (메타행 + gap2 + 설명) */}
+        <div className="flex flex-col min-w-0" style={{ gap: 4, flex: 1 }}>
           <span
             className="truncate"
             style={{
@@ -54,9 +57,8 @@ function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
           >
             {place.name}
           </span>
-          <div className="flex flex-col" style={{ gap: 2 }}>
-            {/* 메타 행: 지역·카테고리 + 별점 */}
-            <div className="flex items-center" style={{ gap: 5 }}>
+          <div className="flex flex-col min-w-0" style={{ gap: 2 }}>
+            <div className="flex items-center whitespace-nowrap" style={{ gap: 5 }}>
               <span
                 style={{
                   fontFamily: '"Spoqa Han Sans Neo"',
@@ -66,7 +68,7 @@ function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
                   color: "#555555",
                 }}
               >
-                {place.region}·{place.category}
+                {subArea}·{place.category}
               </span>
               <div className="flex items-center" style={{ gap: 1 }}>
                 <Star size={11} color="#FFE770" fill="#FFE770" strokeWidth={0} />
@@ -83,7 +85,6 @@ function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
                 </span>
               </div>
             </div>
-            {/* 설명 */}
             <span
               className="truncate"
               style={{
@@ -109,7 +110,6 @@ function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
           borderRadius: "50%",
           background: isSelected ? "#2E2E70" : "#FFFFFF",
           border: isSelected ? "none" : "1px solid #E6E8EB",
-          marginTop: 12,
         }}
       >
         {isSelected && <Check size={16} color="#FFFFFF" strokeWidth={2.6} />}
