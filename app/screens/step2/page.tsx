@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Search, ThumbsUp } from "lucide-react";
 
@@ -61,17 +62,16 @@ export default function Step2Page() {
           <div className="flex flex-col items-center" style={{ gap: 15 }}>
             {/* 구글맵 로고 51x51 #FFFFFF radius 10 */}
             <div
-              className="flex items-center justify-center"
+              className="relative flex items-center justify-center"
               style={{ width: 51, height: 51, background: "#FFFFFF", borderRadius: 10 }}
             >
-              <svg width="31" height="31" viewBox="0 0 24 24" fill="none">
-                {/* Google Maps style pin */}
-                <path d="M12 2C7.58 2 4 5.58 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.42-3.58-8-8-8z" fill="#EA4335" />
-                <circle cx="12" cy="10" r="3" fill="#FFFFFF" />
-                <path d="M19 7.5l-3 1.5-3-1.5 3-1.5 3 1.5z" fill="#34A853" opacity="0.9" />
-                <path d="M9 6L6 7.5 9 9V6z" fill="#FBBC04" opacity="0.9" />
-                <path d="M15 6l3 1.5L15 9V6z" fill="#4285F4" opacity="0.9" />
-              </svg>
+              <Image
+                src="/images/googlemap.png"
+                alt="Google Maps"
+                width={31}
+                height={31}
+                style={{ objectFit: "contain" }}
+              />
             </div>
 
             {/* 텍스트 */}
