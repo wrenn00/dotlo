@@ -47,11 +47,11 @@ export default function Step2LoadingPage() {
 
   return (
     <div
-      className="flex flex-col h-full"
+      className="relative flex flex-col items-center justify-center h-full"
       style={{ background: "linear-gradient(180deg, #EFEFFF 0%, #ffffff 60%)" }}
     >
-      {/* 뒤로가기 */}
-      <div className="px-5 pt-12">
+      {/* 뒤로가기 — 절대 위치로 빠져 중앙 정렬에 영향을 안 줌 */}
+      <div className="absolute" style={{ left: 20, top: 48 }}>
         <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
           <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
             <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -60,7 +60,7 @@ export default function Step2LoadingPage() {
       </div>
 
       {/* 중앙 콘텐츠 */}
-      <div className="flex flex-col flex-1 items-center justify-center gap-6 px-8">
+      <div className="flex flex-col items-center justify-center gap-6 px-8 w-full">
         <AnimatePresence mode="wait">
           {stage === "loading" && (
             <motion.div
