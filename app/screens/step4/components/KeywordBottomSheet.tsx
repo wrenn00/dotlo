@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import Icon from "@/components/Icon";
+import { Star, X, Search, Moon, Cake, Landmark, BookOpen, Waves, Mountain, Drama } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const SUGGESTIONS = [
-  { icon: "dark_mode",       label: "야경" },
-  { icon: "cake",            label: "디저트" },
-  { icon: "museum",          label: "박물관" },
-  { icon: "history_edu",     label: "역사" },
-  { icon: "waves",           label: "바다" },
-  { icon: "landscape",       label: "강변" },
-  { icon: "theater_comedy",  label: "공연·전시" },
+const SUGGESTIONS: { Icon: LucideIcon; label: string }[] = [
+  { Icon: Moon,     label: "야경" },
+  { Icon: Cake,     label: "디저트" },
+  { Icon: Landmark, label: "박물관" },
+  { Icon: BookOpen, label: "역사" },
+  { Icon: Waves,    label: "바다" },
+  { Icon: Mountain, label: "강변" },
+  { Icon: Drama,    label: "공연·전시" },
 ];
 
 const MAX = 3;
@@ -32,7 +33,7 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
         ? prev.filter((k) => k !== label)
         : prev.length < MAX
         ? [...prev, label]
-        : prev
+        : prev,
     );
   }
 
@@ -80,33 +81,35 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
       >
         {/* 핸들 */}
         <div className="flex justify-center pt-3 pb-1 shrink-0">
-          <div className="w-10 h-1 rounded-full" style={{ background: "#DDE5E8" }} />
+          <div style={{ width: 40, height: 4, borderRadius: 9999, background: "#A7A7A7" }} />
         </div>
 
         <div className="overflow-y-auto flex-1 px-5 pb-2">
           {/* 제목 */}
-          <p style={{ fontSize: 20, fontWeight: 700, color: "#090738", marginTop: 8 }}>
+          <p style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 20, fontWeight: 700, color: "#1A1A1A", marginTop: 8 }}>
             어떤 걸 원하세요?
           </p>
-          <p style={{ fontSize: 13, color: "#7A858B", marginTop: 4 }}>
+          <p style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 13, fontWeight: 500, color: "#888888", marginTop: 4 }}>
             자유롭게 적어주시면 AI가 반영해요
           </p>
 
-          {/* 선택된 키워드 표시 (있을 때만) */}
+          {/* 선택된 키워드 */}
           {local.length > 0 && (
             <div className="mt-4 flex flex-col gap-2">
               {local.map((kw) => (
                 <div
                   key={kw}
-                  className="flex items-center gap-2 px-4 py-3 rounded-2xl"
-                  style={{ border: "1.5px solid #00E1FF", background: "#E5FBFF" }}
+                  className="flex items-center gap-2 px-4 py-3"
+                  style={{
+                    border: "1.5px solid #D8D8E9",
+                    background: "#F4F4FB",
+                    borderRadius: 16,
+                  }}
                 >
-                  <Icon name="star" size={18} fill className="text-sky-blue-500" />
-                  <span style={{ fontSize: 14, fontWeight: 600, color: "#090738", flex: 1 }}>{kw}</span>
+                  <Star size={16} color="#2E2E70" fill="#2E2E70" strokeWidth={0} />
+                  <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 600, color: "#1A1A1A", flex: 1 }}>{kw}</span>
                   <button onClick={() => remove(kw)} className="w-6 h-6 flex items-center justify-center">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M1 1l8 8M9 1L1 9" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
+                    <X size={14} color="#888888" strokeWidth={2} />
                   </button>
                 </div>
               ))}
@@ -116,15 +119,12 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
           {/* 입력 바 */}
           <div
             className="flex items-center gap-2 px-4 mt-4"
-            style={{ height: 46, background: "#F7F9FA", borderRadius: 12 }}
+            style={{ height: 46, background: "#FAFAFA", borderRadius: 12 }}
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
-              <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
+            <Search size={18} color="#888888" strokeWidth={1.8} />
             <input
-              className="flex-1 bg-transparent outline-none text-sm"
-              style={{ color: "#090738" }}
+              className="flex-1 bg-transparent outline-none"
+              style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, color: "#1A1A1A" }}
               placeholder="예: 디저트, 산책, 풍경"
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -133,10 +133,14 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
             {input.trim() && (
               <button
                 onClick={addInput}
-                className="px-3 py-1 rounded-full text-xs font-semibold"
+                className="px-3 py-1"
                 style={{
-                  background: local.length < MAX ? "#00E1FF" : "#DDE5E8",
-                  color: local.length < MAX ? "#fff" : "#7A858B",
+                  borderRadius: 9999,
+                  background: local.length < MAX ? "#2E2E70" : "#E6E8EB",
+                  color: local.length < MAX ? "#FFFFFF" : "#888888",
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 12,
+                  fontWeight: 600,
                 }}
               >
                 추가
@@ -145,27 +149,28 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
           </div>
 
           {/* 추천 섹션 */}
-          <p style={{ fontSize: 12, fontWeight: 600, color: "#7A858B", marginTop: 20, marginBottom: 10 }}>
+          <p style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 600, color: "#888888", marginTop: 20, marginBottom: 10 }}>
             이런 건 어때요
           </p>
           <div className="flex flex-wrap gap-2">
-            {SUGGESTIONS.map(({ icon, label }) => {
+            {SUGGESTIONS.map(({ Icon, label }) => {
               const active = local.includes(label);
               const disabled = !active && local.length >= MAX;
               return (
                 <button
                   key={label}
                   onClick={() => !disabled && toggle(label)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-full transition-all"
+                  className="flex items-center gap-1.5 px-3 py-2 transition-all"
                   style={{
-                    background: active ? "#00E1FF" : "#fff",
-                    border: `1.5px solid ${active ? "#00E1FF" : "#DDE5E8"}`,
-                    color: active ? "#fff" : disabled ? "#A1ADB3" : "#090738",
+                    borderRadius: 9999,
+                    background: active ? "#2E2E70" : "#FFFFFF",
+                    border: `1.5px solid ${active ? "#2E2E70" : "#D8D8E9"}`,
+                    color: active ? "#FFFFFF" : disabled ? "#A0A0C0" : "#1A1A1A",
                     opacity: disabled ? 0.5 : 1,
                   }}
                 >
-                  <Icon name={icon} size={16} />
-                  <span style={{ fontSize: 13, fontWeight: 500 }}>{label}</span>
+                  <Icon size={14} color={active ? "#FFFFFF" : disabled ? "#A0A0C0" : "#A0A0C0"} strokeWidth={2} />
+                  <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 13, fontWeight: 500 }}>{label}</span>
                 </button>
               );
             })}
@@ -174,7 +179,12 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
           {/* 최대 개수 안내 */}
           <p
             className="text-center mt-4"
-            style={{ fontSize: 12, color: local.length >= MAX ? "#00E1FF" : "#A1ADB3" }}
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 12,
+              fontWeight: 500,
+              color: local.length >= MAX ? "#2E2E70" : "#A0A0C0",
+            }}
           >
             {local.length >= MAX ? "최대 3개를 선택했어요" : "최대 3개까지 추가할 수 있어요"}
           </p>
@@ -184,8 +194,18 @@ export default function KeywordBottomSheet({ open, initial, onClose, onConfirm }
         <div className="px-5 pb-8 pt-3 shrink-0">
           <button
             onClick={handleConfirm}
-            className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-            style={{ background: "#090738" }}
+            className="w-full transition-opacity active:opacity-80"
+            style={{
+              height: 50,
+              background: "#090738",
+              borderRadius: 12,
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 16,
+              fontWeight: 500,
+              lineHeight: "20px",
+              letterSpacing: "-0.5px",
+              color: "#FFFFFF",
+            }}
           >
             선택 완료
           </button>
