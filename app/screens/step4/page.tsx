@@ -112,7 +112,7 @@ export default function Step4Page() {
             color: "#888888",
           }}
         >
-          여러 개 고를 수 있어요
+          최대 3개를 고를 수 있어요
         </p>
       </div>
 
