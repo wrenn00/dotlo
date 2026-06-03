@@ -1,17 +1,22 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
+
 interface TabProps {
   active?: boolean;
   label: string;
   icon: React.ReactNode;
-  /** 라벨 너비 (Figma는 각 탭 width 고정) */
   width: number;
+  onClick?: () => void;
 }
 
-function Tab({ active = false, label, icon, width }: TabProps) {
+function Tab({ active = false, label, icon, width, onClick }: TabProps) {
   return (
-    <button className="flex flex-col items-center" style={{ width, height: 50 }}>
-      <div className="flex items-center justify-center" style={{ width: 30, height: 30, color: active ? "#2E2E70" : "#BBBBBB" }}>
+    <button onClick={onClick} className="flex flex-col items-center" style={{ width, height: 50 }}>
+      <div
+        className="flex items-center justify-center"
+        style={{ width: 30, height: 30, color: active ? "#2E2E70" : "#BBBBBB" }}
+      >
         {icon}
       </div>
       <span
@@ -51,6 +56,13 @@ const UserIcon = () => (
 );
 
 export default function BottomTabBar() {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const isHome = pathname === "/screens/home" || pathname === "/";
+  const isMyTrip = pathname.startsWith("/screens/mytrip");
+  const isMe = pathname.startsWith("/screens/me");
+
   return (
     <div
       className="absolute bottom-0 left-0 right-0"
@@ -63,11 +75,11 @@ export default function BottomTabBar() {
     >
       <div
         className="flex items-center mx-auto"
-        style={{ width: 263, height: 50, gap: 80, paddingTop: 0, marginTop: 8 }}
+        style={{ width: 263, height: 50, gap: 80, marginTop: 8 }}
       >
-        <Tab active label="홈" icon={<HomeIcon />} width={30} />
-        <Tab label="마이트립" icon={<MyTripIcon />} width={43} />
-        <Tab label="마이" icon={<UserIcon />} width={30} />
+        <Tab active={isHome} label="홈" icon={<HomeIcon />} width={30} onClick={() => router.push("/screens/home")} />
+        <Tab active={isMyTrip} label="마이트립" icon={<MyTripIcon />} width={43} onClick={() => router.push("/screens/mytrip")} />
+        <Tab active={isMe} label="마이" icon={<UserIcon />} width={30} onClick={() => router.push("/screens/me")} />
       </div>
     </div>
   );
