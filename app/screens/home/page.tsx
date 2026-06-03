@@ -125,9 +125,16 @@ function HeroCard({ onStart }: { onStart: () => void }) {
   return (
     <div
       className="relative overflow-hidden"
-      style={{ width: 343, height: 169, background: "#80F0FF", borderRadius: 12 }}
+      style={{
+        width: 343,
+        height: 169,
+        background: "#80F0FF",
+        backgroundImage: "url(/images/home_card.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        borderRadius: 12,
+      }}
     >
-      {/* 캐릭터 일러스트 자리 (Figma: 108x112 우측 중앙) — public/images/hero-character.png 추가 필요 */}
 
       {/* 텍스트 영역 (좌측) */}
       <h2
