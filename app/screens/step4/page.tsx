@@ -99,9 +99,10 @@ export default function Step4Page() {
             fontWeight: 700,
             lineHeight: "28px",
             color: "#1A1A1A",
+            whiteSpace: "pre-line",
           }}
         >
-          이번 여행에서 가장 중요하게 생각하는 것은 무엇인가요?
+          이번 여행에서 가장 중요하게{"\n"}생각하는 것은 무엇인가요?
         </h1>
         <p
           style={{
