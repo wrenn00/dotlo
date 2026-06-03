@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { ChevronLeft, Check, Star } from "lucide-react";
 import PlaceThumbnail from "@/components/PlaceThumbnail";
 import places from "@/data/places.json";
 
@@ -10,74 +11,184 @@ export default function Step2LoadedPage() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col h-full" style={{ background: "#fff" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
 
       {/* 헤더 */}
-      <div className="flex items-center px-5 pt-12 pb-2">
-        <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center">
-          <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+      <div className="shrink-0" style={{ padding: "44px 14px 0" }}>
+        <button onClick={() => router.back()} className="flex items-center justify-center" style={{ width: 36, height: 36 }}>
+          <ChevronLeft size={24} color="#090738" strokeWidth={2} />
         </button>
       </div>
 
-      <div className="flex flex-col flex-1 overflow-y-auto px-5 pb-6">
+      {/* 본문 */}
+      <div className="flex flex-col flex-1 overflow-y-auto" style={{ padding: "0 21px", paddingBottom: 24 }}>
 
-        {/* 연동완료 배지 */}
+        {/* 연동완료 칩 */}
         <div
-          className="self-start flex items-center gap-1.5 px-3 py-1.5 rounded-full mt-2 mb-4"
-          style={{ background: "#E5FBFF" }}
+          className="inline-flex items-center justify-center self-start"
+          style={{
+            marginTop: 11,
+            height: 30,
+            padding: "0 10px 0 7px",
+            gap: 3,
+            background: "#F2F2F6",
+            borderRadius: 32,
+          }}
         >
-          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-            <path d="M1 5l3.5 3.5L11 1" stroke="#00E1FF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span style={{ fontSize: 12, fontWeight: 600, color: "#00E1FF" }}>연동완료</span>
+          <Check size={18} color="#2E2E70" strokeWidth={2.4} />
+          <span
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 14,
+              fontWeight: 500,
+              lineHeight: "18px",
+              color: "#2E2E70",
+            }}
+          >
+            연동완료
+          </span>
         </div>
 
         {/* 제목 */}
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#090738", lineHeight: "32px" }}>
-          저장된 장소{" "}
-          <span style={{ color: "#00E1FF" }}>{tokyoPlaces.length}개</span>
-          를{"\n"}가져왔어요
+        <h1
+          style={{
+            marginTop: 16,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 22,
+            fontWeight: 700,
+            lineHeight: "28px",
+            color: "#1A1A1A",
+          }}
+        >
+          저장된 장소 <span style={{ color: "#2E2E70" }}>{tokyoPlaces.length}개를</span>
+          <br />
+          가져왔어요
         </h1>
-        <p style={{ fontSize: 14, color: "#7A858B", marginTop: 8 }}>
+
+        {/* 부제 */}
+        <p
+          style={{
+            marginTop: 6,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 14,
+            fontWeight: 500,
+            lineHeight: "20px",
+            color: "#888E9C",
+          }}
+        >
           이제 코스 생성에 활용할 수 있어요
         </p>
 
         {/* 섹션 헤더 */}
-        <div className="flex items-center justify-between mt-6 mb-3">
-          <span style={{ fontSize: 14, fontWeight: 600, color: "#090738" }}>추가된 장소</span>
-          <button style={{ fontSize: 13, color: "#00E1FF", fontWeight: 600 }}>전체보기</button>
+        <div className="flex items-center justify-between" style={{ marginTop: 28, marginBottom: 14 }}>
+          <span
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 14,
+              fontWeight: 700,
+              lineHeight: "21px",
+              color: "#333333",
+            }}
+          >
+            추가된 장소
+          </span>
+          <button
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 12,
+              fontWeight: 500,
+              lineHeight: "15px",
+              color: "#555555",
+            }}
+          >
+            전체보기
+          </button>
         </div>
 
-        {/* 장소 리스트 */}
-        <div className="flex flex-col gap-2.5">
+        {/* 장소 리스트 — 330x64 white shadow radius 12 */}
+        <div className="flex flex-col" style={{ gap: 12 }}>
           {tokyoPlaces.map((p) => (
             <div
               key={p.id}
-              className="flex items-center gap-3 px-4 py-3 shadow-card"
-              style={{ background: "#fff", borderRadius: 14 }}
+              className="relative flex items-center"
+              style={{
+                height: 64,
+                background: "#FFFFFF",
+                borderRadius: 12,
+                boxShadow: "0 0 6.8px rgba(0, 0, 0, 0.08)",
+                padding: "0 8px",
+              }}
             >
-              <PlaceThumbnail src={p.image} alt={p.name} category={p.category} size={48} />
-              <div className="flex-1 min-w-0">
-                <p className="truncate" style={{ fontSize: 15, fontWeight: 600, color: "#090738" }}>
-                  {p.name}
-                </p>
-                <p style={{ fontSize: 12, color: "#7A858B", marginTop: 2 }}>
-                  {p.region} · {p.category}
-                </p>
+              <div className="flex items-center" style={{ gap: 8, flex: 1 }}>
+                {/* 썸네일 50x50 */}
+                <div className="shrink-0">
+                  <PlaceThumbnail src={p.image} alt={p.name} category={p.category} size={50} />
+                </div>
+                {/* 텍스트 블록 */}
+                <div className="flex flex-col" style={{ gap: 4, flex: 1, minWidth: 0 }}>
+                  <span
+                    className="truncate"
+                    style={{
+                      fontFamily: '"Spoqa Han Sans Neo"',
+                      fontSize: 14,
+                      fontWeight: 500,
+                      lineHeight: "18px",
+                      color: "#1A1A1A",
+                    }}
+                  >
+                    {p.name}
+                  </span>
+                  {/* 메타: 지역·카테고리 + 별점 */}
+                  <div className="flex items-center" style={{ gap: 5 }}>
+                    <span
+                      style={{
+                        fontFamily: '"Spoqa Han Sans Neo"',
+                        fontSize: 10,
+                        fontWeight: 500,
+                        lineHeight: "13px",
+                        color: "#555555",
+                      }}
+                    >
+                      {p.region} · {p.category}
+                    </span>
+                    <div className="flex items-center" style={{ gap: 1 }}>
+                      <Star size={11} color="#FFE770" fill="#FFE770" strokeWidth={0} />
+                      <span
+                        style={{
+                          fontFamily: '"Spoqa Han Sans Neo"',
+                          fontSize: 10,
+                          fontWeight: 500,
+                          lineHeight: "13px",
+                          color: "#555555",
+                        }}
+                      >
+                        {p.rating} ({p.reviews.toLocaleString()})
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* 다음 버튼 */}
-      <div className="px-5 pb-8 pt-3">
+      {/* 다음 버튼 — 330x50 #090738 radius 12 */}
+      <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px" }}>
         <button
           onClick={() => router.push("/screens/step2/select")}
-          className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80"
-          style={{ background: "#090738" }}
+          className="w-full"
+          style={{
+            height: 50,
+            background: "#090738",
+            borderRadius: 12,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 16,
+            fontWeight: 500,
+            lineHeight: "20px",
+            letterSpacing: "-0.5px",
+            color: "#FFFFFF",
+          }}
         >
           다음
         </button>
