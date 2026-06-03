@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ChevronLeft, Search, Star, Check } from "lucide-react";
 import PlaceThumbnail from "@/components/PlaceThumbnail";
-import Icon from "@/components/Icon";
 import { useKeyboard } from "@/components/KeyboardProvider";
 import places from "@/data/places.json";
 
@@ -13,11 +13,10 @@ const tokyoPlaces: Place[] = places.filter((p) => p.city === "tokyo");
 
 const INPUT_ID = "select-search";
 
-// 칩에 노출할 카테고리 (숙소 제외) + 동적 카운트
 const CHIP_CATEGORIES = ["맛집", "카페", "쇼핑", "관광", "야경"] as const;
 const COUNTS: Record<string, number> = CHIP_CATEGORIES.reduce(
   (acc, cat) => ({ ...acc, [cat]: tokyoPlaces.filter((p) => p.category === cat).length }),
-  {} as Record<string, number>
+  {} as Record<string, number>,
 );
 
 // ─── 장소 카드 ────────────────────────────────────────────────────────────────
@@ -32,40 +31,88 @@ function PlaceRow({ place, isSelected, onToggle }: PlaceRowProps) {
   return (
     <button
       onClick={onToggle}
-      className="flex items-start gap-3 text-left py-3 px-3 rounded-2xl transition-all shadow-card"
-      style={{
-        background: isSelected ? "#E5FBFF" : "#fff",
-        border: isSelected ? "1.5px solid #00E1FF" : "none",
-      }}
+      className="flex items-start justify-between w-full text-left"
+      style={{ height: 51, gap: 110 }}
     >
-      <PlaceThumbnail src={place.image} alt={place.name} category={place.category} size={52} />
+      <div className="flex items-start" style={{ gap: 8 }}>
+        {/* 썸네일 51x51 #A5A5A5 radius 8 */}
+        <div className="shrink-0">
+          <PlaceThumbnail src={place.image} alt={place.name} category={place.category} size={51} />
+        </div>
 
-      <div className="flex-1 min-w-0">
-        <p style={{ fontSize: 14, fontWeight: 700, color: "#090738" }}>{place.name}</p>
-        <p className="flex items-center gap-1" style={{ fontSize: 11, color: "#7A858B", marginTop: 2 }}>
-          <Icon name="star" size={13} fill className="text-star-yellow-500" />
-          {place.rating} · {place.reviews.toLocaleString()}개 리뷰
-        </p>
-        <p style={{ fontSize: 12, color: "#555E63", marginTop: 1 }}>
-          {place.region} · {place.category}
-        </p>
-        <p className="truncate" style={{ fontSize: 12, color: "#7A858B", marginTop: 1 }}>{place.description}</p>
+        {/* 텍스트 블록 136x50 */}
+        <div className="flex flex-col" style={{ width: 136, gap: 4 }}>
+          <span
+            className="truncate"
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 14,
+              fontWeight: 500,
+              lineHeight: "18px",
+              color: "#1A1A1A",
+            }}
+          >
+            {place.name}
+          </span>
+          <div className="flex flex-col" style={{ gap: 2 }}>
+            {/* 메타 행: 지역·카테고리 + 별점 */}
+            <div className="flex items-center" style={{ gap: 5 }}>
+              <span
+                style={{
+                  fontFamily: '"Spoqa Han Sans Neo"',
+                  fontSize: 10,
+                  fontWeight: 500,
+                  lineHeight: "13px",
+                  color: "#555555",
+                }}
+              >
+                {place.region}·{place.category}
+              </span>
+              <div className="flex items-center" style={{ gap: 1 }}>
+                <Star size={11} color="#FFE770" fill="#FFE770" strokeWidth={0} />
+                <span
+                  style={{
+                    fontFamily: '"Spoqa Han Sans Neo"',
+                    fontSize: 10,
+                    fontWeight: 500,
+                    lineHeight: "13px",
+                    color: "#555555",
+                  }}
+                >
+                  {place.rating}({place.reviews.toLocaleString()})
+                </span>
+              </div>
+            </div>
+            {/* 설명 */}
+            <span
+              className="truncate"
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 10,
+                fontWeight: 500,
+                lineHeight: "13px",
+                color: "#555555",
+              }}
+            >
+              {place.description}
+            </span>
+          </div>
+        </div>
       </div>
 
+      {/* 체크 박스 28x28 */}
       <div
         className="shrink-0 flex items-center justify-center"
         style={{
-          width: 22, height: 22, borderRadius: "50%",
-          background: isSelected ? "#00E1FF" : "transparent",
-          border: isSelected ? "none" : "1.5px solid #A1ADB3",
-          marginTop: 2,
+          width: 28,
+          height: 28,
+          borderRadius: "50%",
+          background: isSelected ? "#2E2E70" : "#FFFFFF",
+          border: isSelected ? "none" : "1px solid #E6E8EB",
+          marginTop: 12,
         }}
       >
-        {isSelected && (
-          <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
-            <path d="M1 4l3 3 6-6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        )}
+        {isSelected && <Check size={16} color="#FFFFFF" strokeWidth={2.6} />}
       </div>
     </button>
   );
@@ -107,7 +154,7 @@ export default function Step2SelectPage() {
   });
 
   function toggleAll() {
-    const allSelected = filtered.every((p) => selected.has(p.id));
+    const allSelected = filtered.length > 0 && filtered.every((p) => selected.has(p.id));
     setSelected((prev) => {
       const next = new Set(prev);
       filtered.forEach((p) => (allSelected ? next.delete(p.id) : next.add(p.id)));
@@ -116,79 +163,102 @@ export default function Step2SelectPage() {
   }
 
   return (
-    <div className="flex flex-col h-full" style={{ background: "#fff" }}>
+    <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
 
       {/* 헤더 */}
-      <div className="flex items-center px-5 pt-12 pb-2">
-        <button onClick={handleBack} className="w-9 h-9 flex items-center justify-center">
-          <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
-            <path d="M9 1L1 8.5 9 16" stroke="#090738" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+      <div className="shrink-0" style={{ padding: "44px 14px 0" }}>
+        <button onClick={handleBack} className="flex items-center justify-center" style={{ width: 36, height: 36 }}>
+          <ChevronLeft size={24} color="#090738" strokeWidth={2} />
         </button>
       </div>
 
-      {/* 제목 */}
-      <div className="px-5 mb-4">
-        <h1 style={{ fontSize: 20, fontWeight: 700, color: "#090738", lineHeight: "28px" }}>
-          꼭 가고싶은 장소를{"\n"}선택해주세요
+      {/* 제목 + 부제 */}
+      <div className="shrink-0 flex flex-col" style={{ padding: "0 21px", marginTop: 18, gap: 6 }}>
+        <h1
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 22,
+            fontWeight: 700,
+            lineHeight: "28px",
+            color: "#1A1A1A",
+          }}
+        >
+          꼭 가고 싶은 장소를 선택해주세요
         </h1>
-        <p style={{ fontSize: 13, color: "#7A858B", marginTop: 6 }}>
-          구글맵에 {tokyoPlaces.length}개의 장소를 불러왔어요
+        <p
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 14,
+            fontWeight: 500,
+            lineHeight: "20px",
+            color: "#888888",
+          }}
+        >
+          선택한 장소를 우선 반영해 코스를 만들어요
         </p>
       </div>
 
-      {/* 검색바 — 가상 키보드 트리거 */}
-      <div className="px-5 mb-3">
+      {/* 검색바 — 330x44 #FAFAFA radius 8 */}
+      <div className="shrink-0" style={{ padding: "0 22px", marginTop: 18 }}>
         <div
           onClick={() => openKeyboard(INPUT_ID, query, setQuery)}
-          className="flex items-center gap-2 px-4 py-3.5 cursor-pointer"
-          style={{ background: "#F7F9FA", borderRadius: 16 }}
+          className="flex items-center cursor-pointer"
+          style={{
+            height: 44,
+            padding: "0 15px",
+            gap: 10,
+            background: "#FAFAFA",
+            borderRadius: 8,
+          }}
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <circle cx="7" cy="7" r="5" stroke="#7A858B" strokeWidth="1.5" />
-            <path d="M11 11l3 3" stroke="#7A858B" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          <Search size={24} color="#888888" strokeWidth={1.8} />
           <div className="flex-1 flex items-center min-w-0">
             {query ? (
-              <span className="truncate" style={{ fontSize: 14, color: "#090738" }}>{query}</span>
+              <span
+                className="truncate"
+                style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 500, color: "#1A1A1A" }}
+              >
+                {query}
+              </span>
             ) : (
-              <span style={{ fontSize: 14, color: "#A1ADB3" }}>장소 이름으로 검색</span>
+              <span
+                style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 500, lineHeight: "24px", color: "#888888" }}
+              >
+                장소 이름으로 검색
+              </span>
             )}
             {isFocused && (
-              <span className="ml-0.5 animate-pulse" style={{ width: 2, height: 16, background: "#00E1FF" }} />
+              <span className="ml-0.5 animate-pulse" style={{ width: 2, height: 18, background: "#2E2E70" }} />
             )}
           </div>
-          {query && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setQuery("");
-              }}
-              className="shrink-0 flex items-center justify-center"
-              style={{ width: 18, height: 18, borderRadius: "50%", background: "#A1ADB3" }}
-              aria-label="검색어 지우기"
-            >
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                <path d="M1 1l6 6M7 1L1 7" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
-            </button>
-          )}
         </div>
       </div>
 
-      {/* 카테고리 필터 — 가로 스크롤 */}
-      <div className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth px-5 pb-2 mb-1">
-        {[`전체 ${tokyoPlaces.length}`, ...CHIP_CATEGORIES.map((c) => `${c} ${COUNTS[c]}`)].map((label) => {
-          const key = label.split(" ")[0];
+      {/* 카테고리 칩 — h32 radius 20 */}
+      <div
+        className="shrink-0 flex gap-2.5 overflow-x-auto scrollbar-hide"
+        style={{ padding: "0 22px", marginTop: 14 }}
+      >
+        {[
+          { key: "전체", label: "전체" },
+          ...CHIP_CATEGORIES.map((c) => ({ key: c, label: `${c} ${COUNTS[c]}` })),
+        ].map(({ key, label }) => {
           const active = activeCat === key;
           return (
             <button
-              key={label}
+              key={key}
               onClick={() => setActiveCat(key)}
-              className="shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
+              className="shrink-0 whitespace-nowrap flex items-center justify-center"
               style={{
-                background: active ? "#090738" : "#F7F9FA",
-                color: active ? "#fff" : "#555E63",
+                height: 32,
+                padding: "0 14px",
+                background: active ? "#090738" : "#F2F2F6",
+                borderRadius: 20,
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: active ? 14 : 12,
+                fontWeight: 500,
+                lineHeight: active ? "18px" : "15px",
+                color: active ? "#FFFFFF" : "#2E2E70",
               }}
             >
               {label}
@@ -198,17 +268,40 @@ export default function Step2SelectPage() {
       </div>
 
       {/* 전체선택 / 선택수 */}
-      <div className="flex items-center justify-between px-5 mb-2">
-        <button onClick={toggleAll} style={{ fontSize: 13, color: "#555E63", fontWeight: 500 }}>
+      <div
+        className="shrink-0 flex items-center justify-between"
+        style={{ padding: "0 22px", marginTop: 17 }}
+      >
+        <button
+          onClick={toggleAll}
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 12,
+            fontWeight: 500,
+            lineHeight: "18px",
+            color: "#888E9C",
+          }}
+        >
           전체 선택
         </button>
-        <span style={{ fontSize: 13, fontWeight: 600, color: "#00E1FF" }}>
+        <span
+          style={{
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 12,
+            fontWeight: 500,
+            lineHeight: "15px",
+            color: "#888888",
+          }}
+        >
           {selected.size}개 선택
         </span>
       </div>
 
-      {/* 장소 리스트 */}
-      <div className="flex flex-col gap-2.5 px-5 overflow-y-auto flex-1 pb-2">
+      {/* 장소 리스트 — gap 16 */}
+      <div
+        className="flex flex-col flex-1 overflow-y-auto"
+        style={{ padding: "10px 22px 16px", gap: 16 }}
+      >
         {filtered.map((p) => (
           <PlaceRow
             key={p.id}
@@ -219,33 +312,23 @@ export default function Step2SelectPage() {
         ))}
       </div>
 
-      {/* 하단 */}
-      <div className="px-5 pb-8 pt-3 flex flex-col gap-2">
-        {/* 알림 박스 */}
-        <div
-          className="flex items-center justify-between px-4 py-3 rounded-2xl"
-          style={{ background: "#F7F9FA" }}
-        >
-          <div className="flex items-center gap-2">
-            <div
-              className="flex items-center justify-center"
-              style={{ width: 28, height: 28, background: "#00E1FF", borderRadius: "50%" }}
-            >
-              <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{selected.size}</span>
-            </div>
-            <span style={{ fontSize: 13, color: "#090738", fontWeight: 500 }}>
-              선택한 장소로 코스를 짤게요
-            </span>
-          </div>
-          <button style={{ fontSize: 13, color: "#00E1FF", fontWeight: 600 }}>미리보기</button>
-        </div>
-
-        {/* 다음 버튼 */}
+      {/* 다음 버튼 — 330x50 #090738 radius 12 */}
+      <div className="shrink-0 flex justify-center" style={{ padding: "15px 22px 31px", background: "#FFFFFF" }}>
         <button
           onClick={handleNext}
           disabled={selected.size === 0}
-          className="w-full h-[50px] rounded-2xl text-base font-semibold text-white transition-opacity active:opacity-80 disabled:opacity-40"
-          style={{ background: "#090738" }}
+          className="w-full transition-opacity disabled:opacity-40"
+          style={{
+            height: 50,
+            background: "#090738",
+            borderRadius: 12,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 16,
+            fontWeight: 500,
+            lineHeight: "20px",
+            letterSpacing: "-0.5px",
+            color: "#FFFFFF",
+          }}
         >
           다음
         </button>
