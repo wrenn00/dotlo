@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { ChevronLeft, Check, Star } from "lucide-react";
 import PlaceThumbnail from "@/components/PlaceThumbnail";
 import places from "@/data/places.json";
@@ -94,11 +95,18 @@ export default function Step2LoadedPage() {
           </span>
         </div>
 
-        {/* 장소 리스트 — 330x64 white shadow radius 12 */}
+        {/* 장소 리스트 — 330x64 white shadow radius 12, 하단→상단 스태거 등장 */}
         <div className="flex flex-col" style={{ gap: 12 }}>
-          {tokyoPlaces.map((p) => (
-            <div
+          {tokyoPlaces.map((p, idx) => (
+            <motion.div
               key={p.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.36,
+                ease: [0.16, 1, 0.3, 1],
+                delay: Math.min(idx * 0.05, 0.6),
+              }}
               className="relative flex items-center"
               style={{
                 height: 64,
@@ -157,7 +165,7 @@ export default function Step2LoadedPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
