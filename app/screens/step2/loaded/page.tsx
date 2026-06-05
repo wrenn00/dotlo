@@ -100,12 +100,12 @@ export default function Step2LoadedPage() {
           {tokyoPlaces.map((p, idx) => (
             <motion.div
               key={p.id}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
-                duration: 0.36,
+                duration: 0.6,
                 ease: [0.16, 1, 0.3, 1],
-                delay: Math.min(idx * 0.05, 0.6),
+                delay: Math.min(idx * 0.11, 1.2),
               }}
               className="relative flex items-center"
               style={{
