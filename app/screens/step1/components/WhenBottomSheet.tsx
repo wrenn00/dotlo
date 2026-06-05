@@ -164,7 +164,7 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
           {(["start", "end"] as const).map((type) => {
             const val = type === "start" ? sel.start : sel.end;
             const label = type === "start" ? "출발일" : "도착일";
-            const active = picking === type;
+            const filled = val !== null; // 날짜가 채워졌을 때 navy border
             return (
               <button
                 key={type}
@@ -173,7 +173,7 @@ export default function WhenBottomSheet({ open, onClose, onSelect, initial }: Pr
                 style={{
                   height: 67,
                   background: "#FAFAFA",
-                  border: active ? "1.5px solid #2E2E70" : "1.5px solid #D8D8E9",
+                  border: filled ? "1.5px solid #2E2E70" : "1.5px solid #D8D8E9",
                   borderRadius: 10,
                 }}
               >
