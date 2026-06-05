@@ -722,7 +722,32 @@ export default function Step7Page() {
       {/* 이 코스 저장하기 — 330x50 #090738 radius 12 */}
       <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px", background: "#FFFFFF" }}>
         <button
-          onClick={() => setSavedModalOpen(true)}
+          onClick={() => {
+            // 사용자가 저장한 코스 → mytrip 저장함에 누적
+            try {
+              const raw = sessionStorage.getItem("dotlo:saved-courses");
+              const list: Array<Record<string, unknown>> = raw ? JSON.parse(raw) : [];
+              const placeCount = (THEMES[course.categoryKey]?.length ?? 4);
+              const entry = {
+                id: `saved-${Date.now()}`,
+                title: course.title,
+                country: "일본",
+                region: "도쿄",
+                placeCount,
+                category: DISPLAY_CATEGORY[course.categoryKey] ?? course.categoryKey,
+                duration: "단일 코스",
+                image: "/images/where/dokyo.png",
+                savedAt: Date.now(),
+              };
+              // 동일 카테고리 중복 저장 방지
+              const exists = list.some((c) => (c as { categoryKey?: string }).categoryKey === course.categoryKey);
+              const next = exists ? list : [{ ...entry, categoryKey: course.categoryKey }, ...list];
+              sessionStorage.setItem("dotlo:saved-courses", JSON.stringify(next));
+            } catch {
+              /* sessionStorage 사용 불가 시 그냥 모달만 띄움 */
+            }
+            setSavedModalOpen(true);
+          }}
           className="w-full transition-opacity active:opacity-80"
           style={{
             height: 50,

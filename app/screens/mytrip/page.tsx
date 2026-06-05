@@ -1,12 +1,12 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import {
   Search, Bell,
   MapPin, Map as MapIcon, Moon, ShoppingBag, Utensils, Leaf, Landmark,
-  Plus, ChevronDown,
+  Plus, ChevronDown, Coffee, Bath, Cake, Waves, Mountain, Drama,
 } from "lucide-react";
 import TripCard from "../home/components/TripCard";
 import BottomTabBar from "../home/components/BottomTabBar";
@@ -61,10 +61,10 @@ function Header() {
 
 // ─── 세그먼트 탭 ─────────────────────────────────────────────────────────────
 
-function SegmentedTab({ value, onChange }: { value: SegmentKey; onChange: (v: SegmentKey) => void }) {
+function SegmentedTab({ value, onChange, savedCount }: { value: SegmentKey; onChange: (v: SegmentKey) => void; savedCount: number }) {
   const items: { key: SegmentKey; label: string }[] = [
     { key: "mine", label: "내 여행 4" },
-    { key: "saved", label: "저장한 코스 7" },
+    { key: "saved", label: `저장한 코스 ${savedCount}` },
   ];
   return (
     <div className="relative flex items-center mx-auto" style={{ width: 334, height: 40, background: "#F5F5F5", borderRadius: 12, padding: 3 }}>
@@ -107,13 +107,13 @@ const MINE_TRIPS = [
 type DurationBadge = "단일 코스" | "3박 4일";
 
 interface SavedCourse {
-  id: number;
+  id: number | string;
   title: string;
   country: string;
   region: string;
   placeCount: number;
   category: string;
-  duration: DurationBadge;
+  duration: DurationBadge | string;
   image?: string;
 }
 
@@ -227,9 +227,15 @@ function MetaItem({ Icon, label }: { Icon: React.ComponentType<{ size?: number; 
 function categoryIcon(cat: string) {
   if (cat.includes("야경")) return Moon;
   if (cat.includes("쇼핑")) return ShoppingBag;
-  if (cat.includes("미식")) return Utensils;
-  if (cat.includes("자연")) return Leaf;
-  return Landmark; // 역사
+  if (cat.includes("미식") || cat.includes("맛집")) return Utensils;
+  if (cat.includes("자연") || cat.includes("휴식")) return Leaf;
+  if (cat.includes("카페")) return Coffee;
+  if (cat.includes("온천")) return Bath;
+  if (cat.includes("디저트")) return Cake;
+  if (cat.includes("바다")) return Waves;
+  if (cat.includes("강변")) return Mountain;
+  if (cat.includes("전시") || cat.includes("공연") || cat.includes("박물관")) return Drama;
+  return Landmark; // 역사·관광 fallback
 }
 
 // ─── 국가 필터 칩 ────────────────────────────────────────────────────────────
@@ -277,9 +283,24 @@ function MyTripContent() {
   const initialSegment: SegmentKey = searchParams.get("segment") === "saved" ? "saved" : "mine";
   const [segment, setSegment] = useState<SegmentKey>(initialSegment);
   const [country, setCountry] = useState("전체");
+  const [userCourses, setUserCourses] = useState<SavedCourse[]>([]);
 
+  // step7에서 저장한 코스를 sessionStorage에서 읽어와 목록 맨 앞에 prepend
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("dotlo:saved-courses");
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return;
+      setUserCourses(parsed as SavedCourse[]);
+    } catch {
+      /* 무시 */
+    }
+  }, [segment]); // 탭 전환할 때마다 새로 읽기
+
+  const allCourses: SavedCourse[] = [...userCourses, ...SAVED_COURSES];
   const filteredCourses =
-    country === "전체" ? SAVED_COURSES : SAVED_COURSES.filter((c) => c.country === country);
+    country === "전체" ? allCourses : allCourses.filter((c) => c.country === country);
 
   return (
     <div className="relative flex flex-col h-full" style={{ background: "#FEFEFF" }}>
@@ -288,7 +309,7 @@ function MyTripContent() {
 
       <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 120 }}>
         <div className="flex flex-col" style={{ padding: "12px 20px 0", gap: 16 }}>
-          <SegmentedTab value={segment} onChange={setSegment} />
+          <SegmentedTab value={segment} onChange={setSegment} savedCount={allCourses.length} />
 
           {segment === "mine" ? (
             // ── 내 여행 ──
@@ -307,7 +328,7 @@ function MyTripContent() {
           ) : (
             // ── 저장한 코스 ──
             <>
-              <CountryFilter value={country} onChange={setCountry} total={SAVED_COURSES.length} />
+              <CountryFilter value={country} onChange={setCountry} total={allCourses.length} />
 
               {/* 헤더 행 */}
               <div className="flex items-center justify-between">
