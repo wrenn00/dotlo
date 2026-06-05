@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { Delete } from "lucide-react";
 import { useKeyboard } from "./KeyboardProvider";
 
 // 한국어 2벌식 (자모 단순 입력 — 조합 없음)
@@ -16,6 +17,8 @@ const enLayout: string[][] = [
   ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
   ["shift", "z", "x", "c", "v", "b", "n", "m", "backspace"],
 ];
+
+const KEY_FONT = '"Spoqa Han Sans Neo", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif';
 
 export default function VirtualKeyboard() {
   const { isOpen, language, appendChar, deleteChar, close, toggleLanguage } = useKeyboard();
@@ -37,33 +40,54 @@ export default function VirtualKeyboard() {
           initial={{ y: "100%" }}
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
-          transition={{ type: "spring", damping: 30, stiffness: 300 }}
-          className="absolute left-0 right-0 z-50 px-1 pt-2 pb-2"
-          style={{ bottom: 0, background: "#D1D4DA" }}
+          transition={{ type: "spring", damping: 32, stiffness: 320 }}
+          className="absolute left-0 right-0 z-50"
+          style={{
+            bottom: 0,
+            background: "#D1D5DB",
+            paddingTop: 8,
+            paddingBottom: 10,
+            paddingLeft: 4,
+            paddingRight: 4,
+          }}
         >
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col" style={{ gap: 8 }}>
             {layout.map((row, rowIdx) => (
-              <div key={rowIdx} className="flex justify-center gap-1">
+              <div key={rowIdx} className="flex justify-center" style={{ gap: 5 }}>
                 {row.map((key) => {
-                  const isSpecial = key === "shift" || key === "backspace";
-                  const label = key === "shift" ? "⇧" : key === "backspace" ? "⌫" : key;
+                  const isShift = key === "shift";
+                  const isBackspace = key === "backspace";
+                  const isSpecial = isShift || isBackspace;
                   return (
                     <button
                       key={key}
                       onClick={() => handleKey(key)}
-                      className={`h-10 rounded-md font-medium active:opacity-70 transition-opacity ${
-                        isSpecial ? "px-3" : "flex-1"
+                      className={`flex items-center justify-center active:opacity-70 transition-opacity ${
+                        isSpecial ? "" : "flex-1"
                       }`}
                       style={{
-                        background: isSpecial ? "#ADB3BC" : "#fff",
-                        color: "#090738",
-                        fontSize: 16,
-                        minWidth: isSpecial ? 44 : 30,
+                        height: 42,
+                        background: isSpecial ? "#A8AFBA" : "#FFFFFF",
+                        color: "#1A1A1A",
+                        fontFamily: KEY_FONT,
+                        fontSize: 18,
+                        fontWeight: 400,
+                        borderRadius: 5,
+                        boxShadow: "0 1px 0 rgba(0,0,0,0.28)",
+                        minWidth: isSpecial ? 42 : 30,
                         maxWidth: isSpecial ? undefined : 36,
-                        boxShadow: "0 1px 0 rgba(0,0,0,0.18)",
+                        padding: isSpecial ? "0 10px" : 0,
                       }}
                     >
-                      {label}
+                      {isShift ? (
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                          <path d="M8 2L2 8h3v6h6V8h3L8 2z" stroke="#1A1A1A" strokeWidth="1.4" strokeLinejoin="round" />
+                        </svg>
+                      ) : isBackspace ? (
+                        <Delete size={18} color="#1A1A1A" strokeWidth={1.6} />
+                      ) : (
+                        key
+                      )}
                     </button>
                   );
                 })}
@@ -71,25 +95,55 @@ export default function VirtualKeyboard() {
             ))}
 
             {/* 하단: 한/영, 스페이스, 완료 */}
-            <div className="flex gap-1 mt-1">
+            <div className="flex" style={{ gap: 5 }}>
               <button
                 onClick={toggleLanguage}
-                className="h-10 rounded-md px-3 font-medium"
-                style={{ background: "#ADB3BC", color: "#090738", fontSize: 12, boxShadow: "0 1px 0 rgba(0,0,0,0.18)" }}
+                className="active:opacity-70 transition-opacity"
+                style={{
+                  height: 42,
+                  width: 64,
+                  background: "#A8AFBA",
+                  color: "#1A1A1A",
+                  fontFamily: KEY_FONT,
+                  fontSize: 13,
+                  fontWeight: 500,
+                  borderRadius: 5,
+                  boxShadow: "0 1px 0 rgba(0,0,0,0.28)",
+                }}
               >
                 {language === "ko" ? "한/영" : "ENG"}
               </button>
               <button
                 onClick={() => appendChar(" ")}
-                className="h-10 rounded-md flex-1 font-medium"
-                style={{ background: "#fff", color: "#090738", fontSize: 14, boxShadow: "0 1px 0 rgba(0,0,0,0.18)" }}
+                className="flex-1 active:opacity-70 transition-opacity"
+                style={{
+                  height: 42,
+                  background: "#FFFFFF",
+                  color: "#1A1A1A",
+                  fontFamily: KEY_FONT,
+                  fontSize: 14,
+                  fontWeight: 500,
+                  borderRadius: 5,
+                  boxShadow: "0 1px 0 rgba(0,0,0,0.28)",
+                }}
               >
                 space
               </button>
               <button
                 onClick={close}
-                className="h-10 rounded-md px-4 font-semibold"
-                style={{ background: "#00E1FF", color: "#fff", fontSize: 14, boxShadow: "0 1px 0 rgba(0,0,0,0.18)" }}
+                className="active:opacity-80 transition-opacity"
+                style={{
+                  height: 42,
+                  width: 64,
+                  background: "#090738",
+                  color: "#FFFFFF",
+                  fontFamily: KEY_FONT,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  letterSpacing: "-0.3px",
+                  borderRadius: 5,
+                  boxShadow: "0 1px 0 rgba(0,0,0,0.28)",
+                }}
               >
                 완료
               </button>
