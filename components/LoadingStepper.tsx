@@ -113,19 +113,19 @@ export default function LoadingStepper({
       <div className="flex flex-col items-center flex-1 px-8" style={{ paddingTop: 20 }}>
 
         {/* 로딩 인디케이터 — 투명 로고가 lavender 그라데이션 위에 그대로 보이도록 흰 원 제거 */}
-        <div className="relative flex items-center justify-center" style={{ width: 96, height: 96 }}>
+        <div className="relative flex items-center justify-center" style={{ width: 120, height: 120 }}>
           <svg
             className="absolute inset-0"
-            width="96" height="96" viewBox="0 0 96 96"
+            width="120" height="120" viewBox="0 0 120 120"
             style={{ animation: "spin 1s linear infinite" }}
           >
-            <circle cx="48" cy="48" r="43" fill="none" stroke="#EFEFFF" strokeWidth="4" />
+            <circle cx="60" cy="60" r="55" fill="none" stroke="#EFEFFF" strokeWidth="4" />
             <circle
-              cx="48" cy="48" r="43"
+              cx="60" cy="60" r="55"
               fill="none"
               stroke="#6060A0"
               strokeWidth="4"
-              strokeDasharray="70 200"
+              strokeDasharray="88 260"
               strokeLinecap="round"
             />
           </svg>
