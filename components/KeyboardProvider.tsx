@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 
 type Language = "ko" | "en";
 
@@ -59,6 +59,45 @@ export function KeyboardProvider({ children }: { children: ReactNode }) {
   const toggleLanguage = useCallback(() => {
     setLanguage((prev) => (prev === "ko" ? "en" : "ko"));
   }, []);
+
+  // 데스크톱 하드웨어 키보드도 입력 가능하게 — 가상 키보드가 열려있는 동안만 활성
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      // 폼 요소에 포커스가 잡혀있다면 그쪽에 양보
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+
+      if (e.key === "Escape" || e.key === "Enter") {
+        e.preventDefault();
+        setIsOpen(false);
+        setInputId(null);
+        onChangeRef.current = null;
+        return;
+      }
+      if (e.key === "Backspace") {
+        e.preventDefault();
+        setValue((prev) => {
+          const next = prev.slice(0, -1);
+          onChangeRef.current?.(next);
+          return next;
+        });
+        return;
+      }
+      // 한 글자 길이의 출력 가능한 문자만 (조합형 한글 포함)
+      if (e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        const char = e.key;
+        setValue((prev) => {
+          const next = prev + char;
+          onChangeRef.current?.(next);
+          return next;
+        });
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen]);
 
   return (
     <KeyboardContext.Provider
