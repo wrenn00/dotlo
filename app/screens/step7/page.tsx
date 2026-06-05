@@ -125,6 +125,7 @@ export default function Step7Page() {
   const router = useRouter();
   const [courses, setCourses] = useState<Course[]>(() => buildCourses(DEFAULT_LABELS));
   const [activeTab, setActiveTab] = useState<CourseId>("A");
+  const [tabDirection, setTabDirection] = useState<1 | -1>(1); // +1 forward, -1 backward
   const [autoPlaying, setAutoPlaying] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const [savedModalOpen, setSavedModalOpen] = useState(false);
@@ -164,6 +165,7 @@ export default function Step7Page() {
     }
     const sequence = courses.map((c) => c.id);
     const fullCycle = [...sequence, sequence[0]];
+    setTabDirection(1);
     setActiveTab(fullCycle[0]);
     let idx = 0;
     const timer = setInterval(() => {
@@ -173,6 +175,7 @@ export default function Step7Page() {
         clearInterval(timer);
         return;
       }
+      setTabDirection(1); // 자동 사이클은 항상 정방향(오른쪽)으로 슬라이드
       setActiveTab(fullCycle[idx]);
     }, AUTOPLAY_INTERVAL_MS);
     return () => clearInterval(timer);
@@ -190,6 +193,12 @@ export default function Step7Page() {
 
   function handleTabClick(id: CourseId) {
     setAutoPlaying(false);
+    // 현재 위치 대비 다음 탭이 오른쪽이면 +1, 왼쪽이면 -1
+    const cur = courses.findIndex((c) => c.id === activeTab);
+    const next = courses.findIndex((c) => c.id === id);
+    if (next !== cur && cur >= 0 && next >= 0) {
+      setTabDirection(next > cur ? 1 : -1);
+    }
     setActiveTab(id);
   }
 
@@ -314,14 +323,15 @@ export default function Step7Page() {
           ))}
         </div>
 
-        {/* 자동/수동 탭 전환에 따라 코스 콘텐츠가 부드럽게 페이드 */}
-        <AnimatePresence mode="wait">
+        {/* 자동/수동 탭 전환에 따라 코스 콘텐츠가 가로 슬라이드 — 상단 인디케이터와 같은 방향 */}
+        <AnimatePresence mode="wait" custom={tabDirection}>
         <motion.div
           key={activeTab}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+          custom={tabDirection}
+          initial={(dir: 1 | -1) => ({ opacity: 0, x: dir * 40 })}
+          animate={{ opacity: 1, x: 0 }}
+          exit={(dir: 1 | -1) => ({ opacity: 0, x: dir * -40 })}
+          transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
         >
         {/* 히어로 카드 — 344x271 + 하단 정보 영역 */}
         <div className="flex flex-col" style={{ marginTop: 14, gap: 11 }}>
