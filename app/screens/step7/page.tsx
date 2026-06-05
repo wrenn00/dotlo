@@ -3,13 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { ChevronLeft, Sparkles, Map as MapIcon, RotateCcw, ChevronDown, Star, Footprints, Bookmark } from "lucide-react";
 import PlaceThumbnail from "@/components/PlaceThumbnail";
 import { buildCourses, getCourse, type Course, type CourseId } from "./courses";
 import tokyoThemes from "@/data/tokyo-themes.json";
 
 const AUTOPLAY_INTERVAL_MS = 1600;
+
+// 가로 슬라이드 — direction(1=forward / -1=backward)에 따라 enter/exit 방향이 바뀜
+const slideVariants: Variants = {
+  initial: (dir: 1 | -1) => ({ opacity: 0, x: dir * 40 }),
+  animate: { opacity: 1, x: 0 },
+  exit:    (dir: 1 | -1) => ({ opacity: 0, x: dir * -40 }),
+};
 
 // 카테고리별 시간 슬롯 + 이동 안내 — 첫 4개 장소에 차례로 매핑
 const SLOTS: Record<string, { time: string; next?: string }[]> = {
@@ -328,9 +335,10 @@ export default function Step7Page() {
         <motion.div
           key={activeTab}
           custom={tabDirection}
-          initial={(dir: 1 | -1) => ({ opacity: 0, x: dir * 40 })}
-          animate={{ opacity: 1, x: 0 }}
-          exit={(dir: 1 | -1) => ({ opacity: 0, x: dir * -40 })}
+          variants={slideVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
           transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
         >
         {/* 히어로 카드 — 344x271 + 하단 정보 영역 */}
