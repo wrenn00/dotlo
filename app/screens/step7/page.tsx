@@ -740,32 +740,26 @@ export default function Step7Page() {
         </button>
       </div>
 
-      {/* 저장 완료 모달 */}
-      <AnimatePresence>
-        {savedModalOpen && (
-          <motion.div
-            key="saved-modal-root"
-            className="absolute inset-0 z-50 flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            style={{ background: "rgba(0,0,0,0.5)" }}
-            onClick={() => setSavedModalOpen(false)}
+      {/* 저장 완료 모달 — 단순 조건부 렌더 + CSS 트랜지션으로 안정성 우선 */}
+      {savedModalOpen && (
+        <div
+          className="absolute inset-0 z-50 flex items-center justify-center"
+          style={{
+            background: "rgba(0,0,0,0.5)",
+            animation: "savedFadeIn 200ms ease-out both",
+          }}
+          onClick={() => setSavedModalOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: 339,
+              background: "#FFFFFF",
+              borderRadius: 26,
+              padding: "26px 16px 18px",
+              animation: "savedPopIn 260ms cubic-bezier(0.16, 1, 0.3, 1) both",
+            }}
           >
-            <motion.div
-              initial={{ scale: 0.92, y: 12 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.94, y: 8 }}
-              transition={{ type: "spring", stiffness: 320, damping: 26 }}
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                width: 339,
-                background: "#FFFFFF",
-                borderRadius: 26,
-                padding: "26px 16px 18px",
-              }}
-            >
                 {/* 아이콘 + 텍스트 */}
                 <div className="flex flex-col items-center" style={{ gap: 18 }}>
                   <div
@@ -846,10 +840,19 @@ export default function Step7Page() {
                     보관함 보기
                   </button>
                 </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
+      <style>{`
+        @keyframes savedFadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes savedPopIn {
+          from { opacity: 0; transform: scale(0.92) translateY(12px); }
+          to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }
