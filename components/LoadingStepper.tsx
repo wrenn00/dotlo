@@ -30,11 +30,11 @@ function CenterIcon({ kind }: { kind: "create" | "regenerate" }) {
     <Image
       src="/images/logo.png"
       alt="Dotlo"
-      width={56}
-      height={48}
+      width={72}
+      height={62}
       priority
       style={{
-        width: 56,
+        width: 72,
         height: "auto",
         // regenerate: 천천히 회전하며 재생성 의도 표현
         animation: kind === "regenerate" ? "spinSlow 2.4s linear infinite" : undefined,
@@ -112,7 +112,7 @@ export default function LoadingStepper({
       {/* 중앙 콘텐츠 */}
       <div className="flex flex-col items-center flex-1 px-8" style={{ paddingTop: 20 }}>
 
-        {/* 로딩 인디케이터 */}
+        {/* 로딩 인디케이터 — 투명 로고가 lavender 그라데이션 위에 그대로 보이도록 흰 원 제거 */}
         <div className="relative flex items-center justify-center" style={{ width: 96, height: 96 }}>
           <svg
             className="absolute inset-0"
@@ -129,17 +129,7 @@ export default function LoadingStepper({
               strokeLinecap="round"
             />
           </svg>
-          <div
-            className="flex items-center justify-center"
-            style={{
-              width: 72, height: 72,
-              background: "#fff",
-              borderRadius: "50%",
-              boxShadow: "0 4px 18px rgba(96, 96, 160, 0.18)",
-            }}
-          >
-            <CenterIcon kind={icon} />
-          </div>
+          <CenterIcon kind={icon} />
         </div>
 
         {/* 제목 */}
