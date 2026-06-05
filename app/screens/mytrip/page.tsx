@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import {
   Search, Bell,
@@ -132,10 +132,12 @@ const COUNTRY_FILTERS = ["전체", "일본", "태국", "이탈리아"];
 // ─── 저장한 코스 카드 (159x144 grid item) ────────────────────────────────────
 
 function SavedCourseCard({ course }: { course: SavedCourse }) {
+  const router = useRouter();
   const isShortDuration = course.duration !== "단일 코스";
   return (
-    <div
-      className="relative overflow-hidden"
+    <button
+      onClick={() => router.push(`/screens/mytrip/course?id=${encodeURIComponent(String(course.id))}`)}
+      className="relative overflow-hidden text-left active:opacity-90 transition-opacity"
       style={{
         width: 159,
         height: 144,
@@ -201,7 +203,7 @@ function SavedCourseCard({ course }: { course: SavedCourse }) {
           <MetaItem Icon={categoryIcon(course.category)} label={course.category} />
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
