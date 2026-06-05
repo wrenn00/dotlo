@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import TripCard from "../home/components/TripCard";
 import BottomTabBar from "../home/components/BottomTabBar";
+import WhenBottomSheet from "../step1/components/WhenBottomSheet";
 
 type SegmentKey = "mine" | "saved";
 
@@ -286,6 +287,7 @@ function MyTripContent() {
   const [segment, setSegment] = useState<SegmentKey>(initialSegment);
   const [country, setCountry] = useState("전체");
   const [userCourses, setUserCourses] = useState<SavedCourse[]>([]);
+  const [whenSheetOpen, setWhenSheetOpen] = useState(false);
 
   // step7에서 저장한 코스를 sessionStorage에서 읽어와 목록 맨 앞에 prepend
   useEffect(() => {
@@ -359,8 +361,11 @@ function MyTripContent() {
         </div>
       </div>
 
-      {/* FAB — 세그먼트별 다른 라벨 */}
+      {/* FAB — 세그먼트별 다른 라벨, saved 탭에서 누르면 날짜 시트 오픈 */}
       <button
+        onClick={() => {
+          if (segment === "saved") setWhenSheetOpen(true);
+        }}
         className="absolute inline-flex items-center justify-center whitespace-nowrap"
         style={{
           right: 17,
@@ -381,6 +386,13 @@ function MyTripContent() {
       </button>
 
       <BottomTabBar />
+
+      {/* 언제 떠나시나요? 바텀시트 — 코스 조합하기 진입점 */}
+      <WhenBottomSheet
+        open={whenSheetOpen}
+        onClose={() => setWhenSheetOpen(false)}
+        onSelect={() => setWhenSheetOpen(false)}
+      />
     </div>
   );
 }
