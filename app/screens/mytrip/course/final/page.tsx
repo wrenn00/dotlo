@@ -161,10 +161,18 @@ export default function FinalCoursePage() {
     야나카: [35.7290, 139.7700], 가구라자카: [35.7035, 139.7384],
   };
 
-  // 활성 일차의 타임라인 (THEMES에서 slice) — 지도 마커는 이 순서를 그대로 따름 (1=가장 이른 시간)
+  // 활성 일차의 타임라인 (THEMES에서 5개 추출) — 지도 마커는 이 순서를 그대로 따름 (1=가장 이른 시간)
+  // 카테고리별로 10개 정도뿐이라 activeDay로 슬라이스하면 3일차 이후가 비는 문제를 막기 위해
+  // (activeDay × 2)부터 5개씩 잘라 항상 결과가 나오도록 함. 데이터가 부족하면 앞에서 채움.
   const dayPlacesForMap = useMemo(() => {
     const base = THEMES[activeCategory] ?? [];
-    return base.slice(activeDay * 5, activeDay * 5 + 5);
+    if (base.length === 0) return [];
+    const offset = (activeDay * 2) % Math.max(1, base.length);
+    const picked: typeof base = [];
+    for (let i = 0; i < 5 && i < base.length; i++) {
+      picked.push(base[(offset + i) % base.length]);
+    }
+    return picked;
   }, [activeCategory, activeDay]);
 
   const sampleMarkers = useMemo(() => {
@@ -321,8 +329,8 @@ export default function FinalCoursePage() {
         {/* 일차별 코스 타임라인 */}
         {(() => {
           const cat = activeCategory;
-          const base = THEMES[cat] ?? [];
-          const dayPlaces = base.slice(activeDay * 5, activeDay * 5 + 5);
+          // dayPlacesForMap과 동일한 순서로 — 지도 마커 번호와 카드 순서가 일치하도록
+          const dayPlaces = dayPlacesForMap;
           const Icon = TIMELINE_ICON[cat] ?? Sparkles;
           const chipBg = CHIP_BG[courseColor] ?? "#F2F2F6";
           if (dayPlaces.length === 0) return null;
