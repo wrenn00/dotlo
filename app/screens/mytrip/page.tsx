@@ -136,11 +136,24 @@ const COUNTRY_FILTERS = ["전체", "일본", "태국", "이탈리아"];
 
 function SavedCourseCard({ course }: { course: SavedCourse }) {
   const router = useRouter();
+  // 프로토타입: "아름다운 도쿄의 밤" 카드만 진입 가능 — 나머지는 무반응
+  const clickable = course.title === "아름다운 도쿄의 밤";
   return (
     <button
-      onClick={() => router.push(`/screens/mytrip/course?id=${encodeURIComponent(String(course.id))}`)}
-      className="text-left active:opacity-90 transition-opacity"
-      style={{ width: 166, borderRadius: 8, overflow: "hidden", background: "#FFFFFF" }}
+      onClick={
+        clickable
+          ? () => router.push(`/screens/mytrip/course?id=${encodeURIComponent(String(course.id))}`)
+          : undefined
+      }
+      aria-disabled={!clickable}
+      className={clickable ? "text-left active:opacity-90 transition-opacity" : "text-left"}
+      style={{
+        width: 166,
+        borderRadius: 8,
+        overflow: "hidden",
+        background: "#FFFFFF",
+        cursor: clickable ? "pointer" : "default",
+      }}
     >
       {/* 이미지 영역 166x118 (높이 축소) */}
       <div
