@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import {
   Search, Bell,
-  MapPin, Map as MapIcon, Moon, ShoppingBag, Utensils, Leaf, Landmark,
-  Plus, ChevronDown, Coffee, Bath, Cake, Waves, Mountain, Drama,
+  MapPin, Map as MapIcon,
+  Plus, ChevronDown, Clock, Bookmark,
 } from "lucide-react";
 import TripCard from "../home/components/TripCard";
 import BottomTabBar from "../home/components/BottomTabBar";
@@ -64,7 +64,7 @@ function Header() {
 
 function SegmentedTab({ value, onChange, savedCount }: { value: SegmentKey; onChange: (v: SegmentKey) => void; savedCount: number }) {
   const items: { key: SegmentKey; label: string }[] = [
-    { key: "mine", label: "내 여행 4" },
+    { key: "mine", label: "최종 코스 4" },
     { key: "saved", label: `저장한 코스 ${savedCount}` },
   ];
   return (
@@ -115,93 +115,118 @@ interface SavedCourse {
   placeCount: number;
   category: string;
   duration: DurationBadge | string;
+  hashtags?: string;
+  hours?: string;
   image?: string;
 }
 
 const SAVED_COURSES: SavedCourse[] = [
-  { id: 1, title: "아름다운 도쿄의 밤", country: "일본", region: "도쿄", placeCount: 9, category: "야경", duration: "단일 코스", image: "/images/where/dokyo.png" },
-  { id: 2, title: "도쿄 Flex", country: "일본", region: "도쿄", placeCount: 21, category: "쇼핑", duration: "단일 코스", image: "/images/where/dokyo.png" },
-  { id: 3, title: "도쿄 먹방 원정대", country: "일본", region: "도쿄", placeCount: 25, category: "미식", duration: "단일 코스", image: "/images/where/dokyo.png" },
-  { id: 4, title: "홋카이도 자연 투어", country: "일본", region: "훗카이도", placeCount: 3, category: "자연", duration: "3박 4일", image: "/images/where/fukuoka.png" },
-  { id: 5, title: "푸켓 힐링 바캉스", country: "태국", region: "태국", placeCount: 16, category: "자연", duration: "단일 코스", image: "/images/where/bangkok.png" },
-  { id: 6, title: "로마의 휴일", country: "이탈리아", region: "이탈리아", placeCount: 8, category: "역사", duration: "단일 코스", image: "/images/where/paris.png" },
-  { id: 7, title: "상하이의 야경", country: "이탈리아", region: "이탈리아", placeCount: 8, category: "야경", duration: "단일 코스", image: "/images/where/shanghai.png" },
+  { id: 1, title: "아름다운 도쿄의 밤",   country: "일본",     region: "도쿄",    placeCount: 9,  category: "야경", duration: "단일 코스", hashtags: "#야경 #감성 #시부야",       hours: "8시간",  image: "/images/where/dokyo.png" },
+  { id: 2, title: "도쿄 Flex",           country: "일본",     region: "도쿄",    placeCount: 21, category: "쇼핑", duration: "단일 코스", hashtags: "#쇼핑 #하라주쿠 #오모테산도", hours: "9시간",  image: "/images/where/dokyo.png" },
+  { id: 3, title: "도쿄 먹방 원정대",     country: "일본",     region: "도쿄",    placeCount: 25, category: "미식", duration: "단일 코스", hashtags: "#맛집 #라멘 #스시",          hours: "10시간", image: "/images/where/dokyo.png" },
+  { id: 4, title: "홋카이도 자연 투어",   country: "일본",     region: "훗카이도", placeCount: 3,  category: "자연", duration: "3박 4일",   hashtags: "#자연 #힐링 #온천",          hours: "3박 4일",image: "/images/where/fukuoka.png" },
+  { id: 5, title: "푸켓 힐링 바캉스",     country: "태국",     region: "태국",    placeCount: 16, category: "자연", duration: "단일 코스", hashtags: "#휴식 #자연 #관광",          hours: "7시간",  image: "/images/where/bangkok.png" },
+  { id: 6, title: "로마의 휴일",         country: "이탈리아", region: "이탈리아", placeCount: 8,  category: "역사", duration: "단일 코스", hashtags: "#역사 #문화 #관광",          hours: "5시간",  image: "/images/where/paris.png" },
+  { id: 7, title: "상하이의 야경",       country: "이탈리아", region: "이탈리아", placeCount: 8,  category: "야경", duration: "단일 코스", hashtags: "#야경 #감성 #와이탄",        hours: "6시간",  image: "/images/where/shanghai.png" },
 ];
 
 const COUNTRY_FILTERS = ["전체", "일본", "태국", "이탈리아"];
 
-// ─── 저장한 코스 카드 (159x144 grid item) ────────────────────────────────────
+// ─── 저장한 코스 카드 (166x196 — image 144 + meta 52) ────────────────────────
 
 function SavedCourseCard({ course }: { course: SavedCourse }) {
   const router = useRouter();
-  const isShortDuration = course.duration !== "단일 코스";
   return (
     <button
       onClick={() => router.push(`/screens/mytrip/course?id=${encodeURIComponent(String(course.id))}`)}
-      className="relative overflow-hidden text-left active:opacity-90 transition-opacity"
-      style={{
-        width: 159,
-        height: 144,
-        borderRadius: 8,
-        background: course.image ? `url(${course.image}) center / cover` : "#CBCBCB",
-      }}
+      className="text-left active:opacity-90 transition-opacity"
+      style={{ width: 166, borderRadius: 8, overflow: "hidden", background: "#FFFFFF" }}
     >
-      {/* 하단 어두운 그라데이션 (제목 가독성) */}
+      {/* 이미지 영역 166x144 */}
       <div
-        className="absolute pointer-events-none"
+        className="relative"
         style={{
-          width: 159,
-          height: 96,
-          top: 48,
-          left: 0,
-          background:
-            "linear-gradient(180deg, rgba(62, 62, 62, 0) 0%, rgba(39, 39, 39, 0.365) 19.71%, rgba(0, 0, 0, 0.85) 100%)",
-        }}
-      />
-
-      {/* 우측 상단 기간 배지 */}
-      <div
-        className="absolute inline-flex items-center justify-center"
-        style={{
-          top: 6,
-          right: 6,
-          height: 20,
-          padding: "0 10px",
-          background: isShortDuration ? "#EFEFFF" : "#E0FBFF",
-          borderRadius: 19,
+          width: 166,
+          height: 144,
+          background: course.image ? `url(${course.image}) center / cover` : "#CBCBCB",
         }}
       >
-        <span
+        {/* 어두운 그라데이션 (제목 가독성) */}
+        <div
+          className="absolute pointer-events-none"
           style={{
+            left: 0, right: 0, top: 48, height: 96,
+            background:
+              "linear-gradient(180deg, rgba(62,62,62,0) 0%, rgba(39,39,39,0.365) 19.71%, rgba(0,0,0,0.85) 100%)",
+          }}
+        />
+
+        {/* 북마크 (우측 상단) */}
+        <div className="absolute flex items-center justify-center" style={{ top: 8, right: 8, width: 20, height: 20 }}>
+          <Bookmark size={16} color="#2E2E70" fill="#2E2E70" strokeWidth={0} />
+        </div>
+
+        {/* 좌하단 콘텐츠 — 단일 코스 칩 + 제목 */}
+        <div className="absolute flex flex-col" style={{ left: 13, top: 92, width: 146, gap: 5 }}>
+          <div
+            className="inline-flex items-center justify-center self-start"
+            style={{
+              height: 20,
+              padding: "0 10px",
+              background: "#EFEFFF",
+              borderRadius: 19,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 10,
+                fontWeight: 500,
+                lineHeight: "13px",
+                color: "#6B6BCC",
+              }}
+            >
+              {course.duration}
+            </span>
+          </div>
+          <p
+            className="line-clamp-2"
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 14,
+              fontWeight: 700,
+              lineHeight: "18px",
+              color: "#FAFAFA",
+            }}
+          >
+            {course.title}
+          </p>
+        </div>
+      </div>
+
+      {/* 메타 영역 166x52 #F9FAFB */}
+      <div className="relative" style={{ width: 166, height: 52, background: "#F9FAFB" }}>
+        {/* 해시태그 */}
+        <span
+          className="absolute truncate"
+          style={{
+            left: 9, top: 9, right: 9,
             fontFamily: '"Spoqa Han Sans Neo"',
             fontSize: 10,
             fontWeight: 500,
             lineHeight: "13px",
-            color: isShortDuration ? "#6B6BCC" : "#00A8BF",
+            color: "#2E2E70",
+            display: "block",
           }}
         >
-          {course.duration}
+          {course.hashtags ?? `#${course.category}`}
         </span>
-      </div>
 
-      {/* 좌하단 콘텐츠 */}
-      <div className="absolute" style={{ left: 10, top: 98, width: 139 }}>
-        <p
-          style={{
-            fontFamily: '"Spoqa Han Sans Neo"',
-            fontSize: 14,
-            fontWeight: 700,
-            lineHeight: "18px",
-            color: "#FAFAFA",
-          }}
-        >
-          {course.title}
-        </p>
-        {/* 메타 행: 지역 / 장소 수 / 카테고리 */}
-        <div className="flex items-center" style={{ gap: 7, marginTop: 4 }}>
+        {/* 메타 행 — 지역 / 장소 / 시간 */}
+        <div className="absolute flex items-center" style={{ left: 9, top: 29, right: 9, gap: 4 }}>
           <MetaItem Icon={MapPin} label={course.region} />
-          <MetaItem Icon={MapIcon} label={`${course.placeCount}곳`} />
-          <MetaItem Icon={categoryIcon(course.category)} label={course.category} />
+          <MetaItem Icon={MapIcon} label={`장소 ${course.placeCount}개`} />
+          <MetaItem Icon={Clock} label={course.hours ?? "-"} />
         </div>
       </div>
     </button>
@@ -210,35 +235,21 @@ function SavedCourseCard({ course }: { course: SavedCourse }) {
 
 function MetaItem({ Icon, label }: { Icon: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>; label: string }) {
   return (
-    <div className="flex items-center" style={{ gap: 2 }}>
-      <Icon size={11} color="#E0E0E0" strokeWidth={1.5} />
+    <div className="flex items-center whitespace-nowrap" style={{ gap: 2 }}>
+      <Icon size={11} color="#555555" strokeWidth={1.6} />
       <span
         style={{
           fontFamily: '"Spoqa Han Sans Neo"',
           fontSize: 10,
           fontWeight: 500,
           lineHeight: "13px",
-          color: "#E0E0E0",
+          color: "#555555",
         }}
       >
         {label}
       </span>
     </div>
   );
-}
-
-function categoryIcon(cat: string) {
-  if (cat.includes("야경")) return Moon;
-  if (cat.includes("쇼핑")) return ShoppingBag;
-  if (cat.includes("미식") || cat.includes("맛집")) return Utensils;
-  if (cat.includes("자연") || cat.includes("휴식")) return Leaf;
-  if (cat.includes("카페")) return Coffee;
-  if (cat.includes("온천")) return Bath;
-  if (cat.includes("디저트")) return Cake;
-  if (cat.includes("바다")) return Waves;
-  if (cat.includes("강변")) return Mountain;
-  if (cat.includes("전시") || cat.includes("공연") || cat.includes("박물관")) return Drama;
-  return Landmark; // 역사·관광 fallback
 }
 
 // ─── 국가 필터 칩 ────────────────────────────────────────────────────────────
@@ -350,7 +361,7 @@ function MyTripContent() {
               {/* 2-column grid */}
               <div
                 className="grid"
-                style={{ gridTemplateColumns: "repeat(2, 159px)", gap: 9, justifyContent: "center" }}
+                style={{ gridTemplateColumns: "repeat(2, 166px)", gap: 8, justifyContent: "center" }}
               >
                 {filteredCourses.map((c) => (
                   <SavedCourseCard key={c.id} course={c} />
@@ -381,7 +392,7 @@ function MyTripContent() {
       >
         <Plus size={18} color="#FFFFFF" strokeWidth={2.4} />
         <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 600, lineHeight: "18px", letterSpacing: "-0.3px", color: "#FFFFFF" }}>
-          {segment === "mine" ? "새 여행" : "코스 조합하기"}
+          {segment === "mine" ? "새 여행" : "최종 코스 만들기"}
         </span>
       </button>
 
