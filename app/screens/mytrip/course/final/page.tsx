@@ -3,7 +3,46 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { ChevronLeft, Share2, Bookmark, Sparkles } from "lucide-react";
+import {
+  ChevronLeft, Share2, Bookmark, Sparkles, Star, Footprints,
+  Utensils, MountainSnow, ShoppingBag, Coffee, Bath, Cake, Landmark, BookOpen, Waves, Mountain, Drama, Moon,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import tokyoThemes from "@/data/tokyo-themes.json";
+import PlaceThumbnail from "@/components/PlaceThumbnail";
+
+const TIMELINE_ICON: Record<string, LucideIcon> = {
+  미식: Utensils, 관광: MountainSnow, 쇼핑: ShoppingBag, 카페: Coffee,
+  휴식: Bath, 디저트: Cake, 박물관: Landmark, 역사: BookOpen,
+  바다: Waves, 강변: Mountain, 야경: Moon, "공연·전시": Drama,
+};
+
+const CHIP_BG: Record<string, string> = {
+  "#00E1FF": "#F2FDFF",
+  "#A5A5FF": "#EFEFFF",
+  "#FFE400": "#FFFCE2",
+  "#090738": "#EFEFFF",
+  "#A0A0C0": "#F2F2F6",
+};
+
+// 카테고리별 시간 윈도우 (step7과 동일)
+const SCHEDULE_WINDOW: Record<string, [number, number]> = {
+  미식: [510, 1260], 관광: [540, 1080], 쇼핑: [600, 1200], 카페: [540, 1140],
+  야경: [1020, 1380], 휴식: [570, 1080], 디저트: [600, 1200],
+  박물관: [570, 1050], 역사: [540, 1050], 바다: [570, 1080],
+  강변: [570, 1170], "공연·전시": [600, 1260],
+};
+
+type ThemePlace = { name: string; subRegion: string; rating: number; reviews: number; description: string; image?: string };
+const THEMES = tokyoThemes as Record<string, ThemePlace[]>;
+
+function timeAt(label: string, idx: number, count: number) {
+  const [s, e] = SCHEDULE_WINDOW[label] ?? [540, 1080];
+  const step = count > 1 ? (e - s) / (count - 1) : 0;
+  const rounded = Math.round((s + step * idx) / 5) * 5;
+  const h = Math.floor(rounded / 60), m = rounded % 60;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
 
 const CourseMap = dynamic(() => import("@/components/CourseMap"), {
   ssr: false,
@@ -245,6 +284,84 @@ export default function FinalCoursePage() {
             </span>
           </div>
         </div>
+
+        {/* 일차별 코스 타임라인 */}
+        {(() => {
+          const cat = activeCategory;
+          const base = THEMES[cat] ?? [];
+          const dayPlaces = base.slice(activeDay * 5, activeDay * 5 + 5);
+          const Icon = TIMELINE_ICON[cat] ?? Sparkles;
+          const chipBg = CHIP_BG[courseColor] ?? "#F2F2F6";
+          if (dayPlaces.length === 0) return null;
+          return (
+            <div className="flex flex-col" style={{ marginTop: 22, gap: 18 }}>
+              {dayPlaces.map((p, i) => (
+                <div key={`${p.name}-${i}`} className="flex">
+                  <div className="shrink-0 flex flex-col items-center" style={{ width: 33 }}>
+                    <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#4B5969" }}>
+                      {timeAt(cat, i, dayPlaces.length)}
+                    </span>
+                    <div className="flex items-center justify-center" style={{ marginTop: 3, width: 25, height: 25, background: chipBg, borderRadius: 8 }}>
+                      <Icon size={14} color={courseColor} strokeWidth={2} />
+                    </div>
+                    {i < dayPlaces.length - 1 && (
+                      <div className="flex-1 flex flex-col items-center" style={{ marginTop: 4, gap: 4 }}>
+                        <div style={{ width: 1, flex: 1, background: "#E6E8EB" }} />
+                        <Footprints size={14} color="#A0A0C0" strokeWidth={1.8} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1" style={{ marginLeft: 8 }}>
+                    <div className="relative" style={{ padding: 9, background: "#F9FAFB", borderRadius: 8 }}>
+                      <div className="flex items-start" style={{ gap: 8 }}>
+                        <div className="shrink-0">
+                          <PlaceThumbnail src={p.image} alt={p.name} category={cat} size={51} />
+                        </div>
+                        <div className="flex flex-col min-w-0" style={{ gap: 4, flex: 1 }}>
+                          <span className="truncate" style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, color: "#1A1A1A" }}>
+                            {p.name}
+                          </span>
+                          <div className="flex flex-col" style={{ gap: 2 }}>
+                            <div className="flex items-center whitespace-nowrap" style={{ gap: 5 }}>
+                              <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#555555" }}>
+                                {p.subRegion}·{cat}
+                              </span>
+                              <div className="flex items-center" style={{ gap: 1 }}>
+                                <Star size={11} color="#FFE770" fill="#FFE770" strokeWidth={0} />
+                                <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#555555" }}>
+                                  {p.rating}({p.reviews.toLocaleString()})
+                                </span>
+                              </div>
+                            </div>
+                            <span className="truncate" style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#555555" }}>
+                              {p.description}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="absolute inline-flex items-center justify-center"
+                        style={{ top: 6, right: 6, height: 14, padding: "0 6px", background: chipBg, borderRadius: 4 }}
+                      >
+                        <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 8, fontWeight: 500, color: courseColor }}>
+                          {cat}
+                        </span>
+                      </div>
+                    </div>
+                    {i < dayPlaces.length - 1 && (
+                      <div className="flex items-center" style={{ marginTop: 4, gap: 4 }}>
+                        <Footprints size={13} color="#A0A0C0" strokeWidth={1.8} />
+                        <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#767F89" }}>
+                          도보 10분 · 800m
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
       </div>
 
       {/* 최종 코스에 저장하기 */}
