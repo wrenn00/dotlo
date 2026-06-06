@@ -38,19 +38,20 @@ const slideVariants: Variants = {
 };
 
 // 카테고리별 시간 슬롯 + 이동 안내 — 첫 4개 장소에 차례로 매핑
-const SLOTS: Record<string, { time: string; next?: string }[]> = {
-  미식:      [{ time: "11:00", next: "도보 10분 · 800m" }, { time: "13:30", next: "지하철 15분 · 4km" }, { time: "16:00", next: "도보 6분 · 500m" }, { time: "19:00" }],
-  관광:      [{ time: "10:00", next: "지하철 12분 · 3km" }, { time: "13:00", next: "도보 18분 · 1.4km" }, { time: "15:30", next: "지하철 10분 · 3km" }, { time: "17:00" }],
-  쇼핑:      [{ time: "10:00", next: "지하철 8분 · 2km" }, { time: "13:00", next: "도보 12분 · 1km" }, { time: "15:30", next: "지하철 10분 · 3km" }, { time: "18:00" }],
-  카페:      [{ time: "10:00", next: "도보 15분 · 1km" }, { time: "13:00", next: "지하철 12분 · 4km" }, { time: "16:00", next: "지하철 10분 · 3km" }, { time: "18:00" }],
-  야경:      [{ time: "18:00", next: "도보 10분 · 800m" }, { time: "19:30", next: "지하철 15분 · 4km" }, { time: "21:00", next: "도보 6분 · 500m" }, { time: "22:30" }],
-  휴식:      [{ time: "10:30", next: "도보 20분 · 1.6km" }, { time: "13:30", next: "지하철 25분 · 8km" }, { time: "15:30", next: "도보 14분 · 1km" }, { time: "17:30" }],
-  디저트:    [{ time: "11:00", next: "도보 10분 · 800m" }, { time: "14:00", next: "지하철 12분 · 4km" }, { time: "16:30", next: "도보 9분 · 700m" }, { time: "19:00" }],
-  박물관:    [{ time: "10:00", next: "도보 8분 · 600m" }, { time: "12:30", next: "지하철 12분 · 4km" }, { time: "14:30", next: "도보 10분 · 800m" }, { time: "16:30" }],
-  역사:      [{ time: "10:00", next: "지하철 10분 · 3km" }, { time: "12:00", next: "도보 15분 · 1.2km" }, { time: "14:30", next: "지하철 12분 · 4km" }, { time: "16:30" }],
-  바다:      [{ time: "10:30", next: "도보 15분 · 1.2km" }, { time: "13:00", next: "버스 18분 · 5km" }, { time: "15:30", next: "도보 12분 · 1km" }, { time: "17:30" }],
-  강변:      [{ time: "10:30", next: "도보 20분 · 1.6km" }, { time: "14:00", next: "지하철 10분 · 3km" }, { time: "16:30", next: "도보 18분 · 1.4km" }, { time: "18:30" }],
-  "공연·전시": [{ time: "11:00", next: "지하철 12분 · 4km" }, { time: "14:00", next: "도보 10분 · 800m" }, { time: "16:00", next: "지하철 8분 · 2km" }, { time: "18:00" }],
+// 카테고리별 영업 시간대 — [시작시(분), 종료시(분)]. 전체 장소 수만큼 이 구간 안에 균등 분포.
+const SCHEDULE_WINDOW: Record<string, [number, number]> = {
+  미식:      [8 * 60 + 30, 21 * 60],      // 08:30 ~ 21:00
+  관광:      [9 * 60,      18 * 60],      // 09:00 ~ 18:00
+  쇼핑:      [10 * 60,     20 * 60],      // 10:00 ~ 20:00
+  카페:      [9 * 60,      19 * 60],      // 09:00 ~ 19:00
+  야경:      [17 * 60,     23 * 60],      // 17:00 ~ 23:00
+  휴식:      [9 * 60 + 30, 18 * 60],      // 09:30 ~ 18:00
+  디저트:    [10 * 60,     20 * 60],      // 10:00 ~ 20:00
+  박물관:    [9 * 60 + 30, 17 * 60 + 30], // 09:30 ~ 17:30
+  역사:      [9 * 60,      17 * 60 + 30], // 09:00 ~ 17:30
+  바다:      [9 * 60 + 30, 18 * 60],      // 09:30 ~ 18:00
+  강변:      [9 * 60 + 30, 19 * 60 + 30], // 09:30 ~ 19:30
+  "공연·전시": [10 * 60,    21 * 60],      // 10:00 ~ 21:00
 };
 
 // 표시용 카테고리 라벨 (미식 → 맛집)
@@ -90,25 +91,22 @@ interface TimelineEntry {
   next?: string;
 }
 
-// 미리 정의된 4-슬롯 뒤로는 1.5시간 간격으로 시간을 자동 생성
+// 카테고리 시간대를 N개 장소에 균등 분포 + 5분 단위로 반올림
 function makeSlots(label: string, count: number): { time: string; next?: string }[] {
-  const base = SLOTS[label] ?? SLOTS["관광"];
-  if (count <= base.length) return base.slice(0, count);
+  if (count <= 0) return [];
+  const [startMin, endMin] = SCHEDULE_WINDOW[label] ?? SCHEDULE_WINDOW["관광"];
+  const step = count > 1 ? (endMin - startMin) / (count - 1) : 0;
 
-  const slots: { time: string; next?: string }[] = base.map((s, i) =>
-    // 마지막 base 슬롯은 next가 없으니 채워줘서 연결선이 끊기지 않게
-    i === base.length - 1 && !s.next ? { ...s, next: "도보 8분 · 600m" } : s,
-  );
-
-  const [h0, m0] = base[base.length - 1].time.split(":").map(Number);
-  let totalMin = h0 * 60 + m0;
-  for (let i = base.length; i < count; i++) {
-    totalMin += 90; // 1시간 30분 간격
-    const h = Math.min(23, Math.floor(totalMin / 60));
-    const m = totalMin % 60;
+  const slots: { time: string; next?: string }[] = [];
+  for (let i = 0; i < count; i++) {
+    const raw = startMin + step * i;
+    const rounded = Math.round(raw / 5) * 5; // 5분 단위로 깔끔하게
+    const h = Math.floor(rounded / 60);
+    const m = rounded % 60;
     const time = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
     const isLast = i === count - 1;
-    const transit = i % 2 === 0 ? "도보 12분 · 1km" : "지하철 10분 · 3km";
+    // 이동 수단은 보폭/거리에 맞춰 4가지를 반복
+    const transit = ["도보 10분 · 800m", "지하철 12분 · 4km", "도보 15분 · 1km", "지하철 10분 · 3km"][i % 4];
     slots.push({ time, next: isLast ? undefined : transit });
   }
   return slots;
