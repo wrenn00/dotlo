@@ -343,12 +343,12 @@ export default function Step7Page() {
         >
         {/* 히어로 카드 — 344x271 + 하단 정보 영역 */}
         <div className="flex flex-col" style={{ marginTop: 14, gap: 11 }}>
-          {/* 지도 영역 */}
+          {/* 지도 영역 — 모서리 라벤더/시안 누수 방지를 위해 타일 톤(#F2F4F7)으로 통일 */}
           <div
             className="relative overflow-hidden"
             style={{
               height: 271,
-              background: course.bgHex,
+              background: "#F2F4F7",
               borderRadius: 12,
             }}
           >

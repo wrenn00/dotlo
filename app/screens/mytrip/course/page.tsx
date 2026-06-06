@@ -215,7 +215,7 @@ export default function CourseDetailPage() {
           </div>
 
           {/* 지도 미리보기 — 271h */}
-          <div className="relative overflow-hidden" style={{ height: 271, background: "#D6D6FF", borderRadius: 12 }}>
+          <div className="relative overflow-hidden" style={{ height: 271, background: "#F2F4F7", borderRadius: 12 }}>
             <CourseMap
               courses={[{ id: "B", color: "#A5A5FF", markers: MARKERS }]}
               center={[MARKERS[0].lat, MARKERS[0].lng]}
