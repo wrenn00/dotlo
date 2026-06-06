@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import {
   ChevronLeft, Share2, Bookmark, Sparkles, Star, Footprints,
   Utensils, MountainSnow, ShoppingBag, Coffee, Bath, Cake, Landmark, BookOpen, Waves, Mountain, Drama, Moon,
-  FileDown, UserPlus,
+  Pencil, RefreshCw,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import tokyoThemes from "@/data/tokyo-themes.json";
@@ -238,11 +238,11 @@ export default function FinalCoursePage() {
           </p>
         </div>
 
-        {/* AI 카드 (네이비) */}
+        {/* AI 카드 (라이트 #FAFAFA — 라벤더 칩) */}
         <div
           style={{
             marginTop: 22,
-            background: "#090738",
+            background: "#FAFAFA",
             borderRadius: 12,
             padding: "10px 18px 18px 18px",
           }}
@@ -250,11 +250,11 @@ export default function FinalCoursePage() {
           <div className="flex items-center" style={{ gap: 9 }}>
             <div
               className="flex items-center justify-center"
-              style={{ width: 34, height: 34, background: "#484759", borderRadius: 20 }}
+              style={{ width: 34, height: 34, background: "#EFEFFF", borderRadius: 20 }}
             >
-              <Sparkles size={18} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} />
+              <Sparkles size={18} color="#B8B8FF" fill="#B8B8FF" strokeWidth={0} />
             </div>
-            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, color: "#FBFBFB" }}>
+            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, color: "#333333" }}>
               AI가 이렇게 짰어요
             </span>
           </div>
@@ -262,20 +262,19 @@ export default function FinalCoursePage() {
             {["맛집 우선으로 점심·저녁 동선 짰어요", "야경 시간대를 일정 마지막에 배치했어요", "숙소 기준으로 동선이 가장 짧아요"].map((t) => (
               <div key={t} className="flex items-center" style={{ gap: 13 }}>
                 <div className="shrink-0" style={{ width: 5, height: 5, background: "#A0A0C0", borderRadius: "50%" }} />
-                <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, color: "#C1C3C8" }}>{t}</span>
+                <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, color: "#888888" }}>{t}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 내 취향 반영 카드 (화이트) */}
+        {/* 내 취향 반영 카드 (라이트 #FAFAFA) */}
         <div
           style={{
             marginTop: 12,
-            background: "#FFFFFF",
+            background: "#FAFAFA",
             borderRadius: 12,
             padding: "17px 18px 18px 18px",
-            boxShadow: "0 0 6.8px rgba(0,0,0,0.06)",
           }}
         >
           <div className="flex items-baseline justify-between">
@@ -354,20 +353,35 @@ export default function FinalCoursePage() {
           </div>
         </div>
 
-        {/* 코스 타이틀 카드 — 지도 아래 */}
+        {/* 코스 타이틀 카드 — 지도 아래 (캐릭터 + 시안 톤) */}
         <div
           className="relative overflow-hidden"
           style={{
             marginTop: 14,
-            height: 71,
+            height: 90,
             borderRadius: 12,
             background: CHIP_BG[courseColor] ?? "#F2FDFF",
           }}
         >
-          <div className="absolute flex items-center" style={{ left: 14, top: 17, gap: 8 }}>
+          {/* 캐릭터 — 우측 */}
+          <div
+            className="absolute"
+            style={{
+              right: 8,
+              top: 4,
+              width: 100,
+              height: 82,
+              backgroundImage: "url(/images/cheer.png)",
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right center",
+              pointerEvents: "none",
+            }}
+          />
+          <div className="absolute flex items-start" style={{ left: 14, top: 14, right: 110, gap: 8 }}>
             {/* 일차 칩 */}
             <div
-              className="flex items-center justify-center"
+              className="shrink-0 flex items-center justify-center"
               style={{ height: 24, padding: "0 12px", background: "#FFFFFF", borderRadius: 17 }}
             >
               <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: courseColor }}>
@@ -383,8 +397,17 @@ export default function FinalCoursePage() {
                 {activeCourse?.title ?? `${activeDay + 1}일차 코스`}
               </span>
               <span
-                className="truncate"
-                style={{ fontFamily: '"Pretendard", "Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 400, lineHeight: "12px", color: "#555555" }}
+                style={{
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 2,
+                  overflow: "hidden",
+                  fontFamily: '"Pretendard", "Spoqa Han Sans Neo"',
+                  fontSize: 10,
+                  fontWeight: 400,
+                  lineHeight: "14px",
+                  color: "#555555",
+                }}
               >
                 {CATEGORY_TAGLINE[activeCategory] ?? "AI가 추천하는 코스"}
               </span>
@@ -471,13 +494,13 @@ export default function FinalCoursePage() {
         })()}
       </div>
 
-      {/* 하단 액션 영역 — PDF 저장 / 친구 초대 보조 버튼 + 메인 저장 버튼 */}
+      {/* 하단 액션 영역 — 일정 수정 / 다시 만들기 보조 + 내 여행에 저장하기 메인 */}
       <div className="shrink-0 flex flex-col" style={{ padding: "0 20px 24px", gap: 10 }}>
         {/* 보조 버튼 2개 (좌우 분할) */}
         <div className="flex" style={{ gap: 10 }}>
           {[
-            { Icon: FileDown, label: "PDF 저장" },
-            { Icon: UserPlus, label: "친구 초대" },
+            { Icon: Pencil, label: "일정 수정" },
+            { Icon: RefreshCw, label: "다시 만들기" },
           ].map(({ Icon, label }) => (
             <button
               key={label}
@@ -485,24 +508,23 @@ export default function FinalCoursePage() {
               style={{
                 height: 44,
                 background: "#FFFFFF",
-                border: "1.5px solid #D8D8E9",
-                borderRadius: 12,
+                border: "1.5px solid #E0E0E0",
+                borderRadius: 30,
                 gap: 6,
                 fontFamily: '"Spoqa Han Sans Neo"',
                 fontSize: 14,
-                fontWeight: 600,
+                fontWeight: 500,
                 lineHeight: "18px",
-                letterSpacing: "-0.3px",
-                color: "#2E2E70",
+                color: "#555555",
               }}
             >
-              <Icon size={16} color="#6060A0" strokeWidth={2} />
+              <Icon size={16} color="#555555" strokeWidth={1.8} />
               {label}
             </button>
           ))}
         </div>
 
-        {/* 메인 — 최종 코스에 저장하기 */}
+        {/* 메인 — 내 여행에 저장하기 */}
         <button
           onClick={() => router.push("/screens/mytrip?segment=saved")}
           className="w-full flex items-center justify-center transition-opacity active:opacity-80"
@@ -520,7 +542,7 @@ export default function FinalCoursePage() {
           }}
         >
           <Sparkles size={18} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} />
-          최종 코스에 저장하기
+          내 여행에 저장하기
         </button>
       </div>
       {/* dayPalette는 참조만 — 추후 일차별 강조 색에 사용 */}
