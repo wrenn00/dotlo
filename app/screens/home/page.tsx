@@ -128,57 +128,43 @@ function HeroCard({ onStart }: { onStart: () => void }) {
       style={{
         width: 343,
         height: 169,
-        background: "#80F0FF",
-        backgroundImage: "url(/images/home_card.png)",
+        background: "#E6F8FF",
+        backgroundImage: "url(/images/banner.png)",
         backgroundSize: "cover",
         backgroundPosition: "center",
         borderRadius: 12,
       }}
     >
-
-      {/* 텍스트 영역 (좌측) */}
+      {/* 타이틀 — 좌측 상단 */}
       <h2
         className="absolute"
         style={{
-          left: 17,
-          top: 16,
-          width: 200,
+          left: 20,
+          top: 22,
+          width: 220,
           fontFamily: '"Pretendard", "Spoqa Han Sans Neo"',
-          fontSize: 16,
+          fontSize: 18,
           fontWeight: 700,
-          lineHeight: "20px",
+          lineHeight: "24px",
           color: "#1A1A1A",
+          letterSpacing: "-0.4px",
         }}
       >
-        저장한 장소로
+        구글맵 저장목록으로
         <br />
-        코스 자동 생성하기
+        코스를 만들어보세요!
       </h2>
-      <p
-        className="absolute"
-        style={{
-          left: 17,
-          top: 63,
-          fontFamily: '"Spoqa Han Sans Neo"',
-          fontSize: 12,
-          fontWeight: 400,
-          lineHeight: "15px",
-          color: "#555555",
-        }}
-      >
-        저장한 장소를 취향에 맞게 일정으로 짜드려요
-      </p>
 
-      {/* 코스 만들기 버튼 (76x26, white, radius 8) */}
+      {/* 코스 만들기 버튼 — 좌측 하단, 네이비 */}
       <button
         onClick={onStart}
-        className="absolute inline-flex items-center justify-center"
+        className="absolute inline-flex items-center justify-center transition-opacity active:opacity-80"
         style={{
-          left: 17,
-          top: 129,
-          height: 26,
-          padding: "0 10px",
-          background: "#FFFFFF",
+          left: 20,
+          bottom: 22,
+          height: 32,
+          padding: "0 14px",
+          background: "#090738",
           borderRadius: 8,
           gap: 4,
         }}
@@ -186,15 +172,15 @@ function HeroCard({ onStart }: { onStart: () => void }) {
         <span
           style={{
             fontFamily: '"Spoqa Han Sans Neo"',
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: 500,
-            lineHeight: "13px",
-            color: "#000000",
+            lineHeight: "15px",
+            color: "#FFFFFF",
           }}
         >
           코스 만들기
         </span>
-        <ChevronRight size={12} color="#888888" strokeWidth={1.8} />
+        <ChevronRight size={14} color="#FFFFFF" strokeWidth={2} />
       </button>
     </div>
   );
