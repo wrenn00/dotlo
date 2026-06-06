@@ -4,7 +4,26 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
-import { ChevronLeft, Sparkles, Map as MapIcon, RotateCcw, ChevronDown, Star, Footprints, Bookmark } from "lucide-react";
+import {
+  ChevronLeft, Sparkles, Map as MapIcon, RotateCcw, ChevronDown, Star, Footprints, Bookmark,
+  Utensils, MountainSnow, ShoppingBag, Bath, Coffee, Cake, Landmark, BookOpen, Waves, Mountain, Drama, Moon,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+const TIMELINE_ICON: Record<string, LucideIcon> = {
+  미식: Utensils,
+  관광: MountainSnow,
+  쇼핑: ShoppingBag,
+  카페: Coffee,
+  휴식: Bath,
+  디저트: Cake,
+  박물관: Landmark,
+  역사: BookOpen,
+  바다: Waves,
+  강변: Mountain,
+  야경: Moon,
+  "공연·전시": Drama,
+};
 import PlaceThumbnail from "@/components/PlaceThumbnail";
 import { buildCourses, getCourse, type Course, type CourseId } from "./courses";
 import tokyoThemes from "@/data/tokyo-themes.json";
@@ -510,7 +529,10 @@ export default function Step7Page() {
                     borderRadius: 8,
                   }}
                 >
-                  <Sparkles size={14} color={course.colorHex} fill={course.colorHex} strokeWidth={0} />
+                  {(() => {
+                    const Icon = TIMELINE_ICON[course.categoryKey] ?? Sparkles;
+                    return <Icon size={14} color={course.colorHex} strokeWidth={2} />;
+                  })()}
                 </div>
                 {idx < visibleItems.length - 1 && (
                   <div className="flex-1 flex flex-col items-center" style={{ marginTop: 4, gap: 4 }}>
