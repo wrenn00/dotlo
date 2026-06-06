@@ -50,7 +50,7 @@ const DISPLAY_CATEGORY: Record<string, string> = {
   "공연·전시": "전시",
 };
 
-type ThemePlace = { name: string; subRegion: string; rating: number; reviews: number; description: string };
+type ThemePlace = { name: string; subRegion: string; rating: number; reviews: number; description: string; image?: string };
 const THEMES = tokyoThemes as Record<string, ThemePlace[]>;
 
 const CourseMap = dynamic(() => import("@/components/CourseMap"), {
@@ -114,7 +114,7 @@ function timelineFor(label: string): TimelineEntry[] {
     rating: p.rating,
     reviews: p.reviews,
     description: p.description,
-    image: "/images/places/default.jpg",
+    image: p.image ?? "/images/places/default.jpg",
     tag: display,
     next: slots[i].next,
   }));
