@@ -477,6 +477,7 @@ function CourseBuildContent() {
       <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px", background: "#FFFFFF" }}>
         <button
           disabled={!hasAny}
+          onClick={() => router.push(`/screens/mytrip/course/loading?days=${days}`)}
           className="w-full transition-opacity disabled:cursor-not-allowed"
           style={{
             height: 50,
