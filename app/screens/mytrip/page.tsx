@@ -291,7 +291,14 @@ function MyTripContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialSegment: SegmentKey = searchParams.get("segment") === "saved" ? "saved" : "mine";
-  const [segment, setSegment] = useState<SegmentKey>(initialSegment);
+  const [segment, _setSegment] = useState<SegmentKey>(initialSegment);
+
+  // 탭 변경 시 URL도 함께 업데이트 — 상세 화면에서 뒤로가기 시 같은 탭에 머물도록
+  const setSegment = (key: SegmentKey) => {
+    _setSegment(key);
+    const next = key === "saved" ? "/screens/mytrip?segment=saved" : "/screens/mytrip";
+    router.replace(next);
+  };
   const [country, setCountry] = useState("전체");
   const [userCourses, setUserCourses] = useState<SavedCourse[]>([]);
   const [whenSheetOpen, setWhenSheetOpen] = useState(false);
