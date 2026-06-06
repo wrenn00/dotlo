@@ -73,6 +73,23 @@ const DISPLAY_CATEGORY: Record<string, string> = {
 type ThemePlace = { name: string; subRegion: string; rating: number; reviews: number; description: string; image?: string };
 const THEMES = tokyoThemes as Record<string, ThemePlace[]>;
 
+// Mulberry32 — 시드를 받아 결정적으로 카드 순서를 섞기 위함
+function shuffledBy<T>(arr: readonly T[], seed: number): T[] {
+  const out = arr.slice();
+  let s = seed | 0;
+  const rand = () => {
+    s = (s + 0x6D2B79F5) | 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
 const CourseMap = dynamic(() => import("@/components/CourseMap"), {
   ssr: false,
   loading: () => <div className="w-full h-full" style={{ background: "rgba(255,255,255,0.2)" }} />,
@@ -112,15 +129,18 @@ function makeSlots(label: string, count: number): { time: string; next?: string 
   return slots;
 }
 
-function timelineFor(label: string): TimelineEntry[] {
-  const places = THEMES[label];
-  if (!places || places.length === 0) {
+function timelineFor(label: string, shuffleSeed = 0): TimelineEntry[] {
+  const base = THEMES[label];
+  if (!base || base.length === 0) {
     return [
       { time: "10:00", title: `${label} 추천 장소 1`, region: "도쿄", category: label, rating: 4.5, reviews: 1200, description: `${label} 우선 동선의 첫 스팟`, image: "/images/places/default.jpg", tag: label, next: "도보 10분 · 800m" },
       { time: "13:00", title: `${label} 추천 장소 2`, region: "도쿄", category: label, rating: 4.4, reviews: 900,  description: `${label} 흐름을 이어가는 곳`,  image: "/images/places/default.jpg", tag: label, next: "지하철 12분 · 3km" },
       { time: "16:00", title: `${label} 추천 장소 3`, region: "도쿄", category: label, rating: 4.6, reviews: 1500, description: `${label}의 핵심 스팟`,         image: "/images/places/default.jpg", tag: label },
     ];
   }
+  // 라벨별 시드를 살짝 분리해서 탭마다 다른 순서가 되게 한다
+  const labelHash = Array.from(label).reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const places = shuffleSeed > 0 ? shuffledBy(base, shuffleSeed + labelHash * 31) : base;
   const slots = makeSlots(label, places.length);
   const display = DISPLAY_CATEGORY[label] ?? label;
   return places.map((p, i) => ({
@@ -153,6 +173,8 @@ export default function Step7Page() {
   const [autoPlaying, setAutoPlaying] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const [savedModalOpen, setSavedModalOpen] = useState(false);
+  // 페이지 마운트마다 새 시드 — step8/재생성 거쳐 돌아오면 코스 순서가 새로 섞임
+  const [shuffleSeed] = useState(() => (Math.floor(Math.random() * 0x7fffffff) | 0) + 1);
   const tabsRef = useRef<HTMLDivElement>(null);
   const tabBtnRefs = useRef<Record<CourseId, HTMLButtonElement | null>>({ A: null, B: null, C: null });
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
@@ -227,7 +249,7 @@ export default function Step7Page() {
   }
 
   const course = getCourse(activeTab, courses);
-  const items = timelineFor(course.categoryKey);
+  const items = timelineFor(course.categoryKey, shuffleSeed);
   const visibleItems = expanded ? items : items.slice(0, 4);
 
   return (
