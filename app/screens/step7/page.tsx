@@ -496,8 +496,8 @@ export default function Step7Page() {
           </div>
         </div>
 
-        {/* 코스 헤더 — "코스" + 지도로 보기 */}
-        <div className="flex items-center justify-between" style={{ marginTop: 22 }}>
+        {/* 코스 헤더 */}
+        <div className="flex items-center" style={{ marginTop: 22 }}>
           <span
             style={{
               fontFamily: '"Spoqa Han Sans Neo"',
@@ -509,20 +509,6 @@ export default function Step7Page() {
           >
             코스
           </span>
-          <button className="flex items-center" style={{ gap: 4 }}>
-            <span
-              style={{
-                fontFamily: '"Spoqa Han Sans Neo"',
-                fontSize: 12,
-                fontWeight: 500,
-                lineHeight: "15px",
-                color: "#888888",
-              }}
-            >
-              지도로 보기
-            </span>
-            <MapIcon size={14} color="#888888" strokeWidth={1.8} />
-          </button>
         </div>
 
         {/* 타임라인 리스트 */}
