@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
 const DAY_PALETTE = [
   { bg: "#E0FBFF", border: "#00A8BF" }, // sky
@@ -88,8 +90,16 @@ export default function CourseDonePage() {
     >
       {/* 본문 */}
       <div className="flex-1 overflow-y-auto" style={{ padding: "70px 20px 24px" }}>
-        {/* 타이틀 블록 */}
-        <div className="flex flex-col items-center" style={{ marginTop: 80, gap: 12 }}>
+        {/* 캐릭터 + 타이틀 블록 — 캐릭터는 진입 시 살짝 점프 */}
+        <div className="flex flex-col items-center" style={{ marginTop: 40, gap: 12 }}>
+          <motion.div
+            initial={{ y: 0 }}
+            animate={{ y: [0, -18, 0, -8, 0] }}
+            transition={{ duration: 1.1, ease: [0.34, 1.56, 0.64, 1], delay: 0.15 }}
+            style={{ width: 120, height: 120, position: "relative" }}
+          >
+            <Image src="/character.png" alt="" fill priority style={{ objectFit: "contain" }} />
+          </motion.div>
           <h1
             className="text-center"
             style={{
