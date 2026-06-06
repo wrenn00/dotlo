@@ -36,17 +36,17 @@
     { "name": "도쿄 솔라마치", "subRegion": "오시아게", "rating": 4.5, "reviews": 22100, "description": "스카이트리 아래 위치한 대형 쇼핑몰", "image": "/images/location/shopping/Tokyo Solamachi.png" }
   ],
   "카페": [
-    { "name": "온리 센스 커피", "subRegion": "나카메구로", "rating": 4.6, "reviews": 2900, "description": "취향에 맞는 원두를 추천받을 수 있는 카페" },
-    { "name": "푸글렌 도쿄", "subRegion": "토미가야", "rating": 4.5, "reviews": 4800, "description": "북유럽 감성의 스페셜티 커피 전문점" },
-    { "name": "리틀 냅 커피 스탠드", "subRegion": "요요기", "rating": 4.5, "reviews": 3200, "description": "요요기 공원 인근의 감성 카페" },
-    { "name": "카페 키츠네 아오야마점", "subRegion": "아오야마", "rating": 4.5, "reviews": 5900, "description": "일본 감성과 프렌치 감성이 어우러진 공간" },
-    { "name": "아라비카 도쿄", "subRegion": "히가시야마", "rating": 4.6, "reviews": 6100, "description": "라떼가 유명한 스페셜티 커피 브랜드" },
-    { "name": "스트리머 커피 컴퍼니", "subRegion": "시부야", "rating": 4.4, "reviews": 4700, "description": "대형 라떼아트로 유명한 카페" },
+    { "name": "온리 센스 커피", "subRegion": "나카메구로", "rating": 4.6, "reviews": 2900, "description": "취향에 맞는 원두를 추천받을 수 있는 카페", "image": "/images/location/cafe/Onibus Coffee.png" },
+    { "name": "푸글렌 도쿄", "subRegion": "토미가야", "rating": 4.5, "reviews": 4800, "description": "북유럽 감성의 스페셜티 커피 전문점", "image": "/images/location/cafe/Fuglen Tokyo.png" },
+    { "name": "리틀 냅 커피 스탠드", "subRegion": "요요기", "rating": 4.5, "reviews": 3200, "description": "요요기 공원 인근의 감성 카페", "image": "/images/location/cafe/Little Nap Coffee.png" },
+    { "name": "카페 키츠네 아오야마점", "subRegion": "아오야마", "rating": 4.5, "reviews": 5900, "description": "일본 감성과 프렌치 감성이 어우러진 공간", "image": "/images/location/cafe/Cafe Kitsune.png" },
+    { "name": "아라비카 도쿄", "subRegion": "히가시야마", "rating": 4.6, "reviews": 6100, "description": "라떼가 유명한 스페셜티 커피 브랜드", "image": "/images/location/cafe/%25 Arabica Tokyo.png" },
+    { "name": "스트리머 커피 컴퍼니", "subRegion": "시부야", "rating": 4.4, "reviews": 4700, "description": "대형 라떼아트로 유명한 카페", "image": "/images/location/cafe/Streamer Coffee.png" },
     { "name": "사라베스 도쿄점", "subRegion": "신주쿠", "rating": 4.4, "reviews": 8200, "description": "브런치와 디저트가 인기인 카페" },
-    { "name": "오카페 도쿄", "subRegion": "마루노우치", "rating": 4.5, "reviews": 3900, "description": "조용한 분위기의 감성 카페" },
-    { "name": "램버스 커피", "subRegion": "에비스", "rating": 4.5, "reviews": 2500, "description": "핸드드립 커피가 유명한 소규모 카페" },
-    { "name": "블루보틀 아오야마 카페", "subRegion": "아오야마", "rating": 4.5, "reviews": 4300, "description": "세련된 공간과 스페셜티 커피를 즐길 수 있는 카페" },
-    { "name": "스타벅스 리저브 로스터리 도쿄", "subRegion": "나카메구로", "rating": 4.6, "reviews": 14900, "description": "대형 로스터리와 특별한 커피 경험을 제공하는 공간" }
+    { "name": "오카페 도쿄", "subRegion": "마루노우치", "rating": 4.5, "reviews": 3900, "description": "조용한 분위기의 감성 카페", "image": "/images/location/cafe/Okafe Tokyo.png" },
+    { "name": "램버스 커피", "subRegion": "에비스", "rating": 4.5, "reviews": 2500, "description": "핸드드립 커피가 유명한 소규모 카페", "image": "/images/location/cafe/Leaves Coffee.png" },
+    { "name": "블루보틀 아오야마 카페", "subRegion": "아오야마", "rating": 4.5, "reviews": 4300, "description": "세련된 공간과 스페셜티 커피를 즐길 수 있는 카페", "image": "/images/location/cafe/Blue Bottle Aoyama.png" },
+    { "name": "스타벅스 리저브 로스터리 도쿄", "subRegion": "나카메구로", "rating": 4.6, "reviews": 14900, "description": "대형 로스터리와 특별한 커피 경험을 제공하는 공간", "image": "/images/location/cafe/Starbucks Reserve Tokyo.png" }
   ],
   "야경": [
     { "name": "롯폰기 힐즈 전망대", "subRegion": "롯폰기", "rating": 4.7, "reviews": 29400, "description": "도쿄 타워와 도심 야경을 동시에 감상 가능" },
@@ -61,16 +61,16 @@
     { "name": "도쿄 스카이트리 전망대", "subRegion": "오시아게", "rating": 4.7, "reviews": 95700, "description": "도쿄 전역을 감상할 수 있는 대표 전망대" }
   ],
   "휴식": [
-    { "name": "신주쿠 교엔", "subRegion": "신주쿠", "rating": 4.7, "reviews": 44300, "description": "계절마다 아름다운 풍경을 감상할 수 있는 정원" },
-    { "name": "요요기 공원", "subRegion": "요요기", "rating": 4.6, "reviews": 37800, "description": "산책과 피크닉을 즐기기 좋은 도심 공원" },
-    { "name": "하마리큐 정원", "subRegion": "츄오", "rating": 4.5, "reviews": 17800, "description": "전통 일본 정원의 정취를 느낄 수 있는 공간" },
-    { "name": "고쿄 히가시교엔", "subRegion": "치요다", "rating": 4.6, "reviews": 19300, "description": "황궁 주변의 조용한 산책 명소" },
-    { "name": "메이지 신궁 숲길", "subRegion": "시부야", "rating": 4.7, "reviews": 78600, "description": "도심 속 울창한 숲을 거닐 수 있는 장소" },
-    { "name": "이노카시라 공원", "subRegion": "키치조지", "rating": 4.6, "reviews": 22700, "description": "호수와 자연을 함께 즐길 수 있는 힐링 스팟" },
-    { "name": "리쿠기엔", "subRegion": "분쿄", "rating": 4.6, "reviews": 10200, "description": "고즈넉한 일본식 정원이 아름다운 명소" },
-    { "name": "고마자와 올림픽 공원", "subRegion": "세타가야", "rating": 4.5, "reviews": 11900, "description": "넓은 녹지와 산책로를 갖춘 공원" },
-    { "name": "시오카제 공원", "subRegion": "오다이바", "rating": 4.5, "reviews": 8400, "description": "오다이바 바다 풍경을 감상할 수 있는 공원" },
-    { "name": "히비야 공원", "subRegion": "치요다", "rating": 4.5, "reviews": 15300, "description": "도심 속에서 여유를 즐기기 좋은 휴식 공간" }
+    { "name": "신주쿠 교엔", "subRegion": "신주쿠", "rating": 4.7, "reviews": 44300, "description": "계절마다 아름다운 풍경을 감상할 수 있는 정원", "image": "/images/location/Relaxation/Shinjuku Gyoen.png" },
+    { "name": "요요기 공원", "subRegion": "요요기", "rating": 4.6, "reviews": 37800, "description": "산책과 피크닉을 즐기기 좋은 도심 공원", "image": "/images/location/Relaxation/Yoyogi Park.png" },
+    { "name": "하마리큐 정원", "subRegion": "츄오", "rating": 4.5, "reviews": 17800, "description": "전통 일본 정원의 정취를 느낄 수 있는 공간", "image": "/images/location/Relaxation/Hamarikyu Gardens.png" },
+    { "name": "고쿄 히가시교엔", "subRegion": "치요다", "rating": 4.6, "reviews": 19300, "description": "황궁 주변의 조용한 산책 명소", "image": "/images/location/Relaxation/Kokyo East Gardens.png" },
+    { "name": "메이지 신궁 숲길", "subRegion": "시부야", "rating": 4.7, "reviews": 78600, "description": "도심 속 울창한 숲을 거닐 수 있는 장소", "image": "/images/location/Relaxation/Meiji Shrine Forest.png" },
+    { "name": "이노카시라 공원", "subRegion": "키치조지", "rating": 4.6, "reviews": 22700, "description": "호수와 자연을 함께 즐길 수 있는 힐링 스팟", "image": "/images/location/Relaxation/Inokashira Park.png" },
+    { "name": "리쿠기엔", "subRegion": "분쿄", "rating": 4.6, "reviews": 10200, "description": "고즈넉한 일본식 정원이 아름다운 명소", "image": "/images/location/Relaxation/Rikugien Garden.png" },
+    { "name": "고마자와 올림픽 공원", "subRegion": "세타가야", "rating": 4.5, "reviews": 11900, "description": "넓은 녹지와 산책로를 갖춘 공원", "image": "/images/location/Relaxation/Komazawa Olympic Park.png" },
+    { "name": "시오카제 공원", "subRegion": "오다이바", "rating": 4.5, "reviews": 8400, "description": "오다이바 바다 풍경을 감상할 수 있는 공원", "image": "/images/location/Relaxation/Shiokaze Park.png" },
+    { "name": "히비야 공원", "subRegion": "치요다", "rating": 4.5, "reviews": 15300, "description": "도심 속에서 여유를 즐기기 좋은 휴식 공간", "image": "/images/location/Relaxation/Hibiya Park.png" }
   ],
   "디저트": [
     { "name": "긴자 웨스트 본점", "subRegion": "긴자", "rating": 4.5, "reviews": 3800, "description": "전통 있는 일본식 디저트를 맛볼 수 있는 카페" },
