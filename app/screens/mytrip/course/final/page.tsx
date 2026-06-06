@@ -81,6 +81,23 @@ interface SavedCourse {
   image?: string;
 }
 
+// 카테고리별 한 줄 설명 (done 페이지와 동일)
+const CATEGORY_TAGLINE: Record<string, string> = {
+  미식:    "현지인 맛집 중심으로 구성했어요",
+  쇼핑:    "쇼핑 거리를 효율적으로 도는 여행",
+  야경:    "야경 명소를 따라 걷는 밤 산책",
+  휴식:    "공원을 여유롭게 둘러보는 힐링",
+  자연:    "자연 속에서 즐기는 여유로운 코스",
+  카페:    "분위기 좋은 카페를 즐기는 코스",
+  관광:    "랜드마크를 효율적으로 도는 코스",
+  역사:    "옛 도쿄 역사를 따라가는 코스",
+  박물관:  "다양한 박물관을 둘러보는 코스",
+  바다:    "바다와 산책을 함께 즐기는 코스",
+  강변:    "강변 산책길을 따라가는 코스",
+  디저트:  "달콤한 디저트를 즐기는 코스",
+  "공연·전시": "공연과 전시를 즐기는 코스",
+};
+
 interface FinalCombine {
   assignments: Record<number, SavedCourse>;
   startISO: string;
@@ -221,52 +238,62 @@ export default function FinalCoursePage() {
           </p>
         </div>
 
-        {/* AI가 이렇게 짰어요 + 내 취향 반영 카드 */}
+        {/* AI 카드 (네이비) */}
         <div
-          className="relative"
-          style={{ marginTop: 22, height: 220, background: "#FFFFFF", borderRadius: 12, boxShadow: "0 0 6.8px rgba(0,0,0,0.06)" }}
+          style={{
+            marginTop: 22,
+            background: "#090738",
+            borderRadius: 12,
+            padding: "10px 18px 18px 18px",
+          }}
         >
-          {/* AI 칩 */}
-          <div
-            className="absolute flex items-center justify-center"
-            style={{ left: 10, top: 10, width: 34, height: 34, background: "#090738", borderRadius: 20 }}
-          >
-            <Sparkles size={18} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} />
+          <div className="flex items-center" style={{ gap: 9 }}>
+            <div
+              className="flex items-center justify-center"
+              style={{ width: 34, height: 34, background: "#484759", borderRadius: 20 }}
+            >
+              <Sparkles size={18} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} />
+            </div>
+            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, color: "#FBFBFB" }}>
+              AI가 이렇게 짰어요
+            </span>
           </div>
-          <span
-            className="absolute"
-            style={{ left: 53, top: 19, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, color: "#000000" }}
-          >
-            AI가 이렇게 짰어요
-          </span>
-
-          {/* bullets */}
-          <div className="absolute flex flex-col" style={{ left: 18, top: 53, gap: 9 }}>
+          <div className="flex flex-col" style={{ marginTop: 14, gap: 10 }}>
             {["맛집 우선으로 점심·저녁 동선 짰어요", "야경 시간대를 일정 마지막에 배치했어요", "숙소 기준으로 동선이 가장 짧아요"].map((t) => (
               <div key={t} className="flex items-center" style={{ gap: 13 }}>
                 <div className="shrink-0" style={{ width: 5, height: 5, background: "#A0A0C0", borderRadius: "50%" }} />
-                <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, color: "#666C78" }}>{t}</span>
+                <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, color: "#C1C3C8" }}>{t}</span>
               </div>
             ))}
           </div>
+        </div>
 
-          {/* 내 취향 반영 */}
-          <span className="absolute" style={{ left: 17, top: 130, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, color: "#888E9C" }}>
-            내 취향 반영
-          </span>
-          <span className="absolute" style={{ right: 18, top: 131, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#888E9C" }}>
-            총 {Object.values(assignments).length || days}곳 중
-          </span>
-
+        {/* 내 취향 반영 카드 (화이트) */}
+        <div
+          style={{
+            marginTop: 12,
+            background: "#FFFFFF",
+            borderRadius: 12,
+            padding: "17px 18px 18px 18px",
+            boxShadow: "0 0 6.8px rgba(0,0,0,0.06)",
+          }}
+        >
+          <div className="flex items-baseline justify-between">
+            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, color: "#000000" }}>
+              내 취향 반영
+            </span>
+            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#888E9C" }}>
+              총 {Object.values(assignments).length || days}곳 중
+            </span>
+          </div>
           {/* 누적 가로 막대 */}
-          <div className="absolute flex" style={{ left: 18, right: 18, top: 150, height: 7, borderRadius: 4, overflow: "hidden" }}>
+          <div className="flex" style={{ marginTop: 16, height: 7, borderRadius: 4, overflow: "hidden" }}>
             {(usedCategories.length > 0 ? usedCategories : [{ cat: "관광", percent: 100, color: "#A0A0C0", count: 1 }]).map((p) => (
               <div key={p.cat} style={{ flex: p.percent, background: p.color }} />
             ))}
           </div>
-
           {/* 범례 2x2 */}
-          <div className="absolute grid grid-cols-2" style={{ left: 18, right: 18, top: 168, gap: "11px 41px" }}>
+          <div className="grid grid-cols-2" style={{ marginTop: 18, gap: "11px 41px" }}>
             {(usedCategories.length > 0 ? usedCategories : []).slice(0, 4).map((p) => (
               <div key={p.cat} className="flex items-center" style={{ gap: 8 }}>
                 <div className="shrink-0" style={{ width: 8, height: 8, background: p.color, borderRadius: "50%" }} />
@@ -324,6 +351,44 @@ export default function FinalCoursePage() {
             <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 8, fontWeight: 400, lineHeight: "10px", color: "#000000" }}>
               이동 부담을 줄인{"\n"}최적의 동선이에요
             </span>
+          </div>
+        </div>
+
+        {/* 코스 타이틀 카드 — 지도 아래 */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            marginTop: 14,
+            height: 71,
+            borderRadius: 12,
+            background: `linear-gradient(180deg, rgba(255,255,255,0) 0%, ${courseColor}55 55%, ${courseColor} 100%)`,
+          }}
+        >
+          <div className="absolute flex items-center" style={{ left: 14, top: 17, gap: 8 }}>
+            {/* 일차 칩 */}
+            <div
+              className="flex items-center justify-center"
+              style={{ height: 24, padding: "0 12px", background: CHIP_BG[courseColor] ?? "#F2F2F6", borderRadius: 17 }}
+            >
+              <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: courseColor }}>
+                {activeDay + 1}일차
+              </span>
+            </div>
+            {/* 코스 이름 + 태그라인 */}
+            <div className="flex flex-col min-w-0" style={{ gap: 4 }}>
+              <span
+                className="truncate"
+                style={{ fontFamily: '"Pretendard", "Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 700, lineHeight: "20px", color: "#FFFFFF" }}
+              >
+                {activeCourse?.title ?? `${activeDay + 1}일차 코스`}
+              </span>
+              <span
+                className="truncate"
+                style={{ fontFamily: '"Pretendard", "Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 400, lineHeight: "12px", color: "#444444" }}
+              >
+                {CATEGORY_TAGLINE[activeCategory] ?? "AI가 추천하는 코스"}
+              </span>
+            </div>
           </div>
         </div>
 
