@@ -482,7 +482,7 @@ export default function Step7Page() {
               borderRadius: 12,
             }}
           >
-            {/* 카테고리별 캐릭터 — 미식/야경/쇼핑일 때만 우측 상단에 배치 */}
+            {/* 카테고리별 캐릭터 — 미식/야경/쇼핑일 때만 우측에 배치 (카드 전체 높이 사용) */}
             {(() => {
               const charMap: Record<string, string> = {
                 미식: "/images/blue_eat.png",
@@ -495,10 +495,10 @@ export default function Step7Page() {
                 <div
                   className="absolute"
                   style={{
-                    right: 8,
-                    top: 4,
-                    width: 96,
-                    height: 90,
+                    right: 6,
+                    top: 0,
+                    bottom: 0,
+                    width: 110,
                     backgroundImage: `url(${src})`,
                     backgroundSize: "contain",
                     backgroundRepeat: "no-repeat",
