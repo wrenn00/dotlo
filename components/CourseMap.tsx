@@ -1,13 +1,13 @@
 "use client";
 
 import { Fragment } from "react";
-import { MapContainer, TileLayer, CircleMarker, Polyline, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, CircleMarker, Polyline, Tooltip, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 export interface MapCourse {
   id: string;
   color: string;
-  markers: { number: number; lat: number; lng: number; name?: string }[];
+  markers: { number: number; lat: number; lng: number; name?: string; description?: string }[];
 }
 
 interface CourseMapProps {
@@ -55,6 +55,37 @@ export default function CourseMap({
                 <Tooltip permanent direction="center" className="map-marker-label">
                   {m.number}
                 </Tooltip>
+                {(m.name || m.description) && (
+                  <Popup className="map-marker-popup" closeButton={false} maxWidth={220} offset={[0, -8]}>
+                    <div style={{ fontFamily: '"Spoqa Han Sans Neo"' }}>
+                      {m.name && (
+                        <div
+                          style={{
+                            fontSize: 13,
+                            fontWeight: 700,
+                            lineHeight: "16px",
+                            color: "#1A1A1A",
+                            marginBottom: m.description ? 4 : 0,
+                          }}
+                        >
+                          {m.number}. {m.name}
+                        </div>
+                      )}
+                      {m.description && (
+                        <div
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 500,
+                            lineHeight: "15px",
+                            color: "#555555",
+                          }}
+                        >
+                          {m.description}
+                        </div>
+                      )}
+                    </div>
+                  </Popup>
+                )}
               </CircleMarker>
             ))}
           </Fragment>

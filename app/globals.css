@@ -221,3 +221,18 @@ body.dragging-scroll {
   font-family: inherit;
   background: #eef2f4;
 }
+
+/* CourseMap 마커 클릭 시 뜨는 팝업 */
+.map-marker-popup .leaflet-popup-content-wrapper {
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+}
+.map-marker-popup .leaflet-popup-content {
+  margin: 0;
+  font-family: inherit;
+}
+.map-marker-popup .leaflet-popup-tip {
+  background: #ffffff;
+}
