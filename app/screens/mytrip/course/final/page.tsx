@@ -559,11 +559,16 @@ export default function FinalCoursePage() {
         {/* 보조 버튼 2개 (좌우 분할) */}
         <div className="flex" style={{ gap: 10 }}>
           {[
-            { Icon: Pencil, label: "일정 수정" },
-            { Icon: RefreshCw, label: "다시 만들기" },
-          ].map(({ Icon, label }) => (
+            { Icon: Pencil, label: "일정 수정", onClick: () => {} },
+            {
+              Icon: RefreshCw,
+              label: "다시 만들기",
+              onClick: () => router.push(`/screens/mytrip/course/loading?days=${days}`),
+            },
+          ].map(({ Icon, label, onClick }) => (
             <button
               key={label}
+              onClick={onClick}
               className="flex-1 flex items-center justify-center transition-opacity active:opacity-80"
               style={{
                 height: 44,
