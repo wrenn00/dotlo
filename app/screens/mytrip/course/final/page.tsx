@@ -361,14 +361,14 @@ export default function FinalCoursePage() {
             marginTop: 14,
             height: 71,
             borderRadius: 12,
-            background: `linear-gradient(180deg, rgba(255,255,255,0) 0%, ${courseColor}55 55%, ${courseColor} 100%)`,
+            background: CHIP_BG[courseColor] ?? "#F2FDFF",
           }}
         >
           <div className="absolute flex items-center" style={{ left: 14, top: 17, gap: 8 }}>
             {/* 일차 칩 */}
             <div
               className="flex items-center justify-center"
-              style={{ height: 24, padding: "0 12px", background: CHIP_BG[courseColor] ?? "#F2F2F6", borderRadius: 17 }}
+              style={{ height: 24, padding: "0 12px", background: "#FFFFFF", borderRadius: 17 }}
             >
               <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: courseColor }}>
                 {activeDay + 1}일차
@@ -378,13 +378,13 @@ export default function FinalCoursePage() {
             <div className="flex flex-col min-w-0" style={{ gap: 4 }}>
               <span
                 className="truncate"
-                style={{ fontFamily: '"Pretendard", "Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 700, lineHeight: "20px", color: "#FFFFFF" }}
+                style={{ fontFamily: '"Pretendard", "Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 700, lineHeight: "20px", color: courseColor }}
               >
                 {activeCourse?.title ?? `${activeDay + 1}일차 코스`}
               </span>
               <span
                 className="truncate"
-                style={{ fontFamily: '"Pretendard", "Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 400, lineHeight: "12px", color: "#444444" }}
+                style={{ fontFamily: '"Pretendard", "Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 400, lineHeight: "12px", color: "#555555" }}
               >
                 {CATEGORY_TAGLINE[activeCategory] ?? "AI가 추천하는 코스"}
               </span>
