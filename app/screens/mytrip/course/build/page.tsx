@@ -68,12 +68,12 @@ function DraggableMiniCard({ course, isOverlay = false, isAssigned = false }: { 
         boxShadow: isOverlay ? "0 10px 30px rgba(0,0,0,0.18)" : undefined,
       }}
     >
-      {/* 이미지 영역 166x144 */}
+      {/* 이미지 영역 166x118 (높이 축소) */}
       <div
         className="relative"
         style={{
           width: 166,
-          height: 144,
+          height: 118,
           backgroundImage: `url(${course.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -82,33 +82,28 @@ function DraggableMiniCard({ course, isOverlay = false, isAssigned = false }: { 
         <div
           className="absolute pointer-events-none"
           style={{
-            left: 0, right: 0, top: 48, height: 96,
+            left: 0, right: 0, top: 40, height: 78,
             background:
               "linear-gradient(180deg, rgba(62,62,62,0) 0%, rgba(39,39,39,0.365) 19.71%, rgba(0,0,0,0.85) 100%)",
           }}
         />
-        <div className="absolute flex flex-col" style={{ left: 13, top: 92, width: 146, gap: 5 }}>
-          <div
-            className="inline-flex items-center justify-center self-start"
-            style={{ height: 20, padding: "0 10px", background: "#EFEFFF", borderRadius: 19 }}
-          >
-            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, lineHeight: "13px", color: "#6B6BCC" }}>
-              {course.duration}
-            </span>
-          </div>
-          <p
-            className="line-clamp-2"
-            style={{
-              fontFamily: '"Spoqa Han Sans Neo"',
-              fontSize: 14,
-              fontWeight: 700,
-              lineHeight: "18px",
-              color: "#FAFAFA",
-            }}
-          >
-            {course.title}
-          </p>
-        </div>
+        {/* 제목 — 이미지 하단 좌측 정렬 (배지 제거, mytrip 카드와 동일) */}
+        <p
+          className="absolute line-clamp-2"
+          style={{
+            left: 12,
+            right: 12,
+            bottom: 12,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 15,
+            fontWeight: 700,
+            lineHeight: "19px",
+            color: "#FAFAFA",
+            textAlign: "left",
+          }}
+        >
+          {course.title}
+        </p>
       </div>
 
       {/* 메타 52h */}
@@ -363,8 +358,8 @@ function CourseBuildContent() {
         </span>
       </div>
 
-      {/* 본문 */}
-      <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 20 }}>
+      {/* 본문 — 보관함 코스 (스크롤 영역, 하단 드로어 위까지) */}
+      <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 280 }}>
         {/* 타이틀 */}
         <div className="flex flex-col" style={{ padding: "0 23px", marginTop: 24, gap: 6 }}>
           <h1
@@ -377,7 +372,7 @@ function CourseBuildContent() {
               whiteSpace: "pre-line",
             }}
           >
-            {"어떤 코스를\n어느 날에 담을까요?"}
+            {"담고 싶은 코스를\n아래 날짜로 끌어내려요"}
           </h1>
           <p
             style={{
@@ -392,58 +387,13 @@ function CourseBuildContent() {
           </p>
         </div>
 
-        {/* 일차 슬롯 */}
-        <div className="flex flex-col" style={{ padding: "0 20px", marginTop: 32, gap: 11 }}>
-          {slots.map((d, idx) => {
-            const palette = DAY_PALETTE[idx % DAY_PALETTE.length];
-            const { short } = fmtDate(d);
-            return (
-              <div
-                key={idx}
-                className="flex items-center"
-                style={{
-                  width: "100%",
-                  height: 70,
-                  background: palette.bg,
-                  borderRadius: 8,
-                  paddingLeft: 12,
-                  gap: 16,
-                }}
-              >
-                <div className="shrink-0 flex flex-col" style={{ width: 47, gap: 6 }}>
-                  <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, lineHeight: "18px", color: "#1A1A1A" }}>
-                    {idx + 1}일차
-                  </span>
-                  <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: "#555555" }}>
-                    {short}
-                  </span>
-                </div>
-                <DroppableSlotInner
-                  dayIndex={idx}
-                  course={assignments[idx] ?? null}
-                  borderColor={palette.dash}
-                  onClear={() =>
-                    setAssignments((prev) => {
-                      const next = { ...prev };
-                      delete next[idx];
-                      return next;
-                    })
-                  }
-                />
-              </div>
-            );
-          })}
-        </div>
-
         {/* 보관함의 코스 섹션 */}
-        <div className="flex flex-col" style={{ padding: "0 20px", marginTop: 32, gap: 15 }}>
-          <div className="flex items-center justify-between">
-            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "21px", color: "#363636" }}>
-              보관함의 코스
-            </span>
-          </div>
+        <div className="flex flex-col" style={{ padding: "0 20px", marginTop: 28, gap: 14 }}>
+          <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "21px", color: "#363636" }}>
+            보관함의 코스
+          </span>
 
-          {/* 카테고리 칩 — 가로 스크롤 */}
+          {/* 카테고리 칩 */}
           <div className="flex items-center overflow-x-auto scrollbar-hide" style={{ gap: 10 }}>
             {categories.map(({ label, count }) => {
               const active = activeCat === label;
@@ -475,8 +425,11 @@ function CourseBuildContent() {
             })}
           </div>
 
-          {/* 가로 스크롤 카드 리스트 */}
-          <div className="flex items-stretch overflow-x-auto scrollbar-hide" style={{ gap: 6, marginLeft: -20, paddingLeft: 20, paddingRight: 20 }}>
+          {/* 2열 그리드 카드 */}
+          <div
+            className="grid"
+            style={{ gridTemplateColumns: "repeat(2, 166px)", gap: 8, justifyContent: "center", marginTop: 4 }}
+          >
             {filtered.map((c) => (
               <DraggableMiniCard
                 key={c.id}
@@ -488,8 +441,87 @@ function CourseBuildContent() {
         </div>
       </div>
 
-      {/* 하단 버튼 — 비활성 회색 */}
-      <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px", background: "#FFFFFF" }}>
+      {/* 하단 드로어 — 일자별 코스 (sticky) */}
+      <div
+        className="absolute"
+        style={{
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "#FFFFFF",
+          borderTop: "1px solid #E7E7E7",
+          boxShadow: "0 -4px 15px rgba(0,0,0,0.08)",
+          padding: "16px 20px 96px",
+        }}
+      >
+        <div className="flex items-center" style={{ gap: 10, marginBottom: 14 }}>
+          <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "21px", color: "#363636" }}>
+            일자별 코스
+          </span>
+          <div
+            className="inline-flex items-center justify-center"
+            style={{ height: 17, padding: "0 8px", background: "#E0FBFF", borderRadius: 8 }}
+          >
+            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, lineHeight: "13px", color: "#00A8BF" }}>
+              {Object.keys(assignments).length}개
+            </span>
+          </div>
+        </div>
+
+        {/* 일차 슬롯 — 가로 스크롤 (156×114 카드) */}
+        <div className="flex items-stretch overflow-x-auto scrollbar-hide" style={{ gap: 12, marginLeft: -20, paddingLeft: 20, paddingRight: 20 }}>
+          {slots.map((d, idx) => {
+            const palette = DAY_PALETTE[idx % DAY_PALETTE.length];
+            const { short } = fmtDate(d);
+            return (
+              <div
+                key={idx}
+                className="shrink-0 relative"
+                style={{
+                  width: 156,
+                  height: 114,
+                  border: "1px solid #F3F4F6",
+                  borderRadius: 14,
+                  background: "#FFFFFF",
+                }}
+              >
+                <span style={{ position: "absolute", left: 13, top: 10, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "21px", color: "#363636" }}>
+                  {idx + 1}일차
+                </span>
+                <span style={{ position: "absolute", left: 53, top: 13, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "18px", color: "#888888" }}>
+                  {short}
+                </span>
+                <div style={{ position: "absolute", left: 10, right: 10, bottom: 11, height: 57 }}>
+                  <DroppableSlotInner
+                    dayIndex={idx}
+                    course={assignments[idx] ?? null}
+                    borderColor={palette.dash}
+                    onClear={() =>
+                      setAssignments((prev) => {
+                        const next = { ...prev };
+                        delete next[idx];
+                        return next;
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 하단 버튼 — 비활성 회색 (sticky 위) */}
+      <div
+        className="absolute flex justify-center"
+        style={{
+          left: 0,
+          right: 0,
+          bottom: 0,
+          padding: "0 22px 24px",
+          background: "transparent",
+        }}
+      >
         <button
           disabled={!hasAny}
           onClick={() => {
