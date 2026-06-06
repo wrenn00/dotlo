@@ -142,7 +142,7 @@ export default function TripCard({ title, date, dDay, participants, image }: Tri
                   }}
                 >
                   <Image
-                    src="/images/profile4.png"
+                    src={participants.label.includes("초대") ? "/images/profile2.png" : "/images/profile4.png"}
                     alt=""
                     fill
                     sizes="20px"
