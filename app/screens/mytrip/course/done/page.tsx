@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Lottie from "lottie-react";
+import successCheck from "@/public/lottie/success-check.json";
 
 const DAY_PALETTE = [
   { bg: "#E0FBFF", border: "#00A8BF" }, // sky
@@ -88,8 +90,11 @@ export default function CourseDonePage() {
     >
       {/* 본문 */}
       <div className="flex-1 overflow-y-auto" style={{ padding: "70px 20px 24px" }}>
-        {/* 타이틀 블록 */}
-        <div className="flex flex-col items-center" style={{ marginTop: 80, gap: 12 }}>
+        {/* 체크 Lottie + 타이틀 블록 */}
+        <div className="flex flex-col items-center" style={{ marginTop: 40, gap: 12 }}>
+          <div style={{ width: 96, height: 96, marginBottom: -8 }}>
+            <Lottie animationData={successCheck} loop={false} autoplay />
+          </div>
           <h1
             className="text-center"
             style={{
