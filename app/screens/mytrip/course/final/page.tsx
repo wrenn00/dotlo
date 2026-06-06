@@ -140,13 +140,19 @@ export default function FinalCoursePage() {
 
   // 지도 마커 — 활성 일차 기준 임의의 6개 도쿄 좌표
   const sampleMarkers = useMemo(() => {
-    const seed = activeDay * 7 + 11;
-    const baseLat = 35.681;
-    const baseLng = 139.767;
+    // 결정적이지만 일차마다 완전히 다른 좌표가 나오도록 Mulberry32 시드 사용
+    let s = (activeDay * 2654435761 + activeCategory.length * 17 + 1) >>> 0;
+    const rand = () => {
+      s = (s + 0x6D2B79F5) | 0;
+      let t = Math.imul(s ^ (s >>> 15), 1 | s);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    // 도쿄 중심부에서 ±0.018도 (~2km) 범위로 흩기
     return Array.from({ length: 6 }, (_, i) => ({
       number: i + 1,
-      lat: baseLat + ((seed + i * 13) % 7) * 0.005 - 0.015,
-      lng: baseLng + ((seed + i * 17) % 7) * 0.005 - 0.015,
+      lat: 35.681 + (rand() - 0.5) * 0.036,
+      lng: 139.767 + (rand() - 0.5) * 0.036,
       name: `${activeCategory} 스팟 ${i + 1}`,
     }));
   }, [activeDay, activeCategory]);
