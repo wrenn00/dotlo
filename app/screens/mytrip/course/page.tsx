@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import {
-  ChevronLeft, Share2, Bookmark, Sparkles, MapPin, Footprints, Route, Wallet, Map as MapIcon,
+  ChevronLeft, Share2, Bookmark, Sparkles, MapPin, Footprints, Route, Wallet,
   Pencil, Star,
 } from "lucide-react";
 import PlaceThumbnail from "@/components/PlaceThumbnail";
@@ -40,20 +40,10 @@ const STATS = [
   { Icon: Wallet,     value: "90만원",   caption: "예상 비용" },
 ];
 
-// AI 노트 bullets
-const AI_BULLETS = [
-  "맛집 우선으로 점심·저녁 동선 짰어요",
-  "야경 시간대를 일정 마지막에 배치했어요",
-  "숙소 기준으로 동선이 가장 짧아요",
-];
-
-// 취향 반영 — 누적 가로 막대 (총합 100%)
-const PREFERENCES = [
-  { label: "카페", percent: 40, color: "#00E1FF" },
-  { label: "맛집", percent: 25, color: "#A5A5FF" },
-  { label: "관광", percent: 20, color: "#FFE400" },
-  { label: "야경", percent: 15, color: "#090738" },
-];
+// AI 추천 만족도 (단일 카드로 변경)
+const AI_MATCH_PERCENT = 92;
+const AI_MATCH_LINE_1 = `나의 취향 카테고리 야경과 ${AI_MATCH_PERCENT}% 일치하는 코스에요`;
+const AI_MATCH_LINE_2 = "야경 시간대를 일정 마지막에 배치했어요";
 
 export default function CourseDetailPage() {
   const router = useRouter();
@@ -110,7 +100,9 @@ export default function CourseDetailPage() {
                 color: "#FFFFFF",
               }}
             >
-              아름다운 도쿄의 야경
+              아름다운
+              <br />
+              도쿄의 밤
             </h1>
             <p
               style={{
@@ -139,80 +131,76 @@ export default function CourseDetailPage() {
           </div>
         </div>
 
-        {/* 통계 바 — 60h 흰색 */}
-        <div className="flex items-center" style={{ height: 60, padding: "0 8px", gap: 10, background: "#FFFFFF" }}>
-          {STATS.map(({ Icon, value, caption }) => (
-            <div key={value} className="flex items-center" style={{ gap: 4, flex: 1 }}>
-              <div
-                className="shrink-0 flex items-center justify-center"
-                style={{ width: 28, height: 28, background: "#F2F2F6", borderRadius: 25 }}
-              >
-                <Icon size={14} color="#6060A0" strokeWidth={1.6} />
+        {/* 카드 영역 */}
+        <div className="flex flex-col" style={{ padding: "14px 14px 0", gap: 12 }}>
+
+          {/* AI 추천 만족도 — 145h #FAFAFA + 진행 바 */}
+          <div className="relative" style={{ height: 145, background: "#FAFAFA", borderRadius: 12 }}>
+            {/* 라벤더 칩 */}
+            <div className="absolute flex items-center justify-center" style={{ left: 17, top: 10, width: 34, height: 34, background: "#EFEFFF", borderRadius: 20 }}>
+              <Sparkles size={18} color="#A5A5FF" fill="#A5A5FF" strokeWidth={0} />
+            </div>
+            <span className="absolute" style={{ left: 60, top: 19, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "18px", color: "#1A1A1A" }}>
+              AI 추천 만족도
+            </span>
+
+            {/* 92% + 그라데이션 진행 바 */}
+            <div className="absolute" style={{ left: 18, top: 55, width: 292 }}>
+              <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 700, lineHeight: "20px", color: "#1A1A1A" }}>
+                {AI_MATCH_PERCENT}%
+              </span>
+              <div className="relative" style={{ marginTop: 8, width: "100%", height: 5, background: "#E0E0E0", borderRadius: 10, overflow: "hidden" }}>
+                <div
+                  style={{
+                    width: `${AI_MATCH_PERCENT}%`,
+                    height: "100%",
+                    background: "linear-gradient(90deg, #A5A5FF 0%, #4F4FAA 100%)",
+                    borderRadius: 10,
+                  }}
+                />
               </div>
-              <div className="flex flex-col min-w-0" style={{ gap: 3 }}>
-                <span className="truncate" style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 700, lineHeight: "13px", color: "#000000" }}>
+            </div>
+
+            {/* 본문 2줄 */}
+            <span
+              className="absolute"
+              style={{ left: 18, top: 99, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: "#666C78" }}
+              dangerouslySetInnerHTML={{
+                __html: AI_MATCH_LINE_1.replace(
+                  `${AI_MATCH_PERCENT}%`,
+                  `<span style="color:#A5A5FF;font-weight:700;">${AI_MATCH_PERCENT}%</span>`,
+                ),
+              }}
+            />
+            <span className="absolute" style={{ left: 18, top: 118, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: "#666C78" }}>
+              {AI_MATCH_LINE_2}
+            </span>
+          </div>
+
+          {/* 통계 카드 — 87h #FAFAFA */}
+          <div className="flex items-center justify-around" style={{ height: 87, padding: "0 16px", background: "#FAFAFA", borderRadius: 12 }}>
+            {STATS.map(({ Icon, value, caption }) => (
+              <div key={value} className="flex flex-col items-center" style={{ gap: 4 }}>
+                <div
+                  className="flex items-center justify-center"
+                  style={{ width: 28, height: 28, background: "#F2F2F6", borderRadius: 25 }}
+                >
+                  <Icon size={14} color="#333333" strokeWidth={1.8} />
+                </div>
+                <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 700, lineHeight: "13px", color: "#000000", textAlign: "center" }}>
                   {value}
                 </span>
-                <span className="truncate" style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 8, fontWeight: 400, lineHeight: "10px", color: "#000000" }}>
+                <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 8, fontWeight: 400, lineHeight: "10px", color: "#000000", textAlign: "center" }}>
                   {caption}
                 </span>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* 카드 영역 */}
-        <div className="flex flex-col" style={{ padding: "12px 20px 0", gap: 11 }}>
-
-          {/* AI가 이렇게 짰어요 — 134h navy */}
-          <div className="relative" style={{ height: 134, background: "#090738", borderRadius: 12 }}>
-            <div className="absolute flex items-center" style={{ left: 10, top: 10, gap: 9 }}>
-              <div className="flex items-center justify-center" style={{ width: 34, height: 34, background: "#484759", borderRadius: 20 }}>
-                <Sparkles size={18} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} />
-              </div>
-              <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, lineHeight: "18px", color: "#FBFBFB" }}>
-                AI가 이렇게 짰어요
-              </span>
-            </div>
-            <div className="absolute flex flex-col" style={{ left: 18, top: 51, gap: 10 }}>
-              {AI_BULLETS.map((text) => (
-                <div key={text} className="flex items-center" style={{ gap: 13 }}>
-                  <div className="shrink-0" style={{ width: 5, height: 5, background: "#A0A0C0", borderRadius: "50%" }} />
-                  <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: "#C1C3C8" }}>
-                    {text}
-                  </span>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
 
-          {/* 내 취향 반영 — 124h 흰색 + 가로 막대 */}
-          <div className="relative" style={{ height: 124, background: "#FFFFFF", borderRadius: 12, boxShadow: "0 0 6.8px rgba(0,0,0,0.08)" }}>
-            <span className="absolute" style={{ left: 18, top: 17, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, lineHeight: "18px", color: "#000000" }}>
-              내 취향 반영
-            </span>
-            <span className="absolute" style={{ right: 18, top: 22, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, lineHeight: "13px", color: "#888E9C" }}>
-              총 16곳 중
-            </span>
-
-            {/* 누적 가로 막대 (총 7px high) */}
-            <div className="absolute flex" style={{ left: 18, right: 18, top: 50, height: 7, borderRadius: 4, overflow: "hidden" }}>
-              {PREFERENCES.map((p) => (
-                <div key={p.label} style={{ flex: p.percent, background: p.color }} />
-              ))}
-            </div>
-
-            {/* 카테고리 범례 — 2열 4개 */}
-            <div className="absolute grid grid-cols-2" style={{ left: 18, right: 18, top: 68, gap: "11px 41px" }}>
-              {PREFERENCES.map((p) => (
-                <div key={`legend-${p.label}`} className="flex items-center" style={{ gap: 8 }}>
-                  <div className="shrink-0" style={{ width: 8, height: 8, background: p.color, borderRadius: "50%" }} />
-                  <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: "#535353" }}>{p.label}</span>
-                  <span className="ml-auto" style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, lineHeight: "13px", color: "#535353" }}>{p.percent}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* 코스 미리보기 헤더 */}
+          <span style={{ marginTop: 6, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 700, lineHeight: "20px", color: "#000000" }}>
+            코스 미리보기
+          </span>
 
           {/* 지도 미리보기 — 271h */}
           <div className="relative overflow-hidden" style={{ height: 271, background: "#F2F4F7", borderRadius: 12 }}>
@@ -223,19 +211,6 @@ export default function CourseDetailPage() {
               height="100%"
               showAll
             />
-          </div>
-
-          {/* 일정 섹션 헤더 */}
-          <div className="flex items-center justify-between" style={{ marginTop: 12 }}>
-            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 20, fontWeight: 700, lineHeight: "30px", color: "#363636" }}>
-              일정
-            </span>
-            <button className="flex items-center" style={{ gap: 3 }}>
-              <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 12, fontWeight: 500, lineHeight: "15px", color: "#888888" }}>
-                전체 지도로 보기
-              </span>
-              <MapIcon size={14} color="#888888" strokeWidth={1.8} />
-            </button>
           </div>
 
           {/* 타임라인 — 스태거 등장 */}
@@ -315,37 +290,16 @@ export default function CourseDetailPage() {
         </div>
       </div>
 
-      {/* 하단 버튼 영역 — 일정 수정하기 (outline) + 다음 (navy) */}
-      <div className="shrink-0 flex" style={{ padding: "0 22px 31px", gap: 10, background: "#FCFCFC" }}>
+      {/* 하단 버튼 — 코스 수정하기 단일 navy */}
+      <div className="shrink-0" style={{ padding: "0 22px 31px", background: "#FCFCFC" }}>
         <button
           onClick={() => router.push("/screens/step9/edit")}
-          className="flex items-center justify-center transition-opacity active:opacity-80"
+          className="w-full flex items-center justify-center transition-opacity active:opacity-80"
           style={{
-            flex: 1,
-            height: 50,
-            background: "#FFFFFF",
-            border: "1px solid #888888",
-            borderRadius: 12,
-            gap: 8,
-            fontFamily: '"Spoqa Han Sans Neo"',
-            fontSize: 16,
-            fontWeight: 500,
-            lineHeight: "20px",
-            letterSpacing: "-0.5px",
-            color: "#888888",
-          }}
-        >
-          <Pencil size={18} color="#7C7C7C" strokeWidth={1.8} />
-          일정 수정하기
-        </button>
-        <button
-          onClick={() => router.back()}
-          className="flex items-center justify-center transition-opacity active:opacity-80"
-          style={{
-            flex: 1,
             height: 50,
             background: "#090738",
             borderRadius: 12,
+            gap: 8,
             fontFamily: '"Spoqa Han Sans Neo"',
             fontSize: 16,
             fontWeight: 500,
@@ -354,7 +308,8 @@ export default function CourseDetailPage() {
             color: "#FFFFFF",
           }}
         >
-          다음
+          <Pencil size={18} color="#FFFFFF" strokeWidth={1.8} />
+          코스 수정하기
         </button>
       </div>
     </div>
