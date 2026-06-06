@@ -884,13 +884,15 @@ export default function Step7Page() {
         </button>
       </div>
 
-      {/* 저장 완료 모달 — 단순 조건부 렌더 + CSS 트랜지션으로 안정성 우선 */}
+      {/* 저장 완료 모달 — fixed로 viewport 고정, 항상 최상단 */}
       {savedModalOpen && (
         <div
-          className="absolute inset-0 z-50 flex items-center justify-center"
+          className="fixed inset-0 flex items-center justify-center"
           style={{
             background: "rgba(0,0,0,0.5)",
-            animation: "savedFadeIn 200ms ease-out both",
+            zIndex: 9999,
+            opacity: 1,
+            animation: "savedFadeIn 200ms ease-out",
           }}
           onClick={() => setSavedModalOpen(false)}
         >
@@ -901,7 +903,9 @@ export default function Step7Page() {
               background: "#FFFFFF",
               borderRadius: 26,
               padding: "26px 16px 18px",
-              animation: "savedPopIn 260ms cubic-bezier(0.16, 1, 0.3, 1) both",
+              opacity: 1,
+              transform: "scale(1)",
+              animation: "savedPopIn 260ms cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           >
                 {/* 아이콘 + 텍스트 */}
