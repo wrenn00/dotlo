@@ -94,9 +94,9 @@ export default function CourseDonePage() {
         <div className="flex flex-col items-center" style={{ marginTop: 40, gap: 12 }}>
           <motion.div
             initial={{ y: 0 }}
-            animate={{ y: [0, -18, 0, -8, 0] }}
-            transition={{ duration: 1.1, ease: [0.34, 1.56, 0.64, 1], delay: 0.15 }}
-            style={{ width: 120, height: 120, position: "relative" }}
+            animate={{ y: [0, -16, 0, -10, 0] }}
+            transition={{ duration: 1.4, times: [0, 0.25, 0.55, 0.8, 1], ease: "easeOut", delay: 0.15 }}
+            style={{ width: 80, height: 80, position: "relative" }}
           >
             <Image src="/character.png" alt="" fill priority style={{ objectFit: "contain" }} />
           </motion.div>
