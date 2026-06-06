@@ -46,23 +46,24 @@ const LIBRARY: SavedCourse[] = [
 ];
 
 // 드래그 가능한 보관함 카드
-function DraggableMiniCard({ course, isOverlay = false }: { course: SavedCourse; isOverlay?: boolean }) {
+function DraggableMiniCard({ course, isOverlay = false, isAssigned = false }: { course: SavedCourse; isOverlay?: boolean; isAssigned?: boolean }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `lib-${course.id}`,
     data: { course },
+    disabled: isAssigned, // 이미 배치된 코스는 드래그 불가
   });
   return (
     <div
       ref={isOverlay ? undefined : setNodeRef}
-      {...(isOverlay ? {} : attributes)}
-      {...(isOverlay ? {} : listeners)}
+      {...(isOverlay || isAssigned ? {} : attributes)}
+      {...(isOverlay || isAssigned ? {} : listeners)}
       className="shrink-0 relative overflow-hidden text-left select-none"
       style={{
         width: 166,
         borderRadius: 8,
         background: "#FFFFFF",
-        opacity: isDragging && !isOverlay ? 0.4 : 1,
-        cursor: isOverlay ? "grabbing" : "grab",
+        opacity: isAssigned ? 0.35 : isDragging && !isOverlay ? 0.4 : 1,
+        cursor: isAssigned ? "not-allowed" : isOverlay ? "grabbing" : "grab",
         touchAction: "none",
         boxShadow: isOverlay ? "0 10px 30px rgba(0,0,0,0.18)" : undefined,
       }}
@@ -323,7 +324,17 @@ function CourseBuildContent() {
     const dayIdx = parseInt(overId.replace("slot-", ""), 10);
     const course = active.data.current?.course as SavedCourse | undefined;
     if (!course || Number.isNaN(dayIdx)) return;
-    setAssignments((prev) => ({ ...prev, [dayIdx]: course }));
+    setAssignments((prev) => {
+      // 같은 코스가 이미 다른 일차에 있으면 거기서 제거 후 새 일차에 배치 (이동)
+      const next: Record<number, SavedCourse> = {};
+      for (const k of Object.keys(prev)) {
+        const idx = Number(k);
+        if (String(prev[idx].id) === String(course.id)) continue;
+        next[idx] = prev[idx];
+      }
+      next[dayIdx] = course;
+      return next;
+    });
   }
   const hasAny = Object.keys(assignments).length > 0;
 
@@ -467,7 +478,11 @@ function CourseBuildContent() {
           {/* 가로 스크롤 카드 리스트 */}
           <div className="flex items-stretch overflow-x-auto scrollbar-hide" style={{ gap: 6, marginLeft: -20, paddingLeft: 20, paddingRight: 20 }}>
             {filtered.map((c) => (
-              <DraggableMiniCard key={c.id} course={c} />
+              <DraggableMiniCard
+                key={c.id}
+                course={c}
+                isAssigned={Object.values(assignments).some((a) => String(a.id) === String(c.id))}
+              />
             ))}
           </div>
         </div>
