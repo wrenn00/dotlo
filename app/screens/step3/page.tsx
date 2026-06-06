@@ -120,16 +120,15 @@ export default function Step3Page() {
             </div>
           </button>
 
-          {/* 카드 2: 바로 추천받기 — light yellow #FFF9C2 + 기본 gray 배지 + 02.png */}
-          <button
-            type="button"
-            onClick={() => setSelected("quick")}
-            className="relative w-full overflow-hidden text-left transition-transform active:scale-[0.99]"
+          {/* 카드 2: 바로 추천받기 — 프로토타입에서는 비활성 (클릭해도 동작 없음) */}
+          <div
+            aria-disabled="true"
+            className="relative w-full overflow-hidden text-left"
             style={{
               height: 145,
               background: "#FFF9C2",
               borderRadius: 12,
-              boxShadow: selected === "quick" ? "0 0 0 2px #B8B400 inset" : "none",
+              cursor: "default",
             }}
           >
             {/* 배경 일러스트 — 우측 (yellow.png 원본 비율 유지) */}
@@ -188,7 +187,7 @@ export default function Step3Page() {
                 {"원하는 취향의 코스를 추천해드려요\n쉽고 빠르게 코스를 선택해보세요"}
               </span>
             </div>
-          </button>
+          </div>
         </div>
       </div>
 
