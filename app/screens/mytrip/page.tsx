@@ -161,17 +161,17 @@ function SavedCourseCard({ course }: { course: SavedCourse }) {
           }}
         />
 
-        {/* 좌하단 — 제목만 (배지 제거, Figma v2 스펙) */}
+        {/* 제목 — 이미지 하단 중앙에 배치 (배지 제거) */}
         <p
           className="absolute line-clamp-2"
           style={{
-            left: 10,
-            right: 10,
-            top: 73,
+            left: 12,
+            right: 12,
+            bottom: 16,
             fontFamily: '"Spoqa Han Sans Neo"',
-            fontSize: 14,
+            fontSize: 15,
             fontWeight: 700,
-            lineHeight: "18px",
+            lineHeight: "19px",
             color: "#FAFAFA",
             textAlign: "center",
           }}
