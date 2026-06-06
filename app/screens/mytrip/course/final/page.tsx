@@ -210,33 +210,92 @@ export default function FinalCoursePage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dayPlacesForMap]);
 
+  // 지역 → 히어로 이미지 매핑 (없으면 기본 도쿄)
+  const heroImage = (() => {
+    const w = where;
+    if (w.includes("오사카")) return "/images/where/osaka.png";
+    if (w.includes("도쿄"))   return "/images/where/dokyo.png";
+    if (w.includes("교토"))   return "/images/where/kyoto.png";
+    if (w.includes("후쿠오카")) return "/images/where/fukuoka.png";
+    if (w.includes("방콕"))   return "/images/where/bangkok.png";
+    if (w.includes("싱가포르")) return "/images/where/singapore.png";
+    if (w.includes("상하이")) return "/images/where/shanghai.png";
+    if (w.includes("파리"))   return "/images/where/paris.png";
+    if (w.includes("다낭"))   return "/images/where/danang.png";
+    return "/images/where/dokyo.png";
+  })();
+
   return (
     <div className="relative flex flex-col h-full" style={{ background: "#FAFBFF" }}>
-      {/* 헤더 */}
-      <div className="shrink-0 flex items-center justify-between" style={{ padding: "50px 14px 0 14px", height: 86 }}>
-        <button onClick={() => router.back()} className="flex items-center justify-center" style={{ width: 36, height: 36 }}>
-          <ChevronLeft size={24} color="#373C3E" strokeWidth={2} />
-        </button>
-        <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 16, fontWeight: 500, color: "#000000" }}>
-          최종 여행 일정
-        </span>
-        <div className="flex items-center" style={{ gap: 12 }}>
-          <Share2 size={20} color="#111111" strokeWidth={1.8} />
-          <Bookmark size={18} color="#111111" strokeWidth={1.8} />
-        </div>
-      </div>
+      {/* 본문 (헤로 포함, 한 스크롤로 묶음) */}
+      <div className="flex-1 overflow-y-auto">
+        {/* 히어로 — 도시 이미지 + 어두운 그라데이션 + 타이틀 오버레이 */}
+        <div
+          className="relative shrink-0"
+          style={{
+            height: 269,
+            backgroundImage: `url(${heroImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          {/* 그라데이션 — 위 30% 살짝, 아래 70% 진하게 */}
+          <div
+            className="absolute inset-x-0"
+            style={{
+              top: 0,
+              bottom: 0,
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0.26) 0%, rgba(102,102,102,0) 30%, rgba(39,39,39,0.27) 60%, rgba(0,0,0,0.64) 100%)",
+            }}
+          />
 
-      {/* 본문 */}
-      <div className="flex-1 overflow-y-auto" style={{ padding: "0 20px 24px" }}>
-        {/* 타이틀 + 날짜 */}
-        <div className="flex flex-col" style={{ marginTop: 20, gap: 6 }}>
-          <h1 style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 22, fontWeight: 700, lineHeight: "28px", color: "#1A1A1A" }}>
-            {where} {nights}박 {days}일 여행
-          </h1>
-          <p style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, lineHeight: "18px", color: "#888888" }}>
-            {fmtRange(startDate, endDate)} - {nights}박 {days}일
-          </p>
+          {/* 상단 헤더 — 뒤로/공유/북마크 (흰 아이콘) */}
+          <div className="absolute flex items-center justify-between" style={{ top: 50, left: 0, right: 0, padding: "0 18px 0 12px", height: 36 }}>
+            <button onClick={() => router.back()} className="flex items-center justify-center" style={{ width: 36, height: 36 }}>
+              <ChevronLeft size={24} color="#FFFFFF" strokeWidth={2} />
+            </button>
+            <div className="flex items-center" style={{ gap: 12 }}>
+              <Share2 size={20} color="#FFFFFF" strokeWidth={1.8} />
+              <Bookmark size={18} color="#FFFFFF" strokeWidth={1.8} />
+            </div>
+          </div>
+
+          {/* 최종 코스 칩 — 라벤더 #F6F6FF */}
+          <div
+            className="absolute inline-flex items-center justify-center"
+            style={{
+              left: 22,
+              top: 133,
+              height: 29,
+              padding: "0 12px",
+              background: "#F6F6FF",
+              borderRadius: 32,
+              gap: 4,
+            }}
+          >
+            <Sparkles size={14} color="#A5A5FF" fill="#A5A5FF" strokeWidth={0} />
+            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 500, lineHeight: "18px", color: "#A5A5FF" }}>
+              최종 코스
+            </span>
+          </div>
+
+          {/* 타이틀 + 날짜 + 태그라인 */}
+          <div className="absolute" style={{ left: 22, top: 170, width: 220 }}>
+            <h1 style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 22, fontWeight: 700, lineHeight: "28px", color: "#FFFFFF" }}>
+              {where} {nights}박 {days}일 여행
+            </h1>
+            <p style={{ marginTop: 10, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, lineHeight: "13px", color: "#F5F5F5" }}>
+              {fmtRange(startDate, endDate)} - {nights}박 {days}일
+            </p>
+            <p style={{ marginTop: 5, fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, lineHeight: "13px", color: "#F5F5F5" }}>
+              자유롭게 즐기는 {where}의 매력을 담았어요
+            </p>
+          </div>
         </div>
+
+        {/* 본문 내 카드들 */}
+        <div style={{ padding: "0 20px 24px" }}>
 
         {/* AI 카드 (라이트 #FAFAFA — 라벤더 칩) */}
         <div
@@ -492,6 +551,7 @@ export default function FinalCoursePage() {
             </div>
           );
         })()}
+        </div>
       </div>
 
       {/* 하단 액션 영역 — 일정 수정 / 다시 만들기 보조 + 내 여행에 저장하기 메인 */}
