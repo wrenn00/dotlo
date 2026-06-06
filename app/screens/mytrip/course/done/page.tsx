@@ -239,7 +239,7 @@ export default function CourseDonePage() {
       {/* 하단 버튼 — 330x50 #090738 radius 12 */}
       <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px", background: "transparent" }}>
         <button
-          onClick={() => router.push("/screens/mytrip?segment=saved")}
+          onClick={() => router.push("/screens/mytrip/course/final")}
           className="w-full transition-opacity active:opacity-80"
           style={{
             height: 50,
