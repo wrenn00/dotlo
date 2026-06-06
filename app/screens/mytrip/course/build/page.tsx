@@ -2,7 +2,19 @@
 
 import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChevronLeft, MapPin, Map as MapIcon, Clock } from "lucide-react";
+import { ChevronLeft, MapPin, Map as MapIcon, Clock, X } from "lucide-react";
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  TouchSensor,
+  useDraggable,
+  useDroppable,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+  type DragStartEvent,
+} from "@dnd-kit/core";
 
 const DAY_PALETTE = [
   { bg: "#E0FBFF", dash: "#00A8BF" }, // sky
@@ -33,11 +45,27 @@ const LIBRARY: SavedCourse[] = [
   { id: 7, title: "상하이의 야경",       hashtags: "#야경 #감성 #와이탄",        region: "이탈리아", placeCount: 8,  hours: "6시간",  duration: "단일 코스", image: "/images/where/shanghai.png", category: "야경" },
 ];
 
-function MiniCourseCard({ course }: { course: SavedCourse }) {
+// 드래그 가능한 보관함 카드
+function DraggableMiniCard({ course, isOverlay = false }: { course: SavedCourse; isOverlay?: boolean }) {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: `lib-${course.id}`,
+    data: { course },
+  });
   return (
     <div
-      className="shrink-0 relative overflow-hidden text-left"
-      style={{ width: 166, borderRadius: 8, background: "#FFFFFF" }}
+      ref={isOverlay ? undefined : setNodeRef}
+      {...(isOverlay ? {} : attributes)}
+      {...(isOverlay ? {} : listeners)}
+      className="shrink-0 relative overflow-hidden text-left select-none"
+      style={{
+        width: 166,
+        borderRadius: 8,
+        background: "#FFFFFF",
+        opacity: isDragging && !isOverlay ? 0.4 : 1,
+        cursor: isOverlay ? "grabbing" : "grab",
+        touchAction: "none",
+        boxShadow: isOverlay ? "0 10px 30px rgba(0,0,0,0.18)" : undefined,
+      }}
     >
       {/* 이미지 영역 166x144 */}
       <div
@@ -117,6 +145,118 @@ function MiniCourseCard({ course }: { course: SavedCourse }) {
   );
 }
 
+// 일차 슬롯의 드롭 영역
+function DroppableSlotInner({
+  dayIndex,
+  course,
+  borderColor,
+  onClear,
+}: {
+  dayIndex: number;
+  course: SavedCourse | null;
+  borderColor: string;
+  onClear: () => void;
+}) {
+  const { setNodeRef, isOver } = useDroppable({ id: `slot-${dayIndex}` });
+
+  if (course) {
+    return (
+      <div
+        ref={setNodeRef}
+        className="relative flex items-center"
+        style={{
+          flex: 1,
+          height: 70,
+          padding: "5px 10px",
+          gap: 10,
+          background: "#FFFFFF",
+          border: `1px solid ${borderColor}`,
+          borderRadius: 8,
+        }}
+      >
+        {/* 썸네일 59x59 */}
+        <div
+          className="shrink-0 relative overflow-hidden"
+          style={{
+            width: 59,
+            height: 59,
+            borderRadius: 4,
+            backgroundImage: `url(${course.image})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        {/* 텍스트 */}
+        <div className="flex flex-col min-w-0" style={{ gap: 6, flex: 1 }}>
+          <span
+            className="truncate"
+            style={{
+              fontFamily: '"Spoqa Han Sans Neo"',
+              fontSize: 12,
+              fontWeight: 500,
+              lineHeight: "15px",
+              color: "#000000",
+            }}
+          >
+            {course.title}
+          </span>
+          <div className="flex items-center" style={{ gap: 4 }}>
+            <div className="flex items-center whitespace-nowrap" style={{ gap: 2 }}>
+              <MapIcon size={11} color="#888888" strokeWidth={1.6} />
+              <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#888888" }}>
+                장소 {course.placeCount}개
+              </span>
+            </div>
+            <div className="flex items-center whitespace-nowrap" style={{ gap: 2 }}>
+              <Clock size={11} color="#888888" strokeWidth={1.6} />
+              <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#888888" }}>
+                {course.hours}
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* X 버튼 — 드롭 해제 */}
+        <button
+          onClick={onClear}
+          className="shrink-0 flex items-center justify-center"
+          style={{ width: 22, height: 22, borderRadius: "50%", background: "#F2F2F6" }}
+          aria-label="코스 비우기"
+        >
+          <X size={12} color="#555555" strokeWidth={2} />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={setNodeRef}
+      className="flex items-center justify-center text-center"
+      style={{
+        flex: 1,
+        height: 70,
+        background: isOver ? "rgba(255,255,255,0.7)" : "#FFFFFF",
+        border: `1px dashed ${borderColor}`,
+        borderRadius: 8,
+        transition: "background 150ms",
+      }}
+    >
+      <span
+        className="whitespace-pre-line"
+        style={{
+          fontFamily: '"Spoqa Han Sans Neo"',
+          fontSize: 12,
+          fontWeight: 500,
+          lineHeight: "15px",
+          color: "#888888",
+        }}
+      >
+        {"여기에 코스를 드래그하세요\n또는 + 코스 추가"}
+      </span>
+    </div>
+  );
+}
+
 function fmtDate(date: Date) {
   const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
   const mm = String(date.getMonth() + 1);
@@ -153,6 +293,11 @@ function CourseBuildContent() {
   }, [startDate, days]);
 
   const [activeCat, setActiveCat] = useState("전체");
+  const [assignments, setAssignments] = useState<Record<number, SavedCourse>>({});
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const draggingCourse = draggingId
+    ? LIBRARY.find((c) => `lib-${c.id}` === draggingId) ?? null
+    : null;
   const filtered = activeCat === "전체" ? LIBRARY : LIBRARY.filter((c) => c.category === activeCat);
   const categories = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -161,7 +306,29 @@ function CourseBuildContent() {
     return [{ label: "전체", count: LIBRARY.length }, ...sorted.map(([label, count]) => ({ label, count }))];
   }, []);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(TouchSensor,   { activationConstraint: { delay: 180, tolerance: 8 } }),
+  );
+
+  function handleDragStart(e: DragStartEvent) {
+    setDraggingId(String(e.active.id));
+  }
+  function handleDragEnd(e: DragEndEvent) {
+    setDraggingId(null);
+    const { active, over } = e;
+    if (!over) return;
+    const overId = String(over.id);
+    if (!overId.startsWith("slot-")) return;
+    const dayIdx = parseInt(overId.replace("slot-", ""), 10);
+    const course = active.data.current?.course as SavedCourse | undefined;
+    if (!course || Number.isNaN(dayIdx)) return;
+    setAssignments((prev) => ({ ...prev, [dayIdx]: course }));
+  }
+  const hasAny = Object.keys(assignments).length > 0;
+
   return (
+    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
     <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
       {/* 헤더 */}
       <div className="shrink-0 flex items-center justify-center relative" style={{ paddingTop: 50, height: 86 }}>
@@ -240,28 +407,18 @@ function CourseBuildContent() {
                     {short}
                   </span>
                 </div>
-                <button
-                  className="flex-1 flex items-center justify-center"
-                  style={{
-                    height: 56,
-                    background: "#FFFFFF",
-                    border: `1px dashed ${palette.dash}`,
-                    borderRadius: 8,
-                  }}
-                >
-                  <span
-                    className="whitespace-pre-line text-center"
-                    style={{
-                      fontFamily: '"Spoqa Han Sans Neo"',
-                      fontSize: 12,
-                      fontWeight: 500,
-                      lineHeight: "15px",
-                      color: "#888888",
-                    }}
-                  >
-                    {"여기에 코스를 드래그하세요\n또는 + 코스 추가"}
-                  </span>
-                </button>
+                <DroppableSlotInner
+                  dayIndex={idx}
+                  course={assignments[idx] ?? null}
+                  borderColor={palette.dash}
+                  onClear={() =>
+                    setAssignments((prev) => {
+                      const next = { ...prev };
+                      delete next[idx];
+                      return next;
+                    })
+                  }
+                />
               </div>
             );
           })}
@@ -310,7 +467,7 @@ function CourseBuildContent() {
           {/* 가로 스크롤 카드 리스트 */}
           <div className="flex items-stretch overflow-x-auto scrollbar-hide" style={{ gap: 6, marginLeft: -20, paddingLeft: 20, paddingRight: 20 }}>
             {filtered.map((c) => (
-              <MiniCourseCard key={c.id} course={c} />
+              <DraggableMiniCard key={c.id} course={c} />
             ))}
           </div>
         </div>
@@ -319,11 +476,11 @@ function CourseBuildContent() {
       {/* 하단 버튼 — 비활성 회색 */}
       <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px", background: "#FFFFFF" }}>
         <button
-          disabled
-          className="w-full"
+          disabled={!hasAny}
+          className="w-full transition-opacity disabled:cursor-not-allowed"
           style={{
             height: 50,
-            background: "#E0E0E0",
+            background: hasAny ? "#090738" : "#E0E0E0",
             borderRadius: 12,
             fontFamily: '"Spoqa Han Sans Neo"',
             fontSize: 16,
@@ -331,13 +488,18 @@ function CourseBuildContent() {
             lineHeight: "20px",
             letterSpacing: "-0.5px",
             color: "#FFFFFF",
-            cursor: "not-allowed",
           }}
         >
           이 조합으로 만들기
         </button>
       </div>
     </div>
+
+    {/* 드래그 오버레이 */}
+    <DragOverlay dropAnimation={null}>
+      {draggingCourse ? <DraggableMiniCard course={draggingCourse} isOverlay /> : null}
+    </DragOverlay>
+    </DndContext>
   );
 }
 
