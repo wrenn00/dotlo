@@ -482,33 +482,7 @@ export default function Step7Page() {
               borderRadius: 12,
             }}
           >
-            {/* 카테고리별 캐릭터 — 미식/야경/쇼핑일 때만 우측에 배치 (카드 전체 높이 사용) */}
-            {(() => {
-              const charMap: Record<string, string> = {
-                미식: "/images/blue_eat.png",
-                야경: "/images/purple%20night.png",
-                쇼핑: "/images/yellow_shopping.png",
-              };
-              const src = charMap[course.categoryKey];
-              if (!src) return null;
-              return (
-                <div
-                  className="absolute"
-                  style={{
-                    right: 6,
-                    top: 0,
-                    bottom: 0,
-                    width: 110,
-                    backgroundImage: `url(${src})`,
-                    backgroundSize: "contain",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right center",
-                    pointerEvents: "none",
-                  }}
-                />
-              );
-            })()}
-            <div className="flex items-start" style={{ gap: 8, paddingRight: 90 }}>
+            <div className="flex items-start" style={{ gap: 8, paddingRight: 110 }}>
               {/* 코스 칩 — 58x24 코스별 chipBg radius 18 */}
               <div
                 className="inline-flex items-center justify-center"
@@ -569,6 +543,32 @@ export default function Step7Page() {
                 position: "relative",
               }}
             >
+              {/* 카테고리별 캐릭터 — AI 박스 상단 바로 위에 앉아있는 모양 */}
+              {(() => {
+                const charMap: Record<string, string> = {
+                  미식: "/images/blue_eat.png",
+                  야경: "/images/purple%20night.png",
+                  쇼핑: "/images/yellow_shopping.png",
+                };
+                const src = charMap[course.categoryKey];
+                if (!src) return null;
+                return (
+                  <div
+                    className="absolute"
+                    style={{
+                      right: 0,
+                      bottom: "100%",
+                      width: 110,
+                      height: 86,
+                      backgroundImage: `url(${src})`,
+                      backgroundSize: "contain",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right bottom",
+                      pointerEvents: "none",
+                    }}
+                  />
+                );
+              })()}
               <Sparkles
                 size={16}
                 color="#F6F6FF"
