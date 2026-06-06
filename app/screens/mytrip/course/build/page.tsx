@@ -2,7 +2,7 @@
 
 import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChevronLeft, MapPin, Map as MapIcon, Clock, X } from "lucide-react";
+import { ChevronLeft, MapPin, Map as MapIcon, Clock, X, Sparkles, Plus } from "lucide-react";
 import {
   DndContext,
   DragOverlay,
@@ -159,66 +159,69 @@ function DroppableSlotInner({
     return (
       <div
         ref={setNodeRef}
-        className="relative flex items-center"
+        className="relative overflow-hidden"
         style={{
-          flex: 1,
-          height: 70,
-          padding: "5px 10px",
-          gap: 10,
-          background: "#FFFFFF",
-          border: `1px solid ${borderColor}`,
-          borderRadius: 8,
+          width: "100%",
+          height: "100%",
+          borderRadius: 7,
+          backgroundImage: `url(${course.image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
-        {/* 썸네일 59x59 */}
+        {/* 어두운 그라데이션 — 타이틀 가독성 */}
         <div
-          className="shrink-0 relative overflow-hidden"
+          className="absolute pointer-events-none"
           style={{
-            width: 59,
-            height: 59,
-            borderRadius: 4,
-            backgroundImage: `url(${course.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.85) 100%)",
           }}
         />
-        {/* 텍스트 */}
-        <div className="flex flex-col min-w-0" style={{ gap: 6, flex: 1 }}>
+        {/* 타이틀 + 메타 */}
+        <div className="absolute" style={{ left: 8, right: 8, top: 6 }}>
           <span
-            className="truncate"
+            className="line-clamp-2"
             style={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 2,
+              overflow: "hidden",
               fontFamily: '"Spoqa Han Sans Neo"',
-              fontSize: 12,
-              fontWeight: 500,
-              lineHeight: "15px",
-              color: "#000000",
+              fontSize: 11,
+              fontWeight: 700,
+              lineHeight: "14px",
+              color: "#FAFAFA",
             }}
           >
             {course.title}
           </span>
-          <div className="flex items-center" style={{ gap: 4 }}>
-            <div className="flex items-center whitespace-nowrap" style={{ gap: 2 }}>
-              <MapIcon size={11} color="#888888" strokeWidth={1.6} />
-              <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#888888" }}>
-                장소 {course.placeCount}개
-              </span>
-            </div>
-            <div className="flex items-center whitespace-nowrap" style={{ gap: 2 }}>
-              <Clock size={11} color="#888888" strokeWidth={1.6} />
-              <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 10, fontWeight: 500, color: "#888888" }}>
-                {course.hours}
-              </span>
-            </div>
-          </div>
         </div>
-        {/* X 버튼 — 드롭 해제 */}
+        <div className="absolute flex items-center" style={{ left: 8, right: 8, bottom: 6, gap: 6 }}>
+          <div className="flex items-center" style={{ gap: 2 }}>
+            <MapPin size={9} color="#FAFAFA" strokeWidth={1.8} />
+            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 9, fontWeight: 500, color: "#FAFAFA" }}>
+              {course.region}
+            </span>
+          </div>
+          <div className="flex items-center" style={{ gap: 2 }}>
+            <MapIcon size={9} color="#FAFAFA" strokeWidth={1.8} />
+            <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 9, fontWeight: 500, color: "#FAFAFA" }}>
+              {course.placeCount}곳
+            </span>
+          </div>
+          <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 9, fontWeight: 500, color: "#FAFAFA" }}>
+            ·{course.category}
+          </span>
+        </div>
+        {/* X 버튼 */}
         <button
           onClick={onClear}
-          className="shrink-0 flex items-center justify-center"
-          style={{ width: 22, height: 22, borderRadius: "50%", background: "#F2F2F6" }}
+          className="absolute flex items-center justify-center"
+          style={{ top: 4, right: 4, width: 18, height: 18, borderRadius: "50%", background: "rgba(0,0,0,0.5)" }}
           aria-label="코스 비우기"
         >
-          <X size={12} color="#555555" strokeWidth={2} />
+          <X size={10} color="#FFFFFF" strokeWidth={2} />
         </button>
       </div>
     );
@@ -227,28 +230,18 @@ function DroppableSlotInner({
   return (
     <div
       ref={setNodeRef}
-      className="flex items-center justify-center text-center"
+      className="flex items-center justify-center"
       style={{
-        flex: 1,
-        height: 70,
-        background: isOver ? "rgba(255,255,255,0.7)" : "#FFFFFF",
-        border: `1px dashed ${borderColor}`,
-        borderRadius: 8,
+        width: "100%",
+        height: "100%",
+        background: isOver ? "rgba(216,216,233,0.4)" : "#F2F2F6",
+        border: isOver ? `1.5px dashed ${borderColor}` : "none",
+        borderRadius: 7,
         transition: "background 150ms",
       }}
+      aria-label="코스를 여기에 드래그"
     >
-      <span
-        className="whitespace-pre-line"
-        style={{
-          fontFamily: '"Spoqa Han Sans Neo"',
-          fontSize: 12,
-          fontWeight: 500,
-          lineHeight: "15px",
-          color: "#888888",
-        }}
-      >
-        {"여기에 코스를 드래그하세요\n또는 + 코스 추가"}
-      </span>
+      <Plus size={20} color="#D8D8E9" strokeWidth={2} />
     </div>
   );
 }
@@ -542,11 +535,12 @@ function CourseBuildContent() {
             }
             router.push(`/screens/mytrip/course/loading?days=${days}`);
           }}
-          className="w-full transition-opacity disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center transition-opacity disabled:cursor-not-allowed"
           style={{
             height: 50,
             background: hasAny ? "#090738" : "#E0E0E0",
             borderRadius: 12,
+            gap: 8,
             fontFamily: '"Spoqa Han Sans Neo"',
             fontSize: 16,
             fontWeight: 500,
@@ -555,7 +549,8 @@ function CourseBuildContent() {
             color: "#FFFFFF",
           }}
         >
-          이 조합으로 만들기
+          <Sparkles size={18} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} />
+          코스 조합하기
         </button>
       </div>
     </div>
