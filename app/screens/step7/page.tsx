@@ -140,7 +140,10 @@ function timelineFor(label: string, shuffleSeed = 0): TimelineEntry[] {
   }
   // 라벨별 시드를 살짝 분리해서 탭마다 다른 순서가 되게 한다
   const labelHash = Array.from(label).reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  const places = shuffleSeed > 0 ? shuffledBy(base, shuffleSeed + labelHash * 31) : base;
+  const shuffled = shuffleSeed > 0 ? shuffledBy(base, shuffleSeed + labelHash * 31) : base;
+  // 매번 5~6개만 랜덤으로 노출 (시드 + 라벨에 따라 결정)
+  const pickCount = Math.min(shuffled.length, 5 + ((shuffleSeed + labelHash) % 2 === 0 ? 0 : 1));
+  const places = shuffled.slice(0, pickCount);
   const slots = makeSlots(label, places.length);
   const display = DISPLAY_CATEGORY[label] ?? label;
   return places.map((p, i) => ({
