@@ -199,7 +199,7 @@ const recommendations = [
   },
   {
     id: "alps",
-    image: "/images/trips/switzerland.png",
+    image: "/images/%EC%95%8C%ED%94%84%EC%8A%A4.png",
     title: "유럽의 알프스를\n만나다",
     subtitle: "스위스, 오스트리아, 슬로베니아",
     courseCount: 4,
