@@ -142,12 +142,12 @@ function SavedCourseCard({ course }: { course: SavedCourse }) {
       className="text-left active:opacity-90 transition-opacity"
       style={{ width: 166, borderRadius: 8, overflow: "hidden", background: "#FFFFFF" }}
     >
-      {/* 이미지 영역 166x144 */}
+      {/* 이미지 영역 166x118 (높이 축소) */}
       <div
         className="relative"
         style={{
           width: 166,
-          height: 144,
+          height: 118,
           background: course.image ? `url(${course.image}) center / cover` : "#CBCBCB",
         }}
       >
@@ -155,25 +155,25 @@ function SavedCourseCard({ course }: { course: SavedCourse }) {
         <div
           className="absolute pointer-events-none"
           style={{
-            left: 0, right: 0, top: 48, height: 96,
+            left: 0, right: 0, top: 40, height: 78,
             background:
               "linear-gradient(180deg, rgba(62,62,62,0) 0%, rgba(39,39,39,0.365) 19.71%, rgba(0,0,0,0.85) 100%)",
           }}
         />
 
-        {/* 제목 — 이미지 하단 중앙에 배치 (배지 제거) */}
+        {/* 제목 — 이미지 하단 좌측 정렬 */}
         <p
           className="absolute line-clamp-2"
           style={{
             left: 12,
             right: 12,
-            bottom: 16,
+            bottom: 12,
             fontFamily: '"Spoqa Han Sans Neo"',
             fontSize: 15,
             fontWeight: 700,
             lineHeight: "19px",
             color: "#FAFAFA",
-            textAlign: "center",
+            textAlign: "left",
           }}
         >
           {course.title}
