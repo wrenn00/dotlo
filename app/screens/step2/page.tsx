@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Search, ThumbsUp } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 
 export default function Step2Page() {
   const router = useRouter();
@@ -160,13 +160,6 @@ export default function Step2Page() {
                   iconColor: "#00E1FF",
                   title: "직접 검색해서 추가하기",
                   sub: "장소 이름과 주소로 찾기",
-                },
-                {
-                  Icon: ThumbsUp,
-                  iconBg: "#FFF9C2",
-                  iconColor: "#FFE400",
-                  title: `${where} 인기 장소 둘러보기`,
-                  sub: "현지인이 자주 가는 곳 찾기",
                 },
               ].map(({ Icon, iconBg, iconColor, title, sub }) => (
                 <div
