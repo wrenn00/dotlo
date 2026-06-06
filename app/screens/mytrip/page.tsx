@@ -6,7 +6,7 @@ import Image from "next/image";
 import {
   Search, Bell,
   MapPin, Map as MapIcon,
-  Plus, ChevronDown, Clock, Bookmark,
+  Plus, ChevronDown, Clock,
 } from "lucide-react";
 import TripCard from "../home/components/TripCard";
 import BottomTabBar from "../home/components/BottomTabBar";
@@ -160,11 +160,6 @@ function SavedCourseCard({ course }: { course: SavedCourse }) {
               "linear-gradient(180deg, rgba(62,62,62,0) 0%, rgba(39,39,39,0.365) 19.71%, rgba(0,0,0,0.85) 100%)",
           }}
         />
-
-        {/* 북마크 (우측 상단) */}
-        <div className="absolute flex items-center justify-center" style={{ top: 8, right: 8, width: 20, height: 20 }}>
-          <Bookmark size={16} color="#2E2E70" fill="#2E2E70" strokeWidth={0} />
-        </div>
 
         {/* 좌하단 콘텐츠 — 단일 코스 칩 + 제목 */}
         <div className="absolute flex flex-col" style={{ left: 13, top: 92, width: 146, gap: 5 }}>
