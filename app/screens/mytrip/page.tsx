@@ -288,6 +288,7 @@ function CountryFilter({ value, onChange, total }: { value: string; onChange: (v
 // ─── 메인 ────────────────────────────────────────────────────────────────────
 
 function MyTripContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialSegment: SegmentKey = searchParams.get("segment") === "saved" ? "saved" : "mine";
   const [segment, setSegment] = useState<SegmentKey>(initialSegment);
@@ -397,7 +398,13 @@ function MyTripContent() {
       <WhenBottomSheet
         open={whenSheetOpen}
         onClose={() => setWhenSheetOpen(false)}
-        onSelect={() => setWhenSheetOpen(false)}
+        onSelect={(sel) => {
+          setWhenSheetOpen(false);
+          if (!sel.start || !sel.end) return;
+          const fmt = (d: { year: number; month: number; day: number }) =>
+            `${d.year}-${String(d.month + 1).padStart(2, "0")}-${String(d.day).padStart(2, "0")}`;
+          router.push(`/screens/mytrip/course/build?start=${fmt(sel.start)}&end=${fmt(sel.end)}`);
+        }}
       />
     </div>
   );
