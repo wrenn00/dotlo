@@ -20,16 +20,22 @@ export default function Step4Page() {
   const [customKeywords, setCustomKeywords] = useState<string[]>([]);
   const [sheetOpen, setSheetOpen] = useState(false);
 
+  const hasCustom = customKeywords.length > 0;
+  const totalSelected = selected.size + (hasCustom ? 1 : 0);
+
   function toggleCategory(key: string) {
     setSelected((prev) => {
       const next = new Set(prev);
-      next.has(key) ? next.delete(key) : next.add(key);
+      if (next.has(key)) {
+        next.delete(key);
+        return next;
+      }
+      // 최대 3개 — 직접 추가까지 합쳐 3개를 넘기면 무시
+      if (totalSelected >= 3) return prev;
+      next.add(key);
       return next;
     });
   }
-
-  const hasCustom = customKeywords.length > 0;
-  const totalSelected = selected.size + (hasCustom ? 1 : 0);
 
   function renderCard(opts: {
     Icon: LucideIcon;
