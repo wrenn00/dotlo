@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import {
   ChevronLeft, Share2, Bookmark, Sparkles, Star, Footprints,
   Utensils, MountainSnow, ShoppingBag, Coffee, Bath, Cake, Landmark, BookOpen, Waves, Mountain, Drama, Moon,
+  FileDown, UserPlus,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import tokyoThemes from "@/data/tokyo-themes.json";
@@ -405,8 +406,38 @@ export default function FinalCoursePage() {
         })()}
       </div>
 
-      {/* 최종 코스에 저장하기 */}
-      <div className="shrink-0 flex justify-center" style={{ padding: "0 20px 24px" }}>
+      {/* 하단 액션 영역 — PDF 저장 / 친구 초대 보조 버튼 + 메인 저장 버튼 */}
+      <div className="shrink-0 flex flex-col" style={{ padding: "0 20px 24px", gap: 10 }}>
+        {/* 보조 버튼 2개 (좌우 분할) */}
+        <div className="flex" style={{ gap: 10 }}>
+          {[
+            { Icon: FileDown, label: "PDF 저장" },
+            { Icon: UserPlus, label: "친구 초대" },
+          ].map(({ Icon, label }) => (
+            <button
+              key={label}
+              className="flex-1 flex items-center justify-center transition-opacity active:opacity-80"
+              style={{
+                height: 44,
+                background: "#FFFFFF",
+                border: "1.5px solid #D8D8E9",
+                borderRadius: 12,
+                gap: 6,
+                fontFamily: '"Spoqa Han Sans Neo"',
+                fontSize: 14,
+                fontWeight: 600,
+                lineHeight: "18px",
+                letterSpacing: "-0.3px",
+                color: "#2E2E70",
+              }}
+            >
+              <Icon size={16} color="#6060A0" strokeWidth={2} />
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* 메인 — 최종 코스에 저장하기 */}
         <button
           onClick={() => router.push("/screens/mytrip?segment=saved")}
           className="w-full flex items-center justify-center transition-opacity active:opacity-80"
