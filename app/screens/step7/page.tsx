@@ -457,7 +457,7 @@ export default function Step7Page() {
                     color: "#333333",
                   }}
                 >
-                  {course.subtitle}
+                  {`하루 평균 ${items.length}곳 · 휴식 시간 충분`}
                 </p>
               </div>
             </div>
