@@ -62,15 +62,15 @@ export default function Step3Page() {
               boxShadow: selected === "custom" ? "0 0 0 2px #2E2E70 inset" : "none",
             }}
           >
-            {/* 배경 일러스트 — 우측 (잘림 없이 contain) */}
+            {/* 배경 일러스트 — 우측 (blue.png 원본 비율 유지) */}
             <div
               className="absolute"
               style={{
-                right: 8,
+                right: 4,
                 top: 0,
                 bottom: 0,
-                width: 145,
-                backgroundImage: "url(/images/01.png)",
+                width: 160,
+                backgroundImage: "url(/images/blue.png)",
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "right center",
@@ -132,15 +132,15 @@ export default function Step3Page() {
               boxShadow: selected === "quick" ? "0 0 0 2px #B8B400 inset" : "none",
             }}
           >
-            {/* 배경 일러스트 — 우측 (잘림 없이 contain) */}
+            {/* 배경 일러스트 — 우측 (yellow.png 원본 비율 유지) */}
             <div
               className="absolute"
               style={{
-                right: 8,
+                right: 4,
                 top: 0,
                 bottom: 0,
-                width: 145,
-                backgroundImage: "url(/images/02.png)",
+                width: 170,
+                backgroundImage: "url(/images/yellow.png)",
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "right center",
