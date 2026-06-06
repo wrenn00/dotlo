@@ -68,7 +68,7 @@ export default function CourseMap({
                             marginBottom: m.description ? 4 : 0,
                           }}
                         >
-                          {m.number}. {m.name}
+                          {m.name}
                         </div>
                       )}
                       {m.description && (
