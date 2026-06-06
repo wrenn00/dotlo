@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Delete } from "lucide-react";
 import { useKeyboard } from "./KeyboardProvider";
@@ -21,8 +22,18 @@ const enLayout: string[][] = [
 const KEY_FONT = '"Spoqa Han Sans Neo", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif';
 
 export default function VirtualKeyboard() {
-  const { isOpen, language, appendChar, deleteChar, close, toggleLanguage } = useKeyboard();
+  const { isOpen, value, language, appendChar, deleteChar, close, toggleLanguage, setValueDirect } = useKeyboard();
   const layout = language === "ko" ? koLayout : enLayout;
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+
+  // 시트가 열리면 숨겨둔 input에 포커스 — OS IME가 한글 조합을 처리하고
+  // 최종 값을 onChange로 전달해줘 자모가 음절로 합쳐진 상태로 들어옴
+  useEffect(() => {
+    if (isOpen) {
+      const id = window.setTimeout(() => hiddenInputRef.current?.focus(), 0);
+      return () => window.clearTimeout(id);
+    }
+  }, [isOpen]);
 
   const handleKey = (key: string) => {
     if (key === "shift") return; // 시각용
@@ -51,6 +62,39 @@ export default function VirtualKeyboard() {
             paddingRight: 4,
           }}
         >
+          {/* 화면에서 안 보이지만 포커스를 잡고 IME 입력을 받아 한글 조합을 수행 */}
+          <input
+            ref={hiddenInputRef}
+            value={value}
+            onChange={(e) => setValueDirect(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" || e.key === "Enter") {
+                e.preventDefault();
+                close();
+              }
+            }}
+            aria-hidden
+            tabIndex={-1}
+            inputMode="text"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            style={{
+              position: "absolute",
+              left: -9999,
+              top: 0,
+              width: 1,
+              height: 1,
+              opacity: 0,
+              pointerEvents: "none",
+              border: "none",
+              padding: 0,
+              margin: 0,
+              outline: "none",
+              background: "transparent",
+            }}
+          />
+
           <div className="flex flex-col" style={{ gap: 8 }}>
             {layout.map((row, rowIdx) => (
               <div key={rowIdx} className="flex justify-center" style={{ gap: 5 }}>
