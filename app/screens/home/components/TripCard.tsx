@@ -132,14 +132,23 @@ export default function TripCard({ title, date, dDay, participants, image }: Tri
             ) : (
               <>
                 <div
+                  className="relative overflow-hidden shrink-0"
                   style={{
                     width: 20,
                     height: 20,
                     background: "#F2F2F6",
-                    border: "1px solid #FFFFFF",
-                    borderRadius: 116,
+                    border: "1.5px solid #FFFFFF",
+                    borderRadius: "50%",
                   }}
-                />
+                >
+                  <Image
+                    src="/images/profile4.png"
+                    alt=""
+                    fill
+                    sizes="20px"
+                    className="object-cover"
+                  />
+                </div>
                 <span
                   style={{
                     fontFamily: '"Spoqa Han Sans Neo"',
