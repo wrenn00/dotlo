@@ -29,7 +29,7 @@ function CourseLoadingContent() {
       steps={steps}
       completeMessage="조합 완료!"
       completeSubMessage="저장한 코스로 이동할게요"
-      onComplete={() => router.push("/screens/mytrip?segment=saved")}
+      onComplete={() => router.push("/screens/mytrip/course/done")}
     />
   );
 }

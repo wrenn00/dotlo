@@ -477,7 +477,24 @@ function CourseBuildContent() {
       <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px", background: "#FFFFFF" }}>
         <button
           disabled={!hasAny}
-          onClick={() => router.push(`/screens/mytrip/course/loading?days=${days}`)}
+          onClick={() => {
+            // 일차별 코스 배치 + 여행 기간을 done 화면이 읽을 수 있게 저장
+            try {
+              sessionStorage.setItem(
+                "dotlo:final-combine",
+                JSON.stringify({
+                  assignments,
+                  startISO: startDate.toISOString(),
+                  endISO: endDate.toISOString(),
+                  nights,
+                  days,
+                }),
+              );
+            } catch {
+              /* sessionStorage 사용 불가 시 무시 */
+            }
+            router.push(`/screens/mytrip/course/loading?days=${days}`);
+          }}
           className="w-full transition-opacity disabled:cursor-not-allowed"
           style={{
             height: 50,
