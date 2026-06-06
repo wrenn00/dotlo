@@ -90,19 +90,35 @@ export default function TripCard({ title, date, dDay, participants, image }: Tri
           <div className="flex items-center" style={{ gap: 4, height: 20, marginTop: 0 }}>
             {participants.type === "avatars" ? (
               <div className="flex items-center">
-                {/* 프로필 이미지 — 3캐릭터가 한 이미지에 들어있음 (156x60 → 52x20 표시) */}
-                <div className="relative shrink-0" style={{ width: 52, height: 20 }}>
-                  <Image
-                    src="/images/profile.png"
-                    alt=""
-                    fill
-                    sizes="52px"
-                    style={{ objectFit: "contain", objectPosition: "left center" }}
-                  />
+                {/* 프로필 3장 — 20x20 원형, 6px 겹침 */}
+                <div className="flex items-center" style={{ height: 20 }}>
+                  {[1, 2, 3].map((n, i) => (
+                    <div
+                      key={n}
+                      className="relative shrink-0 overflow-hidden"
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        border: "1.5px solid #FFFFFF",
+                        background: "#F2F2F6",
+                        marginLeft: i === 0 ? 0 : -6,
+                        zIndex: 3 - i,
+                      }}
+                    >
+                      <Image
+                        src={`/images/profile${n}.png`}
+                        alt=""
+                        fill
+                        sizes="20px"
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
                 </div>
                 <span
                   style={{
-                    marginLeft: 4,
+                    marginLeft: 6,
                     fontFamily: '"Spoqa Han Sans Neo"',
                     fontSize: 10,
                     fontWeight: 500,
