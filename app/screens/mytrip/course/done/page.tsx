@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ChevronLeft } from "lucide-react";
 
 const DAY_PALETTE = [
   { bg: "#E0FBFF", border: "#00A8BF" }, // sky
@@ -86,19 +87,29 @@ export default function CourseDonePage() {
   return (
     <div
       className="relative flex flex-col h-full"
-      style={{ background: "#FAFBFF" }}
+      style={{ background: "linear-gradient(180deg, #F2FDFF 0%, #FFFFFF 34%)" }}
     >
+      {/* 뒤로가기 — 좌상단 */}
+      <button
+        onClick={() => router.back()}
+        className="absolute flex items-center justify-center"
+        style={{ left: 14, top: 50, width: 36, height: 36, zIndex: 10 }}
+        aria-label="뒤로"
+      >
+        <ChevronLeft size={24} color="#373C3E" strokeWidth={2} />
+      </button>
+
       {/* 본문 */}
       <div className="flex-1 overflow-y-auto" style={{ padding: "70px 20px 24px" }}>
         {/* 캐릭터 + 타이틀 블록 — 캐릭터는 진입 시 살짝 점프 */}
-        <div className="flex flex-col items-center" style={{ marginTop: 40, gap: 12 }}>
+        <div className="flex flex-col items-center" style={{ marginTop: 40, gap: 14 }}>
           <motion.div
             initial={{ y: 0 }}
             animate={{ y: [0, -16, 0, -10, 0] }}
             transition={{ duration: 1.4, times: [0, 0.25, 0.55, 0.8, 1], ease: "easeOut", delay: 0.15 }}
-            style={{ width: 80, height: 80, position: "relative" }}
+            style={{ width: 110, height: 107, position: "relative" }}
           >
-            <Image src="/character.png" alt="" fill priority style={{ objectFit: "contain" }} />
+            <Image src="/images/cheer.png" alt="" fill priority style={{ objectFit: "contain" }} />
           </motion.div>
           <h1
             className="text-center"
@@ -120,7 +131,7 @@ export default function CourseDonePage() {
               fontSize: 14,
               fontWeight: 500,
               lineHeight: "20px",
-              color: "#888888",
+              color: "#888E9C",
               whiteSpace: "pre-line",
             }}
           >
