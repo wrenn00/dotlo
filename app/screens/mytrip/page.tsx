@@ -161,42 +161,23 @@ function SavedCourseCard({ course }: { course: SavedCourse }) {
           }}
         />
 
-        {/* 좌하단 콘텐츠 — 단일 코스 칩 + 제목 */}
-        <div className="absolute flex flex-col" style={{ left: 13, top: 92, width: 146, gap: 5 }}>
-          <div
-            className="inline-flex items-center justify-center self-start"
-            style={{
-              height: 20,
-              padding: "0 10px",
-              background: "#EFEFFF",
-              borderRadius: 19,
-            }}
-          >
-            <span
-              style={{
-                fontFamily: '"Spoqa Han Sans Neo"',
-                fontSize: 10,
-                fontWeight: 500,
-                lineHeight: "13px",
-                color: "#6B6BCC",
-              }}
-            >
-              {course.duration}
-            </span>
-          </div>
-          <p
-            className="line-clamp-2"
-            style={{
-              fontFamily: '"Spoqa Han Sans Neo"',
-              fontSize: 14,
-              fontWeight: 700,
-              lineHeight: "18px",
-              color: "#FAFAFA",
-            }}
-          >
-            {course.title}
-          </p>
-        </div>
+        {/* 좌하단 — 제목만 (배지 제거, Figma v2 스펙) */}
+        <p
+          className="absolute line-clamp-2"
+          style={{
+            left: 10,
+            right: 10,
+            top: 73,
+            fontFamily: '"Spoqa Han Sans Neo"',
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: "18px",
+            color: "#FAFAFA",
+            textAlign: "center",
+          }}
+        >
+          {course.title}
+        </p>
       </div>
 
       {/* 메타 영역 166x52 #F9FAFB */}
@@ -384,17 +365,17 @@ function MyTripContent() {
         style={{
           right: 17,
           bottom: 113,
-          height: 48,
+          height: 44,
           background: "#090738",
-          borderRadius: 999,
-          gap: 6,
-          padding: "0 18px",
+          borderRadius: 30,
+          gap: 4,
+          padding: "0 16px",
           boxShadow: "0 4px 16px rgba(9, 7, 56, 0.25)",
           zIndex: 25,
         }}
       >
         <Plus size={18} color="#FFFFFF" strokeWidth={2.4} />
-        <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 600, lineHeight: "18px", letterSpacing: "-0.3px", color: "#FFFFFF" }}>
+        <span style={{ fontFamily: '"Spoqa Han Sans Neo"', fontSize: 14, fontWeight: 700, lineHeight: "18px", color: "#FFFFFF" }}>
           {segment === "mine" ? "새 여행" : "최종 코스 만들기"}
         </span>
       </button>
