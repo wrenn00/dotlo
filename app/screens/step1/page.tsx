@@ -261,7 +261,10 @@ export default function ScreenStep1() {
       {/* 다음 버튼 (Figma: 330x50, #090738, radius 12) */}
       <div className="shrink-0 flex justify-center" style={{ padding: "0 22px 31px" }}>
         <button
-          onClick={() => router.push("/screens/step2")}
+          onClick={() => {
+            if (sel.where) sessionStorage.setItem("dotlo:where", sel.where);
+            router.push("/screens/step2");
+          }}
           className="w-full"
           style={{
             height: 50,

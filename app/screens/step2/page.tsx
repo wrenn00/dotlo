@@ -1,11 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Search, ThumbsUp } from "lucide-react";
 
 export default function Step2Page() {
   const router = useRouter();
+  const [where, setWhere] = useState("도쿄");
+
+  useEffect(() => {
+    const saved = sessionStorage.getItem("dotlo:where");
+    if (saved) setWhere(saved);
+  }, []);
 
   return (
     <div className="relative flex flex-col h-full" style={{ background: "#FFFFFF" }}>
@@ -158,7 +165,7 @@ export default function Step2Page() {
                   Icon: ThumbsUp,
                   iconBg: "#FFF9C2",
                   iconColor: "#FFE400",
-                  title: "오사카 인기 장소 둘러보기",
+                  title: `${where} 인기 장소 둘러보기`,
                   sub: "현지인이 자주 가는 곳 찾기",
                 },
               ].map(({ Icon, iconBg, iconColor, title, sub }) => (
