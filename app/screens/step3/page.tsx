@@ -62,14 +62,14 @@ export default function Step3Page() {
               boxShadow: selected === "custom" ? "0 0 0 2px #2E2E70 inset" : "none",
             }}
           >
-            {/* 배경 일러스트 — 우측 */}
+            {/* 배경 일러스트 — 우측 (잘림 없이 contain) */}
             <div
               className="absolute"
               style={{
-                right: -28,
-                top: -4,
-                width: 200,
-                height: 200,
+                right: 8,
+                top: 0,
+                bottom: 0,
+                width: 145,
                 backgroundImage: "url(/images/01.png)",
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",
@@ -78,7 +78,7 @@ export default function Step3Page() {
               }}
             />
             {/* 텍스트 블록 */}
-            <div className="absolute flex flex-col" style={{ left: 20, top: 31, gap: 6, width: 175 }}>
+            <div className="absolute flex flex-col" style={{ left: 20, top: 31, gap: 6, width: 170 }}>
               {/* 추천 배지 */}
               <div
                 className="inline-flex items-center justify-center"
@@ -132,14 +132,14 @@ export default function Step3Page() {
               boxShadow: selected === "quick" ? "0 0 0 2px #B8B400 inset" : "none",
             }}
           >
-            {/* 배경 일러스트 — 우측 */}
+            {/* 배경 일러스트 — 우측 (잘림 없이 contain) */}
             <div
               className="absolute"
               style={{
-                right: -18,
-                top: -10,
-                width: 200,
-                height: 200,
+                right: 8,
+                top: 0,
+                bottom: 0,
+                width: 145,
                 backgroundImage: "url(/images/02.png)",
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",
@@ -148,7 +148,7 @@ export default function Step3Page() {
               }}
             />
             {/* 텍스트 블록 */}
-            <div className="absolute flex flex-col" style={{ left: 20, top: 31, gap: 6, width: 175 }}>
+            <div className="absolute flex flex-col" style={{ left: 20, top: 31, gap: 6, width: 170 }}>
               {/* 기본 배지 */}
               <div
                 className="inline-flex items-center justify-center"
