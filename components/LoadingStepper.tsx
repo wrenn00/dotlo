@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import successCheck from "@/public/lottie/success-check.json";
+import loadingAnim from "@/public/lottie/loading.json";
 
 const FINAL_DELAY = 500;
 
@@ -25,21 +25,17 @@ const DEFAULT_STEP_COLORS = ["#00E1FF", "#FFE400", "#A5A5FF", "#A0A0C0"];
 
 // ─── 중앙 아이콘 ──────────────────────────────────────────────────────────────
 
-function CenterIcon({ kind }: { kind: "create" | "regenerate" }) {
+function CenterAnim({ kind }: { kind: "create" | "regenerate" }) {
   return (
-    <Image
-      src="/images/logo.png"
-      alt="Dotlo"
-      width={72}
-      height={62}
-      priority
+    <div
       style={{
-        width: 72,
-        height: "auto",
-        // regenerate: 천천히 회전하며 재생성 의도 표현
+        width: 160,
+        height: 160,
         animation: kind === "regenerate" ? "spinSlow 2.4s linear infinite" : undefined,
       }}
-    />
+    >
+      <Lottie animationData={loadingAnim} loop autoplay />
+    </div>
   );
 }
 
@@ -112,24 +108,9 @@ export default function LoadingStepper({
       {/* 중앙 콘텐츠 */}
       <div className="flex flex-col items-center flex-1 px-8" style={{ paddingTop: 20 }}>
 
-        {/* 로딩 인디케이터 — 투명 로고가 lavender 그라데이션 위에 그대로 보이도록 흰 원 제거 */}
-        <div className="relative flex items-center justify-center" style={{ width: 120, height: 120 }}>
-          <svg
-            className="absolute inset-0"
-            width="120" height="120" viewBox="0 0 120 120"
-            style={{ animation: "spin 1s linear infinite" }}
-          >
-            <circle cx="60" cy="60" r="55" fill="none" stroke="#EFEFFF" strokeWidth="4" />
-            <circle
-              cx="60" cy="60" r="55"
-              fill="none"
-              stroke="#6060A0"
-              strokeWidth="4"
-              strokeDasharray="88 260"
-              strokeLinecap="round"
-            />
-          </svg>
-          <CenterIcon kind={icon} />
+        {/* 로딩 Lottie — 자체 회전 애니메이션 */}
+        <div className="relative flex items-center justify-center" style={{ width: 160, height: 160 }}>
+          <CenterAnim kind={icon} />
         </div>
 
         {/* 제목 */}
