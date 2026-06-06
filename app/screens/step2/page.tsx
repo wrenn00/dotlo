@@ -162,11 +162,10 @@ export default function Step2Page() {
                   sub: "현지인이 자주 가는 곳 찾기",
                 },
               ].map(({ Icon, iconBg, iconColor, title, sub }) => (
-                <button
+                <div
                   key={title}
-                  onClick={() => router.push("/screens/step2/select")}
                   className="relative w-full text-left"
-                  style={{ height: 70, background: "#FAFAFA", borderRadius: 12 }}
+                  style={{ height: 70, background: "#FAFAFA", borderRadius: 12, cursor: "default" }}
                 >
                   {/* 컬러 원 아이콘 */}
                   <div
@@ -207,7 +206,7 @@ export default function Step2Page() {
                   >
                     <ChevronRight size={18} color="#A8A8A9" strokeWidth={1.8} />
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           </div>
