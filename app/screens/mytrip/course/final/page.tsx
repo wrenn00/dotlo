@@ -210,20 +210,8 @@ export default function FinalCoursePage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dayPlacesForMap]);
 
-  // 지역 → 히어로 이미지 매핑 (없으면 기본 도쿄)
-  const heroImage = (() => {
-    const w = where;
-    if (w.includes("오사카")) return "/images/where/osaka.png";
-    if (w.includes("도쿄"))   return "/images/where/dokyo.png";
-    if (w.includes("교토"))   return "/images/where/kyoto.png";
-    if (w.includes("후쿠오카")) return "/images/where/fukuoka.png";
-    if (w.includes("방콕"))   return "/images/where/bangkok.png";
-    if (w.includes("싱가포르")) return "/images/where/singapore.png";
-    if (w.includes("상하이")) return "/images/where/shanghai.png";
-    if (w.includes("파리"))   return "/images/where/paris.png";
-    if (w.includes("다낭"))   return "/images/where/danang.png";
-    return "/images/where/dokyo.png";
-  })();
+  // 코스 조합으로 생성된 결과는 항상 dokyo.png 썸네일 사용
+  const heroImage = "/images/where/dokyo.png";
 
   return (
     <div className="relative flex flex-col h-full" style={{ background: "#FAFBFF" }}>
