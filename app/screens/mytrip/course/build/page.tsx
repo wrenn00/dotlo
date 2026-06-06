@@ -395,7 +395,7 @@ function CourseBuildContent() {
                   height: 70,
                   background: palette.bg,
                   borderRadius: 8,
-                  padding: "0 12px",
+                  paddingLeft: 12,
                   gap: 16,
                 }}
               >
