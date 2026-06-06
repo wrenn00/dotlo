@@ -6,7 +6,7 @@ import { KeyboardProvider } from "@/components/KeyboardProvider";
 import VirtualKeyboard from "@/components/VirtualKeyboard";
 
 export const metadata: Metadata = {
-  title: "dotlo prototype",
+  title: "dotlo",
   description: "Interactive mobile prototype",
 };
 
