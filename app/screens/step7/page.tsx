@@ -482,7 +482,33 @@ export default function Step7Page() {
               borderRadius: 12,
             }}
           >
-            <div className="flex items-start" style={{ gap: 8 }}>
+            {/* 카테고리별 캐릭터 — 미식/야경/쇼핑일 때만 우측 상단에 배치 */}
+            {(() => {
+              const charMap: Record<string, string> = {
+                미식: "/images/blue_eat.png",
+                야경: "/images/purple%20night.png",
+                쇼핑: "/images/yellow_shopping.png",
+              };
+              const src = charMap[course.categoryKey];
+              if (!src) return null;
+              return (
+                <div
+                  className="absolute"
+                  style={{
+                    right: 8,
+                    top: 4,
+                    width: 96,
+                    height: 90,
+                    backgroundImage: `url(${src})`,
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right center",
+                    pointerEvents: "none",
+                  }}
+                />
+              );
+            })()}
+            <div className="flex items-start" style={{ gap: 8, paddingRight: 90 }}>
               {/* 코스 칩 — 58x24 코스별 chipBg radius 18 */}
               <div
                 className="inline-flex items-center justify-center"
