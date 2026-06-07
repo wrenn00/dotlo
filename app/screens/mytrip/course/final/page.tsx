@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import {
   ChevronLeft, Share2, Bookmark, Sparkles, Star, Footprints,
@@ -114,8 +115,10 @@ function fmtRange(start: Date, end: Date) {
   return `${fmt(start)} ~ ${fmt(end)}`;
 }
 
-export default function FinalCoursePage() {
+function FinalCourseContent() {
   const router = useRouter();
+  const params = useSearchParams();
+  const alreadySaved = params.get("saved") === "1";
   const [combine, setCombine] = useState<FinalCombine | null>(null);
   const [where, setWhere] = useState("도쿄");
   const [activeDay, setActiveDay] = useState(0);
@@ -577,7 +580,8 @@ export default function FinalCoursePage() {
           ))}
         </div>
 
-        {/* 메인 — 내 여행에 저장하기: 최종 코스 목록에 추가 후 마이트립으로 이동 */}
+        {/* 메인 — 내 여행에 저장하기: 이미 저장된 카드로 진입 시(saved=1)에는 숨김 */}
+        {!alreadySaved && (
         <button
           onClick={() => {
             try {
@@ -618,9 +622,18 @@ export default function FinalCoursePage() {
           <Sparkles size={18} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} />
           내 여행에 저장하기
         </button>
+        )}
       </div>
       {/* dayPalette는 참조만 — 추후 일차별 강조 색에 사용 */}
       <span style={{ display: "none" }}>{DAY_TAB_PALETTE.length}</span>
     </div>
+  );
+}
+
+export default function FinalCoursePage() {
+  return (
+    <Suspense fallback={<div className="h-full" style={{ background: "#FAFBFF" }} />}>
+      <FinalCourseContent />
+    </Suspense>
   );
 }

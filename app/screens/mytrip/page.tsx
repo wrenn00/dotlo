@@ -344,7 +344,7 @@ function MyTripContent() {
                     dDay={t.dDay}
                     participants={t.participants}
                     image={t.image}
-                    onClick={isUserTrip ? () => router.push("/screens/mytrip/course/final") : undefined}
+                    onClick={isUserTrip ? () => router.push("/screens/mytrip/course/final?saved=1") : undefined}
                   />
                 );
               })}
