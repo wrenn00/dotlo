@@ -210,8 +210,8 @@ export default function FinalCoursePage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dayPlacesForMap]);
 
-  // 코스 조합으로 생성된 결과는 항상 dokyo.png 썸네일 사용
-  const heroImage = "/images/where/dokyo.png";
+  // 코스 조합으로 생성된 결과는 항상 tokyo.png 썸네일 사용
+  const heroImage = "/images/tokyo.png";
 
   return (
     <div className="relative flex flex-col h-full" style={{ background: "#FAFBFF" }}>
