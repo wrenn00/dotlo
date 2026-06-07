@@ -62,9 +62,9 @@ function Header() {
 
 // ─── 세그먼트 탭 ─────────────────────────────────────────────────────────────
 
-function SegmentedTab({ value, onChange, savedCount }: { value: SegmentKey; onChange: (v: SegmentKey) => void; savedCount: number }) {
+function SegmentedTab({ value, onChange, mineCount, savedCount }: { value: SegmentKey; onChange: (v: SegmentKey) => void; mineCount: number; savedCount: number }) {
   const items: { key: SegmentKey; label: string }[] = [
-    { key: "mine", label: "최종 코스 4" },
+    { key: "mine", label: `최종 코스 ${mineCount}` },
     { key: "saved", label: `저장한 코스 ${savedCount}` },
   ];
   return (
@@ -295,22 +295,29 @@ function MyTripContent() {
   };
   const [country, setCountry] = useState("전체");
   const [userCourses, setUserCourses] = useState<SavedCourse[]>([]);
+  const [userTrips, setUserTrips] = useState<typeof MINE_TRIPS>([]);
   const [whenSheetOpen, setWhenSheetOpen] = useState(false);
 
-  // step7에서 저장한 코스를 sessionStorage에서 읽어와 목록 맨 앞에 prepend
+  // step7에서 저장한 코스 + final에서 저장한 최종 코스 trip을 sessionStorage에서 읽어옴
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem("dotlo:saved-courses");
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) return;
-      setUserCourses(parsed as SavedCourse[]);
-    } catch {
-      /* 무시 */
-    }
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) setUserCourses(parsed as SavedCourse[]);
+      }
+    } catch {/* 무시 */}
+    try {
+      const raw = sessionStorage.getItem("dotlo:final-trips");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) setUserTrips(parsed as typeof MINE_TRIPS);
+      }
+    } catch {/* 무시 */}
   }, [segment]); // 탭 전환할 때마다 새로 읽기
 
   const allCourses: SavedCourse[] = [...userCourses, ...SAVED_COURSES];
+  const allMineTrips = [...userTrips, ...MINE_TRIPS];
   const filteredCourses =
     country === "전체" ? allCourses : allCourses.filter((c) => c.country === country);
 
@@ -321,12 +328,12 @@ function MyTripContent() {
 
       <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 120 }}>
         <div className="flex flex-col" style={{ padding: "12px 20px 0", gap: 16 }}>
-          <SegmentedTab value={segment} onChange={setSegment} savedCount={allCourses.length} />
+          <SegmentedTab value={segment} onChange={setSegment} mineCount={allMineTrips.length} savedCount={allCourses.length} />
 
           {segment === "mine" ? (
             // ── 내 여행 ──
             <div className="flex flex-col" style={{ gap: 13 }}>
-              {MINE_TRIPS.map((t) => (
+              {allMineTrips.map((t) => (
                 <TripCard
                   key={t.id}
                   title={t.title}

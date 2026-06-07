@@ -577,9 +577,30 @@ export default function FinalCoursePage() {
           ))}
         </div>
 
-        {/* 메인 — 내 여행에 저장하기 */}
+        {/* 메인 — 내 여행에 저장하기: 최종 코스 목록에 추가 후 마이트립으로 이동 */}
         <button
-          onClick={() => router.push("/screens/mytrip?segment=saved")}
+          onClick={() => {
+            try {
+              const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+              const fmt = (d: Date) => `${d.getMonth() + 1}.${d.getDate()} ${weekdays[d.getDay()]}`;
+              const today = new Date(); today.setHours(0, 0, 0, 0);
+              const start = new Date(startDate); start.setHours(0, 0, 0, 0);
+              const diffDays = Math.round((start.getTime() - today.getTime()) / 86400000);
+              const dDay = diffDays >= 0 ? `D-${diffDays}` : `D+${-diffDays}`;
+              const trip = {
+                id: `trip-${Date.now()}`,
+                title: `${where} 여행`,
+                date: `${fmt(startDate)} ~ ${fmt(endDate)} · ${nights}박 ${days}일`,
+                dDay,
+                participants: { type: "single" as const, label: "혼자 여행" },
+                image: "/images/tokyo.png",
+              };
+              const raw = sessionStorage.getItem("dotlo:final-trips");
+              const list: typeof trip[] = raw ? JSON.parse(raw) : [];
+              sessionStorage.setItem("dotlo:final-trips", JSON.stringify([trip, ...list]));
+            } catch {/* sessionStorage 사용 불가 시 무시 */}
+            router.push("/screens/mytrip");
+          }}
           className="w-full flex items-center justify-center transition-opacity active:opacity-80"
           style={{
             height: 50,
