@@ -11,12 +11,14 @@ interface TripCardProps {
     | { type: "avatars"; count: number; label: string }
     | { type: "single"; icon?: string; label: string };
   image?: string;
+  onClick?: () => void;
 }
 
 
-export default function TripCard({ title, date, dDay, participants, image }: TripCardProps) {
+export default function TripCard({ title, date, dDay, participants, image, onClick }: TripCardProps) {
   return (
     <button
+      onClick={onClick}
       className="flex items-center w-full text-left"
       style={{
         width: "100%",

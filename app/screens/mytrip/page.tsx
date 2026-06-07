@@ -333,16 +333,21 @@ function MyTripContent() {
           {segment === "mine" ? (
             // ── 내 여행 ──
             <div className="flex flex-col" style={{ gap: 13 }}>
-              {allMineTrips.map((t) => (
-                <TripCard
-                  key={t.id}
-                  title={t.title}
-                  date={t.date}
-                  dDay={t.dDay}
-                  participants={t.participants}
-                  image={t.image}
-                />
-              ))}
+              {allMineTrips.map((t) => {
+                // 프로토타입: 사용자가 직접 만든 최종 코스(id="trip-..." prefix)만 final 화면으로 이동
+                const isUserTrip = typeof t.id === "string" && t.id.startsWith("trip-");
+                return (
+                  <TripCard
+                    key={t.id}
+                    title={t.title}
+                    date={t.date}
+                    dDay={t.dDay}
+                    participants={t.participants}
+                    image={t.image}
+                    onClick={isUserTrip ? () => router.push("/screens/mytrip/course/final") : undefined}
+                  />
+                );
+              })}
             </div>
           ) : (
             // ── 저장한 코스 ──
