@@ -122,8 +122,8 @@ interface SavedCourse {
 
 const SAVED_COURSES: SavedCourse[] = [
   { id: 1, title: "아름다운 도쿄의 밤",   country: "일본",     region: "도쿄",    placeCount: 9,  category: "야경", duration: "단일 코스", hashtags: "#야경 #감성 #시부야",       hours: "8시간",  image: "/images/where/dokyo.png" },
-  { id: 2, title: "도쿄 Flex",           country: "일본",     region: "도쿄",    placeCount: 21, category: "쇼핑", duration: "단일 코스", hashtags: "#쇼핑 #하라주쿠 #오모테산도", hours: "9시간",  image: "/images/where/dokyo.png" },
-  { id: 3, title: "도쿄 먹방 원정대",     country: "일본",     region: "도쿄",    placeCount: 25, category: "미식", duration: "단일 코스", hashtags: "#맛집 #라멘 #스시",          hours: "10시간", image: "/images/where/dokyo.png" },
+  { id: 2, title: "도쿄 Flex",           country: "일본",     region: "도쿄",    placeCount: 21, category: "쇼핑", duration: "단일 코스", hashtags: "#쇼핑 #하라주쿠 #오모테산도", hours: "9시간",  image: "/images/tokyo_shopping.png" },
+  { id: 3, title: "도쿄 먹방 원정대",     country: "일본",     region: "도쿄",    placeCount: 25, category: "미식", duration: "단일 코스", hashtags: "#맛집 #라멘 #스시",          hours: "10시간", image: "/images/tokyo_food.png" },
   { id: 4, title: "홋카이도 자연 투어",   country: "일본",     region: "훗카이도", placeCount: 3,  category: "자연", duration: "3박 4일",   hashtags: "#자연 #힐링 #온천",          hours: "3박 4일",image: "/images/where/fukuoka.png" },
   { id: 5, title: "푸켓 힐링 바캉스",     country: "태국",     region: "태국",    placeCount: 16, category: "자연", duration: "단일 코스", hashtags: "#휴식 #자연 #관광",          hours: "7시간",  image: "/images/where/bangkok.png" },
   { id: 6, title: "로마의 휴일",         country: "이탈리아", region: "이탈리아", placeCount: 8,  category: "역사", duration: "단일 코스", hashtags: "#역사 #문화 #관광",          hours: "5시간",  image: "/images/where/paris.png" },
