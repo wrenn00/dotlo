@@ -47,10 +47,13 @@ export default function CourseDonePage() {
         <ChevronLeft size={24} color="#373C3E" strokeWidth={2} />
       </button>
 
-      {/* 본문 */}
-      <div className="flex-1 overflow-y-auto" style={{ padding: "70px 20px 24px" }}>
+      {/* 본문 — 수직 중앙 정렬 */}
+      <div
+        className="flex-1 overflow-y-auto flex flex-col items-center justify-center"
+        style={{ padding: "70px 20px 24px" }}
+      >
         {/* 캐릭터 + 타이틀 블록 — 캐릭터는 진입 시 살짝 점프 */}
-        <div className="flex flex-col items-center" style={{ marginTop: 40, gap: 14 }}>
+        <div className="flex flex-col items-center" style={{ gap: 14 }}>
           <motion.div
             initial={{ y: 0 }}
             animate={{ y: [0, -16, 0, -10, 0] }}
